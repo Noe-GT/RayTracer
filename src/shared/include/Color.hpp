@@ -13,9 +13,9 @@
 
 class Color {
     public:
-        double _x;
-        double _y;
-        double _z;
+        double _r;
+        double _g;
+        double _b;
 
         Color();
         Color(Color &Color);

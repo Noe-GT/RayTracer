@@ -26,8 +26,6 @@ class Ray {
         Ray(double ox, double oy, double oz, double dx, double dy, double dz, double r, double g, double b);
         ~Ray() = default;
 
-        // virtual Ray& operator-() const;
-
         virtual Ray& operator+=(const Ray& other);
         virtual Ray& operator-=(const Ray& other);
         virtual Ray& operator*=(double t);
@@ -69,3 +67,5 @@ class Ray {
         double length_squared() const;
         double length() const;
 };
+
+Ray operator-(const Ray&);

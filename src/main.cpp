@@ -40,6 +40,6 @@ int main(int argc, char* argv[])
     Ray a(1,2,4);
     Ray b(30, 65, 1);
     b += a;
-    std::cout << b << std::endl;
+    std::cout << -b << std::endl;
     return 0;
 }

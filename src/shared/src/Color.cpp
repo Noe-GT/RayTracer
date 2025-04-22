@@ -7,45 +7,45 @@
 
 #include "../include/Color.hpp"
 
-Color::Color(): _x(0), _y(0), _z(0)
+Color::Color(): _r(0), _g(0), _b(0)
 {
 }
 
-Color::Color(Color &Color): _x(Color._x), _y(Color._y), _z(Color._z)
+Color::Color(Color &Color): _r(Color._r), _g(Color._g), _b(Color._b)
 {
 
 }
-Color::Color(double x, double y, double z): _x(x), _y(y), _z(z)
+Color::Color(double x, double y, double z): _r(x), _g(y), _b(z)
 {
 }
 
 Color& Color::operator-() const
 {
-    Color* result = new Color(-this->_x, -this->_y, -this->_z);
+    Color* result = new Color(-this->_r, -this->_g, -this->_b);
     return * result;
 }
 
 Color& Color::operator+=(const Color& other)
 {
-    this->_x += other._x;
-    this->_y += other._y;
-    this->_z += other._z;
+    this->_r += other._r;
+    this->_g += other._g;
+    this->_b += other._b;
     return *this;
 }
 
 Color& Color::operator-=(const Color& other)
 {
-    this->_x -= other._x;
-    this->_y -= other._y;
-    this->_z -= other._z;
+    this->_r -= other._r;
+    this->_g -= other._g;
+    this->_b -= other._b;
     return *this;
 }
 
 Color& Color::operator*=(double scalar)
 {
-    this->_x *= scalar;
-    this->_y *= scalar;
-    this->_z *= scalar;
+    this->_r *= scalar;
+    this->_g *= scalar;
+    this->_b *= scalar;
     return *this;
 }
 
@@ -53,34 +53,34 @@ Color& Color::operator/=(double scalar)
 {
     if (scalar == 0)
         throw std::invalid_argument("Division by zero");
-    this->_x /= scalar;
-    this->_y /= scalar;
-    this->_z /= scalar;
+    this->_r /= scalar;
+    this->_g /= scalar;
+    this->_b /= scalar;
     return *this;
 }
 
 Color Color::operator+(const Color& other)
 {
-    return Color(this->_x + other._x, this->_y + other._y, this->_z + other._z);
+    return Color(this->_r + other._r, this->_g + other._g, this->_b + other._b);
 }
 
 Color Color::operator-(const Color& other)
 {
-    return Color(this->_x - other._x, this->_y - other._y, this->_z - other._z);
+    return Color(this->_r - other._r, this->_g - other._g, this->_b - other._b);
 }
 
 Color Color::operator*(double scalar)
 {
-    return Color(this->_x * scalar, this->_y * scalar, this->_z * scalar);
+    return Color(this->_r * scalar, this->_g * scalar, this->_b * scalar);
 }
 
 Color Color::operator/(double scalar)
 {
     if (scalar == 0)
         throw std::invalid_argument("Division by zero");
-    return Color(this->_x / scalar, this->_y / scalar, this->_z / scalar);
+    return Color(this->_r / scalar, this->_g / scalar, this->_b / scalar);
 }
 
 std::ostream& operator<<(std::ostream& out, const Color& v) {
-    return out << v._x << ' ' << v._y << ' ' << v._z;
+    return out << v._r << ' ' << v._g << ' ' << v._b;
 }

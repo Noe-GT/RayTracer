@@ -133,17 +133,17 @@ Ray& Ray::operator-=(const Color& other)
 
 Ray& Ray::operator*=(const Color& other)
 {
-    this->_color._x /= other._x;
-    this->_color._y /= other._y;
-    this->_color._z /= other._z;
+    this->_color._r /= other._r;
+    this->_color._g /= other._g;
+    this->_color._b /= other._b;
     return *this;
 }
 
 Ray& Ray::operator/=(const Color& other)
 {
-    this->_color._x /= other._x;
-    this->_color._y /= other._y;
-    this->_color._z /= other._z;
+    this->_color._r /= other._r;
+    this->_color._g /= other._g;
+    this->_color._b /= other._b;
     return *this;
 }
 
@@ -261,4 +261,20 @@ Ray Ray::operator/(const Color& other)
 
 std::ostream& operator<<(std::ostream& out, const Ray& v) {
     return out << "oringin: " << v._origin << "\ndestination: " << v._direction << "\ncolor " << v._color;
+}
+
+Ray operator-(const Ray& other)
+{
+    Ray result(0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+    result._color._r = -other._color._r;
+    result._color._g = -other._color._g;
+    result._color._b = -other._color._b;
+    result._direction._x = -other._direction._x;
+    result._direction._y = -other._direction._y;
+    result._direction._z = -other._direction._z;
+    result._origin._x = -other._origin._x;
+    result._origin._y = -other._origin._y;
+    result._origin._z = -other._origin._z;
+    return result;
 }
