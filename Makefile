@@ -6,7 +6,7 @@
 ##
 
 PLUGIN_DIR	=	plugins/
-PLUGINS	=	$(PLUGIN_DIR)math	\
+PLUGINS	=	$(PLUGIN_DIR)solid	\
 
 SRC_DIR	=	src/
 SRC	=	$(SRC_DIR)Main.cpp \
@@ -23,7 +23,7 @@ OBJS_DIR	=	bin/
 
 OBJS	=	$(SRC:cpp/%cpp=OBJS_DIR/%o)
 
-all: $(EXEC)
+all: $(EXEC) plugins
 
 plugins:
 	$(foreach file, $(PLUGINS), make -C $(file);)
@@ -34,7 +34,7 @@ $(EXEC):	$(OBJS)
 
 clean:
 	rm -rf $(SRC_DIR)$(OBJS_DIR)
-# $(foreach file, $(PLUGINS), make clean -C $(file);)
+	$(foreach file, $(PLUGINS), make clean -C $(file);)
 
 fclean:	clean
 	rm -f $(EXEC)
