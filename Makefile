@@ -7,6 +7,7 @@
 
 PLUGIN_DIR	=	plugins/
 PLUGINS	=	$(PLUGIN_DIR)solid	\
+			# $(PLUGIN_DIR)math	\
 
 SRC_DIR	=	src/
 SRC	=	$(SRC_DIR)Main.cpp \
