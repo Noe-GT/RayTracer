@@ -11,6 +11,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "Vector.hpp"
+
 class Point {
     public:
         double _x;

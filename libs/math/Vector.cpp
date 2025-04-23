@@ -5,7 +5,7 @@
 ** Vector.cpp
 */
 
-#include "../include/Vector.hpp"
+#include "Vector.hpp"
 
 Vector::Vector(): _x(0), _y(0), _z(0)
 {

@@ -15,6 +15,10 @@ Solid::Sphere::Sphere(int origin, double radius) :
 
 bool Solid::Sphere::hits(int ray)
 {
+    // Advance
+    // Get distance
+    // if distance <= 0 -> return true
+    // if distance > base distance -> return false
     (void)ray;
     return false;
 }

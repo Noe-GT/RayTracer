@@ -5,16 +5,14 @@
 ## Makefile
 ##
 
-PLUGIN_DIR	=	plugins/
+PLUGIN_DIR	=	plugins_src/
 PLUGINS	=	$(PLUGIN_DIR)solid	\
-			# $(PLUGIN_DIR)math	\
 
 SRC_DIR	=	src/
 SRC	=	$(SRC_DIR)main.cpp \
-		$(SRC_DIR)shared/src/Color.cpp \
-		$(SRC_DIR)shared/src/Point.cpp \
-		$(SRC_DIR)shared/src/Vector.cpp \
-		$(SRC_DIR)shared/src/Ray.cpp \
+
+LIB_DIR	=	libs/
+LIBS_SRC	=	$(LIB_DIR)math	\
 
 EXEC	=	raytracer
 
@@ -26,24 +24,31 @@ SFML_FLAGS	=	-lsfml-graphics -lsfml-window -lsfml-system
 
 OBJS_DIR	=	bin/
 
+LIBS	=	-L libs/math -lmath
+
 OBJS	=	$(SRC:cpp/%cpp=OBJS_DIR/%o)
 
-all: $(EXEC) plugins
+all: libs plugins $(EXEC)
 
 plugins:
 	$(foreach file, $(PLUGINS), make -C $(file);)
 
+libs:
+	$(foreach file, $(LIBS_SRC), make -C $(file);)
+
 $(EXEC):	$(OBJS)
 	mkdir -p $(SRC_DIR)$(OBJS_DIR)
-	$(CXX) -o $(EXEC) $(OBJS) -I $(SRC_DIR)
+	$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR)
 
 clean:
 	rm -rf $(SRC_DIR)$(OBJS_DIR)
 	$(foreach file, $(PLUGINS), make clean -C $(file);)
+	$(foreach file, $(LIBS_SRC), make clean -C $(file);)
 
 fclean:	clean
 	rm -f $(EXEC)
+	$(foreach file, $(LIBS_SRC), make fclean -C $(file);)
 
 re:	fclean all
 
-.PHONY:	all plugins source clean fclean re
+.PHONY:	all libs plugins source clean fclean re

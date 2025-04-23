@@ -4,7 +4,7 @@
 ** File description:
 ** Ray.cpp
 */
-#include "../include/Ray.hpp"
+#include "Ray.hpp"
 
 Ray::Ray()
 {

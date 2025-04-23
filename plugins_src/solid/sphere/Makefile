@@ -5,13 +5,15 @@
 ## Makefile
 ##
 
-PLUGIN_DIR	=	../../
+PLUGIN_DIR	=	../../../plugins/
+
+PLUGIN_SRC_DIR	=	../../
 
 CXX	=	g++
 
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
 
-CPPFLAGS	=	-I$(PLUGIN_DIR)/solid
+CPPFLAGS	=	-I$(PLUGIN_SRC_DIR)solid
 
 BIN_DIR	=	bin
 
@@ -21,12 +23,12 @@ OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
 SUPER_OBJS	=	../bin/*.o
 
-LIB	=	$(PLUGIN_DIR)/sphere.so
+LIB	=	$(PLUGIN_DIR)sphere.so
 
 all:	$(LIB)
 
 $(LIB):	$(OBJS)
-	@mkdir -p $(PLUGIN_DIR)
+	@mkdir -p $(PLUGIN_SRC_DIR)
 	$(CXX) -shared -o $(LIB) $(SUPER_OBJS) $(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
@@ -35,7 +37,6 @@ $(BIN_DIR)/%.o:	%.cpp
 
 clean:
 	rm -rf $(BIN_DIR)
-	rm $(LIB)
 
 fclean:	clean
 

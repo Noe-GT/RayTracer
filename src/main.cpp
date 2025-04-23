@@ -8,14 +8,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "shared/include/Ray.hpp"
+#include "math/Ray.hpp"
 
 Color ray_color(const Ray& r) {
     Vector unit_direction(r._direction._x / r._direction.Length(),r._direction._y / r._direction.Length(),r._direction._z / r._direction.Length());
     auto a = 0.5 * (unit_direction._y + 1.0);
     return Color(1.0, 1.0, 1.0) * (1.0 - a) + Color(0.5, 0.7, 1.0) * a;
 }
-
 
 int main()
 {

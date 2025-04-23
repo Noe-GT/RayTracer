@@ -5,8 +5,6 @@
 ## Makefile
 ##
 
-ROOT	=	../..
-
 CXX	=	g++
 
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3

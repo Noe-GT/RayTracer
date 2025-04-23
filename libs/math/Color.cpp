@@ -5,7 +5,7 @@
 ** Color.cpp
 */
 
-#include "../include/Color.hpp"
+#include "Color.hpp"
 
 Color::Color(): _r(0), _g(0), _b(0)
 {
