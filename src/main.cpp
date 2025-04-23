@@ -10,36 +10,37 @@
 #include <string>
 #include "shared/include/Ray.hpp"
 
-int main(int argc, char* argv[])
+Color ray_color(const Ray& r) {
+    Vector unit_direction(r._direction._x / r._direction.Length(),r._direction._y / r._direction.Length(),r._direction._z / r._direction.Length());
+    auto a = 0.5 * (unit_direction._y + 1.0);
+    return Color(1.0, 1.0, 1.0) * (1.0 - a) + Color(0.5, 0.7, 1.0) * a;
+}
+
+
+int main()
 {
-    if (argc != 2)
-        return 84;
-    std::string input_filename = argv[1];
-    if (input_filename.compare("-h") == 0 || input_filename.compare("-help") == 0) {
-        std::cerr << "USAGE: ./raytracer <SCENE_FILE>\n\tSCENE_FILE: scene configuration\n";
-        return 1;
-    }
-    int image_width = 256;
-    int image_height = 256;
-    std::string output_filename = input_filename.substr(0, input_filename.find_last_of('.')) + ".ppm";
-    std::ofstream out_file(output_filename);
-    out_file << "P3\n" << image_width << ' ' << image_height << "\n255\n";
-    for (int j = 0; j < image_height; j++) {
-        for (int i = 0; i < image_width; i++) {
-            auto r = double(i) / (image_width-1);
-            auto g = double(j) / (image_height-1);
-            auto b = 0.0;
-            int ir = int(255.999 * r);
-            int ig = int(255.999 * g);
-            int ib = int(255.999 * b);
-            out_file << ir << ' ' << ig << ' ' << ib << '\n';
+    auto picRatio = 16.0 / 9.0;
+    int Picwidth = 500;
+
+    int picHeigt = int(Picwidth / picRatio);
+    picHeigt = (picHeigt < 1) ? 1 : picHeigt;
+    auto viewHeight = 2.0;
+    auto viewWidth = viewHeight * (double(Picwidth)/picHeigt);
+    auto camPoint = Point(0, 0, 0);
+    auto delta1= Vector(viewWidth, 0, 0);
+    auto delta2 = Vector(0, -viewHeight, 0);
+    auto fiirstPixel = camPoint - Vector(0, 0, 1) - delta1/2 - delta2/2 + (delta1 / Picwidth + delta2 / picHeigt) / 2;
+    std::cout << "P3\n" << Picwidth << " " << picHeigt << "\n255\n";
+
+    for (int j = 0; j < picHeigt; j++) {
+        for (int i = 0; i < Picwidth; i++) {
+            auto pixel_center = fiirstPixel + (delta1 / Picwidth * i) + (delta2 / picHeigt * j);
+            Point tmp = pixel_center - camPoint;
+            Vector ray_direction(tmp._x, tmp._y, tmp._z);
+            Ray r(camPoint, ray_direction);
+
+            Color pixel_color = ray_color(r);
+            std::cout << pixel_color;
         }
     }
-    std::cout << "Fichier généré: " << output_filename << "\n";
-
-    Ray a(1,2,4);
-    Ray b(30, 65, 1);
-    b += a;
-    std::cout << -b << std::endl;
-    return 0;
 }

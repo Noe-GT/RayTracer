@@ -81,6 +81,9 @@ Color Color::operator/(double scalar)
     return Color(this->_r / scalar, this->_g / scalar, this->_b / scalar);
 }
 
-std::ostream& operator<<(std::ostream& out, const Color& v) {
-    return out << v._r << ' ' << v._g << ' ' << v._b;
+std::ostream& operator<<(std::ostream& os, const Color& c) {
+    os << static_cast<int>(255.999 * c._r) << ' '
+       << static_cast<int>(255.999 * c._g) << ' '
+       << static_cast<int>(255.999 * c._b) << '\n';
+    return os;
 }

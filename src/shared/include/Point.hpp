@@ -10,7 +10,7 @@
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
-
+#include "Vector.hpp"
 class Point {
     public:
         double _x;
@@ -32,6 +32,12 @@ class Point {
         virtual Point operator-(const Point& v);
         virtual Point operator*(double t);
         virtual Point operator/(double t);
+
+        virtual Point& operator+=(const Vector& v);
+        virtual Point& operator-=(const Vector& v);
+        virtual Point operator+(const Vector& v);
+        virtual Point operator-(const Vector& v);
+
 
         friend std::ostream& operator<<(std::ostream& os, const Point& v);
 };

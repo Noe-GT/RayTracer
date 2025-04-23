@@ -84,3 +84,29 @@ Point Point::operator/(double scalar)
 std::ostream& operator<<(std::ostream& out, const Point& v) {
     return out << v._x << ' ' << v._y << ' ' << v._z;
 }
+
+Point & Point::operator+=(const Vector& other)
+{
+    this->_x += other._x;
+    this->_y += other._y;
+    this->_z += other._z;
+    return *this;
+}
+
+Point &Point::operator-=(const Vector& other)
+{
+    this->_x += other._x;
+    this->_y += other._y;
+    this->_z += other._z;
+    return *this;
+}
+
+Point Point::operator+(const Vector& other)
+{
+    return Point(this->_x + other._x, this->_y + other._y, this->_z + other._z);
+}
+
+Point Point::operator-(const Vector& other)
+{
+    return Point(this->_x - other._x, this->_y - other._y, this->_z - other._z);
+}

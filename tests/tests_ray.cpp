@@ -11,9 +11,9 @@ Test(Ray, default_constructor) {
         cr_assert_eq(r._direction._x, 0.0);
         cr_assert_eq(r._direction._y, 0.0);
         cr_assert_eq(r._direction._z, 0.0);
-        cr_assert_eq(r._color._x, 0.0);
-        cr_assert_eq(r._color._y, 0.0);
-        cr_assert_eq(r._color._z, 0.0);
+        cr_assert_eq(r._color._r, 0.0);
+        cr_assert_eq(r._color._g, 0.0);
+        cr_assert_eq(r._color._b, 0.0);
     }
 }
 
@@ -58,9 +58,9 @@ Test(Ray, operator_add_eq) {
         cr_assert_eq(r1._direction._x, 44.0);
         cr_assert_eq(r1._direction._y, 55.0);
         cr_assert_eq(r1._direction._z, 66.0);
-        cr_assert_eq(r1._color._x, 77.0);
-        cr_assert_eq(r1._color._y, 88.0);
-        cr_assert_eq(r1._color._z, 99.0);
+        cr_assert_eq(r1._color._r, 77.0);
+        cr_assert_eq(r1._color._g, 88.0);
+        cr_assert_eq(r1._color._b, 99.0);
     }
 }
 
@@ -77,9 +77,9 @@ Test(Ray, operator_sub_eq) {
         cr_assert_eq(r1._direction._x, 36.0);
         cr_assert_eq(r1._direction._y, 45.0);
         cr_assert_eq(r1._direction._z, 54.0);
-        cr_assert_eq(r1._color._x, 63.0);
-        cr_assert_eq(r1._color._y, 72.0);
-        cr_assert_eq(r1._color._z, 81.0);
+        cr_assert_eq(r1._color._r, 63.0);
+        cr_assert_eq(r1._color._g, 72.0);
+        cr_assert_eq(r1._color._b, 81.0);
     }
 }
 
@@ -95,9 +95,9 @@ Test(Ray, operator_mul_eq) {
         cr_assert_eq(r._direction._x, 8.0);
         cr_assert_eq(r._direction._y, 10.0);
         cr_assert_eq(r._direction._z, 12.0);
-        cr_assert_eq(r._color._x, 14.0);
-        cr_assert_eq(r._color._y, 16.0);
-        cr_assert_eq(r._color._z, 18.0);
+        cr_assert_eq(r._color._r, 14.0);
+        cr_assert_eq(r._color._g, 16.0);
+        cr_assert_eq(r._color._b, 18.0);
     }
 }
 
@@ -115,9 +115,9 @@ Test(Ray, arithmetic_operators) {
         cr_assert_eq(result._direction._x, 44.0);
         cr_assert_eq(result._direction._y, 55.0);
         cr_assert_eq(result._direction._z, 66.0);
-        cr_assert_eq(result._color._x, 77.0);
-        cr_assert_eq(result._color._y, 88.0);
-        cr_assert_eq(result._color._z, 99.0);
+        cr_assert_eq(result._color._r, 77.0);
+        cr_assert_eq(result._color._g, 88.0);
+        cr_assert_eq(result._color._b, 99.0);
     }
 
     // Test * avec double
@@ -132,9 +132,9 @@ Test(Ray, arithmetic_operators) {
         cr_assert_eq(result._direction._x, 8.0);
         cr_assert_eq(result._direction._y, 10.0);
         cr_assert_eq(result._direction._z, 12.0);
-        cr_assert_eq(result._color._x, 14.0);
-        cr_assert_eq(result._color._y, 16.0);
-        cr_assert_eq(result._color._z, 18.0);
+        cr_assert_eq(result._color._r, 14.0);
+        cr_assert_eq(result._color._g, 16.0);
+        cr_assert_eq(result._color._b, 18.0);
     }
 }
 
@@ -151,9 +151,9 @@ Test(Ray, division_operator) {
         cr_assert_eq(result._direction._x, 4.0);
         cr_assert_eq(result._direction._y, 5.0);
         cr_assert_eq(result._direction._z, 6.0);
-        cr_assert_eq(result._color._x, 7.0);
-        cr_assert_eq(result._color._y, 8.0);
-        cr_assert_eq(result._color._z, 9.0);
+        cr_assert_eq(result._color._r, 7.0);
+        cr_assert_eq(result._color._g, 8.0);
+        cr_assert_eq(result._color._b, 9.0);
     }
 
     // Test division par zéro
