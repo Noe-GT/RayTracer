@@ -11,27 +11,29 @@
 #include <iostream>
 #include <stdexcept>
 
-class Color {
-    public:
-        double _r;
-        double _g;
-        double _b;
+namespace math {
+    class Color {
+        public:
+            double _r;
+            double _g;
+            double _b;
 
-        Color();
-        Color(Color &Color);
-        Color(double x, double y, double z);
-        ~Color() = default;
+            Color();
+            Color(math::Color &color);
+            Color(double x, double y, double z);
+            ~Color() = default;
 
-        virtual Color& operator-() const;
-        virtual Color& operator+=(const Color& v);
-        virtual Color& operator-=(const Color& v);
-        virtual Color& operator*=(double t);
-        virtual Color& operator/=(double t);
+            virtual math::Color& operator-() const;
+            virtual math::Color& operator+=(const math::Color& v);
+            virtual math::Color& operator-=(const math::Color& v);
+            virtual math::Color& operator*=(double t);
+            virtual math::Color& operator/=(double t);
 
-        virtual Color operator+(const Color& v);
-        virtual Color operator-(const Color& v);
-        virtual Color operator*(double t);
-        virtual Color operator/(double t);
+            virtual math::Color operator+(const math::Color& v);
+            virtual math::Color operator-(const math::Color& v);
+            virtual math::Color operator*(double t);
+            virtual math::Color operator/(double t);
 
-        friend std::ostream& operator<<(std::ostream& os, const Color& v);
+            friend std::ostream& operator<<(std::ostream& os, const math::Color& v);
+    };
 };

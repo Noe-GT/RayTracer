@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2024
-** raytracer
+** math::raytracer
 ** File description:
-** Ray.hpp
+** math::Ray.hpp
 */
 
 #pragma once
@@ -11,61 +11,62 @@
 #include "Vector.hpp"
 #include "Color.hpp"
 
-class Ray {
+namespace math {
+    class Ray {
+        public:
+            Point _origin;
+            math::Vector _direction;
+            math::Color _color;
 
-    public:
-        Point _origin;
-        Vector _direction;
-        Color _color;
+            Ray();
+            Ray(Point, math::Vector, math::Color);
+            Ray(Point, math::Vector);
+            Ray(double x, double y, double z);
+            Ray(double ox, double oy, double oz, double dx, double dy, double dz);
+            Ray(double ox, double oy, double oz, double dx, double dy, double dz, double r, double g, double b);
+            ~Ray() = default;
 
-        Ray();
-        Ray(Point, Vector, Color);
-        Ray(Point, Vector);
-        Ray(double x, double y, double z);
-        Ray(double ox, double oy, double oz, double dx, double dy, double dz);
-        Ray(double ox, double oy, double oz, double dx, double dy, double dz, double r, double g, double b);
-        ~Ray() = default;
+            virtual math::Ray& operator+=(const math::Ray& other);
+            virtual math::Ray& operator-=(const math::Ray& other);
+            virtual math::Ray& operator*=(double t);
+            virtual math::Ray& operator/=(double t);
+            virtual math::Ray operator+(const math::Ray& other);
+            virtual math::Ray operator-(const math::Ray& other);
+            virtual math::Ray operator*(double t);
+            virtual math::Ray operator/(double t);
 
-        virtual Ray& operator+=(const Ray& other);
-        virtual Ray& operator-=(const Ray& other);
-        virtual Ray& operator*=(double t);
-        virtual Ray& operator/=(double t);
-        virtual Ray operator+(const Ray& other);
-        virtual Ray operator-(const Ray& other);
-        virtual Ray operator*(double t);
-        virtual Ray operator/(double t);
+            virtual math::Ray& operator+=(const Point& other);
+            virtual math::Ray& operator-=(const Point& other);
+            virtual math::Ray& operator*=(const Point& other);
+            virtual math::Ray& operator/=(const Point& other);
+            virtual math::Ray operator+(const Point& other);
+            virtual math::Ray operator*(const Point& other);
+            virtual math::Ray operator/(const Point& other);
+            virtual math::Ray operator-(const Point& other);
 
-        virtual Ray& operator+=(const Point& other);
-        virtual Ray& operator-=(const Point& other);
-        virtual Ray& operator*=(const Point& other);
-        virtual Ray& operator/=(const Point& other);
-        virtual Ray operator+(const Point& other);
-        virtual Ray operator*(const Point& other);
-        virtual Ray operator/(const Point& other);
-        virtual Ray operator-(const Point& other);
+            virtual math::Ray& operator+=(const math::Vector& other);
+            virtual math::Ray& operator-=(const math::Vector& other);
+            virtual math::Ray& operator*=(const math::Vector& other);
+            virtual math::Ray& operator/=(const math::Vector& other);
+            virtual math::Ray operator+(const math::Vector& other);
+            virtual math::Ray operator-(const math::Vector& other);
+            virtual math::Ray operator*(const math::Vector& other);
+            virtual math::Ray operator/(const math::Vector& other);
 
-        virtual Ray& operator+=(const Vector& other);
-        virtual Ray& operator-=(const Vector& other);
-        virtual Ray& operator*=(const Vector& other);
-        virtual Ray& operator/=(const Vector& other);
-        virtual Ray operator+(const Vector& other);
-        virtual Ray operator-(const Vector& other);
-        virtual Ray operator*(const Vector& other);
-        virtual Ray operator/(const Vector& other);
+            virtual math::Ray& operator+=(const math::Color& other);
+            virtual math::Ray& operator-=(const math::Color& other);
+            virtual math::Ray& operator*=(const math::Color& other);
+            virtual math::Ray& operator/=(const math::Color& other);
+            virtual math::Ray operator+(const math::Color& other);
+            virtual math::Ray operator-(const math::Color& other);
+            virtual math::Ray operator*(const math::Color& other);
+            virtual math::Ray operator/(const math::Color& other);
 
-        virtual Ray& operator+=(const Color& other);
-        virtual Ray& operator-=(const Color& other);
-        virtual Ray& operator*=(const Color& other);
-        virtual Ray& operator/=(const Color& other);
-        virtual Ray operator+(const Color& other);
-        virtual Ray operator-(const Color& other);
-        virtual Ray operator*(const Color& other);
-        virtual Ray operator/(const Color& other);
+            friend std::ostream& operator<<(std::ostream& os, const math::Ray& v);
 
-        friend std::ostream& operator<<(std::ostream& os, const Ray& v);
-
-        double length_squared() const;
-        double length() const;
+            double length_squared() const;
+            double length() const;
+    };
 };
 
-Ray operator-(const Ray&);
+math::Ray operator-(const math::Ray&);

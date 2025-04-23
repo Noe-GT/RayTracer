@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** raytracer
 ** File description:
-** Vector.hpp
+** math::Vector.hpp
 */
 
 #pragma once
@@ -11,30 +11,32 @@
 #include <iostream>
 #include <stdexcept>
 
-class Vector {
-    public:
-        double _x;
-        double _y;
-        double _z;
+namespace math {
+    class Vector {
+        public:
+            double _x;
+            double _y;
+            double _z;
 
-        Vector();
-        Vector(Vector &Vector);
-        Vector(double x, double y, double z);
-        ~Vector() = default;
+            Vector();
+            Vector(math::Vector &vector);
+            Vector(double x, double y, double z);
+            ~Vector() = default;
 
-        virtual Vector& operator-() const;
-        virtual Vector& operator+=(const Vector& v);
-        virtual Vector& operator-=(const Vector& v);
-        virtual Vector& operator*=(double t);
-        virtual Vector& operator/=(double t);
+            virtual math::Vector& operator-() const;
+            virtual math::Vector& operator+=(const math::Vector& v);
+            virtual math::Vector& operator-=(const math::Vector& v);
+            virtual math::Vector& operator*=(double t);
+            virtual math::Vector& operator/=(double t);
 
-        virtual Vector operator+(const Vector& v);
-        virtual Vector operator-(const Vector& v);
-        virtual Vector operator*(double t);
-        virtual Vector operator/(double t);
+            virtual math::Vector operator+(const math::Vector& v);
+            virtual math::Vector operator-(const math::Vector& v);
+            virtual math::Vector operator*(double t);
+            virtual math::Vector operator/(double t);
 
-        double LengthSquared() const;
-        double Length() const;
+            double LengthSquared() const;
+            double Length() const;
 
-        friend std::ostream& operator<<(std::ostream& os, const Vector& v);
+            friend std::ostream& operator<<(std::ostream& os, const math::Vector& v);
+    };
 };

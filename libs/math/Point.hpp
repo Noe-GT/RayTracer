@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** raytracer
 ** File description:
-** Point.hpp
+** math::Point.hpp
 */
 
 #pragma once
@@ -12,33 +12,35 @@
 #include <stdexcept>
 #include "Vector.hpp"
 
-class Point {
-    public:
-        double _x;
-        double _y;
-        double _z;
+namespace math {
+    class Point {
+        public:
+            double _x;
+            double _y;
+            double _z;
 
-        Point();
-        Point(Point &Point);
-        Point(double x, double y, double z);
-        ~Point() = default;
+            Point();
+            Point(math::Point &point);
+            Point(double x, double y, double z);
+            ~Point() = default;
 
-        virtual Point& operator-() const;
-        virtual Point& operator+=(const Point& v);
-        virtual Point& operator-=(const Point& v);
-        virtual Point& operator*=(double t);
-        virtual Point& operator/=(double t);
+            virtual math::Point& operator-() const;
+            virtual math::Point& operator+=(const math::Point& v);
+            virtual math::Point& operator-=(const math::Point& v);
+            virtual math::Point& operator*=(double t);
+            virtual math::Point& operator/=(double t);
 
-        virtual Point operator+(const Point& v);
-        virtual Point operator-(const Point& v);
-        virtual Point operator*(double t);
-        virtual Point operator/(double t);
+            virtual math::Point operator+(const math::Point& v);
+            virtual math::Point operator-(const math::Point& v);
+            virtual math::Point operator*(double t);
+            virtual math::Point operator/(double t);
 
-        virtual Point& operator+=(const Vector& v);
-        virtual Point& operator-=(const Vector& v);
-        virtual Point operator+(const Vector& v);
-        virtual Point operator-(const Vector& v);
+            virtual math::Point& operator+=(const math::Vector& v);
+            virtual math::Point& operator-=(const math::Vector& v);
+            virtual math::Point operator+(const math::Vector& v);
+            virtual math::Point operator-(const math::Vector& v);
 
 
-        friend std::ostream& operator<<(std::ostream& os, const Point& v);
+            friend std::ostream& operator<<(std::ostream& os, const math::Point& v);
+    };
 };

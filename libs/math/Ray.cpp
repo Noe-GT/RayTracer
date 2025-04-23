@@ -1,36 +1,47 @@
 /*
 ** EPITECH PROJECT, 2024
-** raytracer
+** math::raytracer
 ** File description:
-** Ray.cpp
+** math::Ray.cpp
 */
 #include "Ray.hpp"
 
-Ray::Ray()
+math::Ray::Ray()
 {
 }
 
-Ray::Ray(Point origin, Vector direction, Color color): _origin(origin), _direction(direction), _color(color)
+math::Ray::Ray(math::Point origin, math::Vector direction, math::Color color):
+    _origin(origin),
+    _direction(direction),
+    _color(color)
 {
 }
 
-Ray::Ray(Point origin, Vector direction): _origin(origin), _direction(direction)
+math::Ray::Ray(math::Point origin, math::Vector direction):
+    _origin(origin),
+    _direction(direction)
 {
 }
 
-Ray::Ray(double x, double y, double z): _origin(x,y,z)
+math::Ray::Ray(double x, double y, double z):
+    _origin(x,y,z)
 {
 }
 
-Ray::Ray(double ox, double oy, double oz, double dx, double dy, double dz): _origin(ox, oy, oz), _direction(dx, dy, dz)
+math::Ray::Ray(double ox, double oy, double oz, double dx, double dy, double dz):
+    _origin(ox, oy, oz),
+    _direction(dx, dy, dz)
 {
 }
 
-Ray::Ray(double ox, double oy, double oz, double dx, double dy, double dz, double r, double g, double b): _origin(ox, oy, oz), _direction(dx, dy, dz), _color(r, g, b)
+math::Ray::Ray(double ox, double oy, double oz, double dx, double dy, double dz, double r, double g, double b):
+    _origin(ox, oy, oz),
+    _direction(dx, dy, dz),
+    _color(r, g, b)
 {
 }
 
-Ray& Ray::operator+=(const Ray& other)
+math::Ray& math::Ray::operator+=(const math::Ray& other)
 {
     this->_origin += other._origin;
     this->_direction += other._direction;
@@ -38,7 +49,7 @@ Ray& Ray::operator+=(const Ray& other)
     return *this;
 }
 
-Ray& Ray::operator-=(const Ray& other)
+math::Ray& math::Ray::operator-=(const math::Ray& other)
 {
     this->_origin -= other._origin;
     this->_direction -= other._direction;
@@ -46,7 +57,7 @@ Ray& Ray::operator-=(const Ray& other)
     return *this;
 }
 
-Ray& Ray::operator*=(double t)
+math::Ray& math::Ray::operator*=(double t)
 {
     this->_origin *= t;
     this->_direction *= t;
@@ -54,7 +65,7 @@ Ray& Ray::operator*=(double t)
     return *this;
 }
 
-Ray& Ray::operator/=(double t) {
+math::Ray& math::Ray::operator/=(double t) {
     if (t == 0.0)
         throw std::runtime_error("Division by zero");
     this->_origin /= t;
@@ -63,19 +74,19 @@ Ray& Ray::operator/=(double t) {
     return *this;
 }
 
-Ray& Ray::operator+=(const Point& other)
+math::Ray& math::Ray::operator+=(const math::Point& other)
 {
     this->_origin += other;
     return *this;
 }
 
-Ray& Ray::operator-=(const Point& other)
+math::Ray& math::Ray::operator-=(const math::Point& other)
 {
     this->_origin -= other;
     return *this;
 }
 
-Ray& Ray::operator*=(const Point& other)
+math::Ray& math::Ray::operator*=(const math::Point& other)
 {
     this->_origin._x *= other._x;
     this->_origin._y *= other._y;
@@ -83,7 +94,7 @@ Ray& Ray::operator*=(const Point& other)
     return *this;
 }
 
-Ray& Ray::operator/=(const Point& other)
+math::Ray& math::Ray::operator/=(const math::Point& other)
 {
     this->_origin._x /= other._x;
     this->_origin._y /= other._y;
@@ -91,19 +102,19 @@ Ray& Ray::operator/=(const Point& other)
     return *this;
 }
 
-Ray& Ray::operator+=(const Vector& other)
+math::Ray& math::Ray::operator+=(const math::Vector& other)
 {
     _direction += other;
     return *this;
 }
 
-Ray& Ray::operator-=(const Vector& other)
+math::Ray& math::Ray::operator-=(const math::Vector& other)
 {
     _direction -= other;
     return *this;
 }
 
-Ray& Ray::operator*=(const Vector& other)
+math::Ray& math::Ray::operator*=(const math::Vector& other)
 {
     this->_direction._x *= other._x;
     this->_direction._y *= other._y;
@@ -111,7 +122,7 @@ Ray& Ray::operator*=(const Vector& other)
     return *this;
 }
 
-Ray& Ray::operator/=(const Vector& other)
+math::Ray& math::Ray::operator/=(const math::Vector& other)
 {
     this->_direction._x /= other._x;
     this->_direction._y /= other._y;
@@ -119,19 +130,19 @@ Ray& Ray::operator/=(const Vector& other)
     return *this;
 }
 
-Ray& Ray::operator+=(const Color& other)
+math::Ray& math::Ray::operator+=(const math::Color& other)
 {
     _color += other;
     return *this;
 }
 
-Ray& Ray::operator-=(const Color& other)
+math::Ray& math::Ray::operator-=(const math::Color& other)
 {
     _color -= other;
     return *this;
 }
 
-Ray& Ray::operator*=(const Color& other)
+math::Ray& math::Ray::operator*=(const math::Color& other)
 {
     this->_color._r /= other._r;
     this->_color._g /= other._g;
@@ -139,7 +150,7 @@ Ray& Ray::operator*=(const Color& other)
     return *this;
 }
 
-Ray& Ray::operator/=(const Color& other)
+math::Ray& math::Ray::operator/=(const math::Color& other)
 {
     this->_color._r /= other._r;
     this->_color._g /= other._g;
@@ -147,125 +158,127 @@ Ray& Ray::operator/=(const Color& other)
     return *this;
 }
 
-Ray Ray::operator+(const Ray& other)
+math::Ray math::Ray::operator+(const math::Ray& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result += other;
     return result;
 }
 
-Ray Ray::operator+(const Point& other)
+math::Ray math::Ray::operator+(const math::Point& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result += other;
     return result;
 }
 
-Ray Ray::operator+(const Vector& other)
+math::Ray math::Ray::operator+(const math::Vector& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result += other;
     return result;
 }
 
-Ray Ray::operator+(const Color& other)
+math::Ray math::Ray::operator+(const math::Color& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result += other;
     return result;
 }
 
-Ray Ray::operator-(const Ray& other)
+math::Ray math::Ray::operator-(const math::Ray& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result -= other;
     return result;
 }
 
-Ray Ray::operator-(const Point& other)
+math::Ray math::Ray::operator-(const math::Point& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result -= other;
     return result;
 }
 
-Ray Ray::operator-(const Vector& other)
+math::Ray math::Ray::operator-(const math::Vector& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result -= other;
     return result;
 }
 
-Ray Ray::operator-(const Color& other)
+math::Ray math::Ray::operator-(const math::Color& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result -= other;
     return result;
 }
 
-Ray Ray::operator*(const double t)
+math::Ray math::Ray::operator*(const double t)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result *= t;
     return result;
 }
 
-Ray Ray::operator*(const Point& other)
+math::Ray math::Ray::operator*(const math::Point& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result *= other;
     return result;
 }
 
-Ray Ray::operator*(const Vector& other)
+math::Ray math::Ray::operator*(const math::Vector& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result *= other;
     return result;
 }
 
-Ray Ray::operator*(const Color& other)
+math::Ray math::Ray::operator*(const math::Color& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result *= other;
     return result;
 }
 
-Ray Ray::operator/(const double t)
+math::Ray math::Ray::operator/(const double t)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result /= t;
     return result;
 }
 
-Ray Ray::operator/(const Point& other)
+math::Ray math::Ray::operator/(const math::Point& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result /= other;
     return result;
 }
 
-Ray Ray::operator/(const Vector& other)
+math::Ray math::Ray::operator/(const math::Vector& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result /= other;
     return result;
 }
 
-Ray Ray::operator/(const Color& other)
+math::Ray math::Ray::operator/(const math::Color& other)
 {
-    Ray result(*this);
+    math::Ray result(*this);
     result /= other;
     return result;
 }
 
-std::ostream& operator<<(std::ostream& out, const Ray& v) {
-    return out << "oringin: " << v._origin << "\ndestination: " << v._direction << "\ncolor " << v._color;
-}
+namespace math {
+    std::ostream& operator<<(std::ostream& out, const math::Ray& v) {
+        return out << "oringin: " << v._origin << "\ndestination: " << v._direction << "\nmath::color " << v._color;
+    }
+};
 
-Ray operator-(const Ray& other)
+math::Ray operator-(const math::Ray& other)
 {
-    Ray result(0, 0, 0, 0, 0, 0, 0, 0, 0);
+    math::Ray result(0, 0, 0, 0, 0, 0, 0, 0, 0);
 
     result._color._r = -other._color._r;
     result._color._g = -other._color._g;
