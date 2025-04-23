@@ -10,7 +10,11 @@ PLUGINS	=	$(PLUGIN_DIR)solid	\
 			# $(PLUGIN_DIR)math	\
 
 SRC_DIR	=	src/
-SRC	=	$(SRC_DIR)Main.cpp \
+SRC	=	$(SRC_DIR)main.cpp \
+		$(SRC_DIR)shared/src/Color.cpp \
+		$(SRC_DIR)shared/src/Point.cpp \
+		$(SRC_DIR)shared/src/Vector.cpp \
+		$(SRC_DIR)shared/src/Ray.cpp \
 
 EXEC	=	raytracer
 
