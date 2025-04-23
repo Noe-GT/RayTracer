@@ -11,12 +11,12 @@ Solid::APrimitive::APrimitive()
 {
 }
 
-Solid::APrimitive::APrimitive(int origin) :
+Solid::APrimitive::APrimitive(math::Point origin) :
     _origin(origin)
 {
 }
 
-int Solid::APrimitive::getOrigin() const
+math::Point Solid::APrimitive::getOrigin() const
 {
     return _origin;
 }

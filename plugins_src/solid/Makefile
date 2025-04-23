@@ -5,15 +5,17 @@
 ## Makefile
 ##
 
+ROOT	=	../../
+
+SRCS	=	APrimitive.cpp	\
+
+PLUGINS	=	sphere	\
+
 CXX	=	g++
 
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
 
 BIN_DIR	=	bin
-
-SRCS	=	APrimitive.cpp	\
-
-PLUGINS	=	sphere	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 

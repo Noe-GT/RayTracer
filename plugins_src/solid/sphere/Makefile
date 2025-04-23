@@ -5,7 +5,9 @@
 ## Makefile
 ##
 
-PLUGIN_DIR	=	../../../plugins/
+ROOT	=	../../../
+
+PLUGIN_DIR	=	$(ROOT)plugins/
 
 PLUGIN_SRC_DIR	=	../../
 

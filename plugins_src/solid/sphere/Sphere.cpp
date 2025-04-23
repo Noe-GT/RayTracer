@@ -7,13 +7,13 @@
 
 #include "Sphere.hpp"
 
-Solid::Sphere::Sphere(int origin, double radius) :
+Solid::Sphere::Sphere(math::Point origin, double radius) :
     APrimitive(origin),
     _radius(radius)
 {
 }
 
-bool Solid::Sphere::hits(int ray)
+bool Solid::Sphere::hits(math::Ray ray)
 {
     // Advance
     // Get distance

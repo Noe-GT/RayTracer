@@ -14,9 +14,9 @@ namespace Solid {
     class Sphere : public Solid::APrimitive
     {
         public:
-            Sphere(int origin, double radius);
+            Sphere(math::Point origin, double radius);
             ~Sphere() = default;
-            bool hits(int ray) final;
+            bool hits(math::Ray ray) final;
         private:
             double _radius;
     };
