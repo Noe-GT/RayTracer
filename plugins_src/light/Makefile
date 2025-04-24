@@ -5,11 +5,14 @@
 ## Makefile
 ##
 
-ROOT	=	../../../
+RESET	   	=	\033[0m
+CYAN	=	\033[0;36m
 
-PLUGIN_DIR	=	$(ROOT)plugins/
+ROOT	=	../../
 
-PLUGIN_SRC_DIR	=	$(ROOT)plugins_src/
+SRCS	=	ALight.cpp	\
+
+PLUGINS	=	directional	\
 
 CXX	=	g++
 
@@ -22,27 +25,20 @@ endif
 
 BIN_DIR	=	bin
 
-SRCS	=	Sphere.cpp \
-
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-SUPER_OBJS	=	../bin/*.o
+all:	$(OBJS) plugins
 
-LIB	=	$(PLUGIN_DIR)primitives_sphere.so
-
-all:	$(LIB)
-
-$(LIB):	$(OBJS)
-	@mkdir -p $(PLUGIN_DIR)
-	$(CXX) -shared -o $(LIB) $(SUPER_OBJS) $(OBJS)
+plugins:
+	@$(foreach file, $(PLUGINS), echo -e "$(CYAN)plugin: $(file)$(RESET)" ; make -C $(file);)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(PLUGIN_SRC_DIR)solid
+	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
 
 clean:
 	rm -rf $(BIN_DIR)
-	rm -f $(LIB)
+	$(foreach file, $(PLUGINS), make clean -C $(file);)
 
 fclean:	clean
 

@@ -23,6 +23,8 @@ namespace math {
             Color(double x, double y, double z);
             ~Color() = default;
 
+            virtual math::Color& operator=(const math::Color& v);
+
             virtual math::Color& operator-() const;
             virtual math::Color& operator+=(const math::Color& v);
             virtual math::Color& operator-=(const math::Color& v);

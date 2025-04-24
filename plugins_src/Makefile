@@ -5,14 +5,21 @@
 ## Makefile
 ##
 
+RESET	   	=	\033[0m
+MAGENTA	=	\033[0;35m
+
 PLUGINS_DIR	=	../plugins/
 
 PLUGINS	=	solid	\
+			light	\
 
-all: build
+all:	print build
+
+print:
+	@echo -e "$(MAGENTA)[PLUGINS]$(RESET)"
 
 build:
-	$(foreach file, $(PLUGINS), make -C $(file);)
+	@$(foreach file, $(PLUGINS), make -C $(file);)
 
 clean:
 	$(foreach file, $(PLUGINS), make clean -C $(file);)
@@ -22,4 +29,4 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY:	all build clean fclean re
+.PHONY:	all print build clean fclean re

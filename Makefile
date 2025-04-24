@@ -5,6 +5,12 @@
 ## Makefile
 ##
 
+GREEN	   	=	\033[1;32m
+RED		 	=	\033[1;31m
+CYAN	=	\033[0;36m
+MAGENTA	=	\033[0;35m
+RESET	   	=	\033[0m
+
 PLUGINS_SRC_DIR	=	plugins_src/
 
 SRC_DIR	=	src/

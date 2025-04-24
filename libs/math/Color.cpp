@@ -25,6 +25,14 @@ math::Color& math::Color::operator-() const
     return * result;
 }
 
+math::Color& math::Color::operator=(const math::Color& other)
+{
+    this->_r = other._r;
+    this->_g = other._g;
+    this->_b = other._b;
+    return *this;
+}
+
 math::Color& math::Color::operator+=(const math::Color& other)
 {
     this->_r += other._r;

@@ -5,14 +5,11 @@
 ## Makefile
 ##
 
-RESET	   	=	\033[0m
-CYAN	=	\033[0;36m
+ROOT	=	../../../
 
-ROOT	=	../../
+PLUGIN_DIR	=	$(ROOT)plugins/
 
-SRCS	=	APrimitive.cpp	\
-
-PLUGINS	=	sphere	\
+PLUGIN_SRC_DIR	=	$(ROOT)plugins_src/
 
 CXX	=	g++
 
@@ -25,20 +22,27 @@ endif
 
 BIN_DIR	=	bin
 
+SRCS	=	DirectionalLight.cpp \
+
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-all:	$(OBJS) plugins print
+SUPER_OBJS	=	../bin/*.o
 
-plugins:
-	@$(foreach file, $(PLUGINS), echo -e "$(CYAN)plugin: $(file)$(RESET)" ; make -C $(file);)
+LIB	=	$(PLUGIN_DIR)primitives_sphere.so
+
+all:	$(LIB)
+
+$(LIB):	$(OBJS)
+	@mkdir -p $(PLUGIN_DIR)
+	$(CXX) -shared -o $(LIB) $(SUPER_OBJS) $(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
+	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(PLUGIN_SRC_DIR)light
 
 clean:
 	rm -rf $(BIN_DIR)
-	$(foreach file, $(PLUGINS), make clean -C $(file);)
+	rm -f $(LIB)
 
 fclean:	clean
 
