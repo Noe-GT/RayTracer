@@ -11,7 +11,9 @@
 #include "APrimitive.hpp"
 
 namespace Solid {
+
     class Sphere : public Solid::APrimitive
+    // APrimitive::_origin is considered the center of the sphere
     {
         public:
             Sphere(math::Point origin, double radius);

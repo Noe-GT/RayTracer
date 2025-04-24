@@ -11,15 +11,15 @@ Solid::Sphere::Sphere(math::Point origin, double radius) :
     APrimitive(origin),
     _radius(radius)
 {
-    (void)this->_radius;
 }
 
 bool Solid::Sphere::hits(math::Ray ray)
 {
-    // Advance
-    // Get distance
-    // if distance <= 0 -> return true
-    // if distance > base distance -> return false
-    (void)ray;
-    return false;
+    math::Vector coVec(this->_origin - ray._origin);
+    // vector from sphereCenter to rayOrigin
+    double a = ray._direction.dotProduct(ray._direction);
+    double b = -2.0 * ray._direction.dotProduct(coVec);
+    double c = coVec.dotProduct(coVec) - this->_radius*this->_radius;
+    double discriminant = b*b - 4*a*c;
+    return (discriminant >= 0);
 }

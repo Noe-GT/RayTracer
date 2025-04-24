@@ -40,7 +40,6 @@ namespace math {
             virtual math::Point operator+(const math::Vector& v);
             virtual math::Point operator-(const math::Vector& v);
 
-
             friend std::ostream& operator<<(std::ostream& os, const math::Point& v);
     };
 };

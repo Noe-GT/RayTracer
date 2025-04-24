@@ -6,16 +6,33 @@
 */
 
 #include "Vector.hpp"
+#include "Point.hpp"
 
-math::Vector::Vector(): _x(0), _y(0), _z(0)
+math::Vector::Vector():
+    _x(0),
+    _y(0),
+    _z(0)
 {
 }
 
-math::Vector::Vector(const math::Vector &vector): _x(vector._x), _y(vector._y), _z(vector._z)
+math::Vector::Vector(const math::Vector &vector):
+    _x(vector._x),
+    _y(vector._y),
+    _z(vector._z)
 {
-
 }
-math::Vector::Vector(double x, double y, double z): _x(x), _y(y), _z(z)
+
+math::Vector::Vector(const math::Point &point):
+    _x(point._x),
+    _y(point._y),
+    _z(point._z)
+{
+}
+
+math::Vector::Vector(double x, double y, double z):
+    _x(x),
+    _y(y),
+    _z(z)
 {
 }
 
@@ -89,6 +106,13 @@ double math::Vector::Length() const
 double math::Vector::LengthSquared() const
 {
     return this->_x * this->_x + this->_y * this->_y + this->_z * this->_z;
+}
+
+double math::Vector::dotProduct(const math::Vector &other) const
+{
+    return (this->_x * other._x)
+        + (this->_y * other._y)
+        + (this->_z * other._z);
 }
 
 namespace math {

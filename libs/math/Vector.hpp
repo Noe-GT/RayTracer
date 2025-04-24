@@ -12,6 +12,10 @@
 #include <stdexcept>
 
 namespace math {
+    class Point;
+}
+
+namespace math {
     class Vector {
         public:
             double _x;
@@ -20,6 +24,7 @@ namespace math {
 
             Vector();
             Vector(const math::Vector &vector);
+            Vector(const math::Point &point);
             Vector(double x, double y, double z);
             ~Vector() = default;
 
@@ -36,6 +41,7 @@ namespace math {
 
             double LengthSquared() const;
             double Length() const;
+            double dotProduct(const math::Vector& other) const;
 
             friend std::ostream& operator<<(std::ostream& os, const math::Vector& v);
     };
