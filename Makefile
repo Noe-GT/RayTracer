@@ -10,6 +10,7 @@ PLUGINS	=	$(PLUGIN_DIR)solid	\
 
 SRC_DIR	=	src/
 SRC	=	$(SRC_DIR)main.cpp \
+		$(SRC_DIR)RayTracer.cpp	\
 
 LIB_DIR	=	libs/
 LIBS_SRC	=	$(LIB_DIR)math	\
@@ -38,7 +39,7 @@ libs:
 
 $(EXEC):	$(OBJS)
 	mkdir -p $(SRC_DIR)$(OBJS_DIR)
-	$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR)
+	$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR) -I$(PLUGIN_DIR)
 
 clean:
 	rm -rf $(SRC_DIR)$(OBJS_DIR)
