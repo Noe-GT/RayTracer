@@ -19,7 +19,7 @@ namespace math {
             double _z;
 
             Vector();
-            Vector(math::Vector &vector);
+            Vector(const math::Vector &vector);
             Vector(double x, double y, double z);
             ~Vector() = default;
 

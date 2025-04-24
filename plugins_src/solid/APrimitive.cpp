@@ -20,3 +20,9 @@ int Solid::APrimitive::getOrigin() const
 {
     return _origin;
 }
+
+bool Solid::APrimitive::hits(int ray)
+{
+    (void)ray;
+    return false;
+}

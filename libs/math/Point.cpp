@@ -11,7 +11,7 @@ math::Point::Point(): _x(0), _y(0), _z(0)
 {
 }
 
-math::Point::Point(math::Point &point): _x(point._x), _y(point._y), _z(point._z)
+math::Point::Point(const math::Point &point): _x(point._x), _y(point._y), _z(point._z)
 {
 
 }

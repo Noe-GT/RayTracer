@@ -19,7 +19,7 @@ namespace math {
             double _b;
 
             Color();
-            Color(math::Color &color);
+            Color(const math::Color &color);
             Color(double x, double y, double z);
             ~Color() = default;
 

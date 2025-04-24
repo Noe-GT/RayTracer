@@ -5,9 +5,16 @@
 ## Makefile
 ##
 
+ROOT	=	../..
+
 CXX	=	g++
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S), Darwin)
+CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3
+else
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
+endif
 
 BIN_DIR	=	bin
 

@@ -11,6 +11,7 @@ Solid::Sphere::Sphere(int origin, double radius) :
     APrimitive(origin),
     _radius(radius)
 {
+    (void)this->_radius;
 }
 
 bool Solid::Sphere::hits(int ray)

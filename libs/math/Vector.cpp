@@ -11,7 +11,7 @@ math::Vector::Vector(): _x(0), _y(0), _z(0)
 {
 }
 
-math::Vector::Vector(math::Vector &vector): _x(vector._x), _y(vector._y), _z(vector._z)
+math::Vector::Vector(const math::Vector &vector): _x(vector._x), _y(vector._y), _z(vector._z)
 {
 
 }

@@ -11,7 +11,7 @@ math::Color::Color(): _r(0), _g(0), _b(0)
 {
 }
 
-math::Color::Color(math::Color &color): _r(color._r), _g(color._g), _b(color._b)
+math::Color::Color(const math::Color &color): _r(color._r), _g(color._g), _b(color._b)
 {
 
 }

@@ -5,3 +5,4 @@
 scenes/
 *.ppm
 .vscode/*
+raytracer

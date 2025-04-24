@@ -20,7 +20,7 @@ namespace math {
             double _z;
 
             Point();
-            Point(math::Point &point);
+            Point(const math::Point &point);
             Point(double x, double y, double z);
             ~Point() = default;
 
