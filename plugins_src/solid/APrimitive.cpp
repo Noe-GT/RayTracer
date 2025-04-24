@@ -16,7 +16,7 @@ Solid::APrimitive::APrimitive(math::Point origin) :
 {
 }
 
-math::Point Solid::APrimitive::getOrigin() const
-{
-    return _origin;
-}
+// math::Point Solid::APrimitive::getOrigin() const
+// {
+//     return this->_origin;
+// }
