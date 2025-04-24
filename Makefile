@@ -42,9 +42,11 @@ plugins:
 	make -C $(PLUGINS_SRC_DIR)
 
 libs:
-	$(foreach file, $(LIBS_SRC), make -C $(file);)
+	@echo -e "$(MAGENTA)[STATIC LIBRARIES]$(RESET)"
+	@$(foreach file, $(LIBS_SRC), echo -e "$(CYAN)library: $(file)$(RESET)" ; make -C $(file);)
 
 $(EXEC):	$(OBJS)
+	@echo -e "$(MAGENTA)[MAIN PROGRAM]$(RESET)"
 	mkdir -p $(SRC_DIR)$(OBJS_DIR)
 	$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR) -I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
 
