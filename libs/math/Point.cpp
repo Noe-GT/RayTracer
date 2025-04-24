@@ -11,10 +11,13 @@ math::Point::Point(): _x(0), _y(0), _z(0)
 {
 }
 
-math::Point::Point(const math::Point &point): _x(point._x), _y(point._y), _z(point._z)
+math::Point::Point(const math::Point &point):
+    _x(point._x),
+    _y(point._y),
+    _z(point._z)
 {
-
 }
+
 math::Point::Point(double x, double y, double z): _x(x), _y(y), _z(z)
 {
 }

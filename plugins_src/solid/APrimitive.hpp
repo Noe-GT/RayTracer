@@ -15,12 +15,13 @@ namespace Solid {
     {
         public:
             APrimitive();
-            APrimitive(int origin);
+            APrimitive(math::Point origin);
             ~APrimitive() = default;
-            int getOrigin() const final;
-            virtual bool hits(int ray);
+            math::Point getOrigin() const final;
+            virtual bool hits(math::Ray ray) = 0;
+
         protected:
-            int _origin;
+            math::Point _origin;
     };
 };
 
