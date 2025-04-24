@@ -28,7 +28,7 @@ OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
 SUPER_OBJS	=	../bin/*.o
 
-LIB	=	$(PLUGIN_DIR)sphere.so
+LIB	=	$(PLUGIN_DIR)primitives_sphere.so
 
 all:	$(LIB)
 
@@ -42,7 +42,7 @@ $(BIN_DIR)/%.o:	%.cpp
 
 clean:
 	rm -rf $(BIN_DIR)
-# rm -f $(LIB)
+	rm -f $(LIB)
 
 fclean:	clean
 

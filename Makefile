@@ -5,8 +5,7 @@
 ## Makefile
 ##
 
-PLUGIN_DIR	=	plugins_src/
-PLUGINS	=	$(PLUGIN_DIR)solid	\
+PLUGINS_SRC_DIR	=	plugins_src/
 
 SRC_DIR	=	src/
 SRC	=	$(SRC_DIR)main.cpp \
@@ -34,18 +33,18 @@ OBJS	=	$(SRC:cpp/%cpp=OBJS_DIR/%o)
 all: libs plugins $(EXEC)
 
 plugins:
-	$(foreach file, $(PLUGINS), make -C $(file);)
+	make -C $(PLUGINS_SRC_DIR)
 
 libs:
 	$(foreach file, $(LIBS_SRC), make -C $(file);)
 
 $(EXEC):	$(OBJS)
 	mkdir -p $(SRC_DIR)$(OBJS_DIR)
-	$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR) -I$(SRC_DIR) -I$(PLUGIN_DIR)
+	$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR) -I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
 
 clean:
 	rm -rf $(SRC_DIR)$(OBJS_DIR)
-	$(foreach file, $(PLUGINS), make clean -C $(file);)
+	make clean -C $(PLUGINS_SRC_DIR)
 	$(foreach file, $(LIBS_SRC), make clean -C $(file);)
 
 fclean:	clean
