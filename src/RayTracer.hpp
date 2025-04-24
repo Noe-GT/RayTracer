@@ -13,17 +13,20 @@
 #include "External.hpp"
 // #include "solid/sphere/Sphere.hpp"
 
-class RayTracer {
-    public:
-        RayTracer(const double &_pictureH, const double &_pictureW);
-        ~RayTracer();
-        void run();
-        math::Color ray_color(const math::Ray& r);
+namespace rayTracer {
+    class RayTracer {
+        public:
+            RayTracer(const double &_pictureH, const double &_pictureW);
+            ~RayTracer();
+            void run();
+            math::Color ray_color(const math::Ray& r);
+            void loadPlugins();
 
-    private:
-        const double _pictureH;
-        const double _pictureW;
-        std::vector<rayTracer::DLLoader> plugins;
+        private:
+            const double _pictureH;
+            const double _pictureW;
+            std::vector<rayTracer::DLLoader> _plugins;
+    };
 };
 
 #endif /* !RAYTRACER_HPP_ */

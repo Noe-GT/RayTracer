@@ -8,9 +8,9 @@
 #include "pluginHandling/LibLister.hpp"
 
 rayTracer::LibLister::LibLister() :
-_libDirectory(LIB_DIRECTORY)
+_libDirectory(PLUGINS_DIR)
 {
-    DIR *dir = opendir(LIB_DIRECTORY);
+    DIR *dir = opendir(PLUGINS_DIR);
     struct dirent *dirent;
     std::string tmp;
 

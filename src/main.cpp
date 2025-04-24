@@ -9,7 +9,7 @@
 
 int main()
 {
-    RayTracer tracer(281, 500);
+    rayTracer::RayTracer tracer(281, 500);
 
     tracer.run();
 }

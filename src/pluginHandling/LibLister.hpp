@@ -9,13 +9,11 @@
 #define LIBLISTER_HPP_
 
 #include "External.hpp"
+#include "Config.hpp"
 #include "Exceptions.hpp"
 #include "pluginHandling/DLLoader.hpp"
 #include <sys/types.h>
 #include <dirent.h>
-
-#define AL arcade::LibLister*
-#define LIB_DIRECTORY "lib/"
 
 namespace rayTracer {
     class LibLister {

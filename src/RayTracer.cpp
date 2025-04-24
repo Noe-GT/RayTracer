@@ -7,17 +7,18 @@
 
 #include "RayTracer.hpp"
 
-RayTracer::RayTracer(const double &_pictureH, const double &_pictureW):
+rayTracer::RayTracer::RayTracer(const double &_pictureH, const double &_pictureW):
     _pictureH(_pictureH),
-    _pictureW(_pictureW)
+    _pictureW(_pictureW),
+    _plugins()
 {
 }
 
-RayTracer::~RayTracer()
+rayTracer::RayTracer::~RayTracer()
 {
 }
 
-void RayTracer::run()
+void rayTracer::RayTracer::run()
 {
     auto viewHeight = 2.0;
     auto viewWidth = viewHeight * (double(this->_pictureW)/this->_pictureH);
@@ -40,8 +41,12 @@ void RayTracer::run()
     }
 }
 
-math::Color RayTracer::ray_color(const math::Ray& r) {
+math::Color rayTracer::RayTracer::ray_color(const math::Ray& r) {
     math::Vector unit_direction(r._direction._x / r._direction.Length(),r._direction._y / r._direction.Length(),r._direction._z / r._direction.Length());
     auto a = 0.5 * (unit_direction._y + 1.0);
     return math::Color(1.0, 1.0, 1.0) * (1.0 - a) + math::Color(0.5, 0.7, 1.0) * a;
+}
+
+void rayTracer::RayTracer::loadPlugins()
+{
 }
