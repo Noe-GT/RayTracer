@@ -9,6 +9,8 @@
 #define RAYTRACER_HPP_
 
 #include "math/Ray.hpp"
+#include "pluginHandling/DLLoader.hpp"
+#include "External.hpp"
 // #include "solid/sphere/Sphere.hpp"
 
 class RayTracer {
@@ -21,7 +23,7 @@ class RayTracer {
     private:
         const double _pictureH;
         const double _pictureW;
-        // std::vector<solid::IPrimitive> _solids;
+        std::vector<rayTracer::DLLoader> plugins;
 };
 
 #endif /* !RAYTRACER_HPP_ */

@@ -7,13 +7,19 @@
 
 #include "Sphere.hpp"
 
-Solid::Sphere::Sphere(math::Point origin, double radius) :
+solid::Sphere::Sphere():
+    APrimitive(),
+    _radius(0)
+{
+}
+
+solid::Sphere::Sphere(math::Point origin, double radius) :
     APrimitive(origin),
     _radius(radius)
 {
 }
 
-bool Solid::Sphere::hits(math::Ray ray)
+bool solid::Sphere::hits(math::Ray ray)
 {
     math::Vector coVec(this->_origin - ray._origin);
     // vector from sphereCenter to rayOrigin
@@ -22,4 +28,12 @@ bool Solid::Sphere::hits(math::Ray ray)
     double c = coVec.dotProduct(coVec) - this->_radius*this->_radius;
     double discriminant = b*b - 4*a*c;
     return (discriminant >= 0);
+}
+
+extern "C"
+{
+    solid::IPrimitive *entryPoint()
+    {
+        return new solid::Sphere;
+    }
 }

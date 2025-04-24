@@ -10,8 +10,8 @@
 
 #include "IPrimitive.hpp"
 
-namespace Solid {
-    class APrimitive : public Solid::IPrimitive
+namespace solid {
+    class APrimitive : public solid::IPrimitive
     {
         public:
             APrimitive();

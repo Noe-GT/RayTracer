@@ -10,7 +10,7 @@
 
 #include "../../libs/math/Ray.hpp"
 
-namespace Solid {
+namespace solid {
     class IPrimitive {
         public:
             ~IPrimitive() = default;

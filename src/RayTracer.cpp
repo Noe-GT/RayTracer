@@ -38,7 +38,6 @@ void RayTracer::run()
             std::cout << pixel_color;
         }
     }
-
 }
 
 math::Color RayTracer::ray_color(const math::Ray& r) {

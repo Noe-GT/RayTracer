@@ -7,11 +7,12 @@
 
 #include "APrimitive.hpp"
 
-Solid::APrimitive::APrimitive()
+solid::APrimitive::APrimitive():
+    _origin(math::Point())
 {
 }
 
-Solid::APrimitive::APrimitive(math::Point origin) :
+solid::APrimitive::APrimitive(math::Point origin) :
     _origin(origin)
 {
 }
