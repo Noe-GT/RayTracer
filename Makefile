@@ -24,9 +24,8 @@ OBJS			=		$(SRC:%.cpp=$(OBJS_DIR)%.o)
 
 LIB_DIR			=		libs/
 LIBS_SRC		=		$(LIB_DIR)math							\
-##################################################################
 
-EXEC			=		raytracer
+NAME			=		raytracer
 
 CXX				=		g++
 
@@ -37,7 +36,7 @@ SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
 LIBS			=		-L libs/math -lmath
 ##################################################################
 
-all: libs plugins $(EXEC)
+all: libs plugins $(NAME)
 	@echo ""
 ##################################################################
 
@@ -48,7 +47,7 @@ plugins:
 ##################################################################
 
 libs:
-	@echo "\n$(BUILD_MSG) Raytracer..."
+	@echo "\n$(BUILD_MSG) building Raytracer..."
 	@echo "  ├─$(LIB_MSG) building libraries..."
 	@$(foreach file, $(LIBS_SRC),								\
 		echo "  │   ├─$(STATIC_MSG) building $(file)..." ; 		\
@@ -63,11 +62,12 @@ $(OBJS_DIR)%.o: %.cpp
 	else \
 		echo "  ├── $(BUILD_MSG) $<$(RESET)"; \
 	fi
-	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIB_DIR) -I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
+	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIB_DIR) -I$(SRC_DIR) 	\
+		-I$(PLUGINS_SRC_DIR)
 
-$(EXEC):	$(OBJS)
+$(NAME):	$(OBJS)
 	@mkdir -p $(SRC_DIR)$(OBJS_DIR)
-	@$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
+	@$(CXX) -o $(NAME) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
 		-I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
 ##################################################################
 
@@ -78,7 +78,7 @@ clean:
 	@$(foreach file, $(LIBS_SRC), make clean -C $(file) --silent;)
 
 fclean:	clean
-	@rm -f $(EXEC)
+	@rm -f $(NAME)
 	@$(foreach file, $(LIBS_SRC), make fclean -C $(file) --silent;)
 
 re:	fclean all

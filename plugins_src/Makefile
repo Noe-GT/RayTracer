@@ -4,17 +4,19 @@
 ## File description:
 ## Makefile
 ##
+
 DELETE_MSG    = \033[1;31m[DELETE]:\033[0m
+##################################################################
 
 PLUGINS_DIR		=	../plugins/
 
-PLUGINS			=	solid							\
-					light							\
+PLUGINS			=	solid										\
+					light										\
+##################################################################
 
-all: build
-
-build:
+all:
 	@$(foreach file, $(PLUGINS), make -C $(file);)
+##################################################################
 
 clean:
 	@$(foreach file, $(PLUGINS), make clean -C $(file) --silent;)
@@ -22,6 +24,7 @@ clean:
 	@rm -f $(PLUGINS_DIR)*
 
 fclean:	clean
+##################################################################
 
 re:	fclean all
 

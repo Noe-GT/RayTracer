@@ -5,34 +5,32 @@
 ## Makefile
 ##
 
-PLUGIN_MSG   = \033[1m\033[1;36m[PLUGIN]:\033[0m
-BUILD_MSG    = \033[1m\033[1;32m[BUILD]:\033[0m
-DELETE_MSG   = \033[1;31m[DELETE]:\033[0m
+PLUGIN_MSG   	=	 	\033[1m\033[1;36m[PLUGIN]:\033[0m
+BUILD_MSG    	=	 	\033[1m\033[1;32m[BUILD]:\033[0m
+DELETE_MSG   	=	 	\033[1m\033[1;31m[DELETE]:\033[0m
+##################################################################
 
-ROOT			=	../../../
+ROOT			=		../../../
+PLUGIN_DIR		=		$(ROOT)plugins/
 
-PLUGIN_DIR		=	$(ROOT)plugins/
+PLUGIN_SRC_DIR	=		$(ROOT)plugins_src/
+SRCS			=		DirectionalLight.cpp \
 
-PLUGIN_SRC_DIR	=	$(ROOT)plugins_src/
+BIN_DIR			=		bin
+OBJS			=		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
+SUPER_OBJS		=		../bin/*.o
 
-CXX				=	g++
+LIB				=		$(PLUGIN_DIR)DirectionalLight.so
+
+CXX				=		g++
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-	CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3
+	CXXFLAGS	=		-std=c++20 -Wall -Wextra -Werror -g3
 else
-	CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
+	CXXFLAGS	=		-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
 endif
-
-BIN_DIR	=	bin
-
-SRCS	=	DirectionalLight.cpp \
-
-OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
-
-SUPER_OBJS	=	../bin/*.o
-
-LIB	=	$(PLUGIN_DIR)DirectionalLight.so
+##################################################################
 
 all:	print $(LIB)
 
@@ -45,19 +43,20 @@ $(LIB):	$(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
-	@if [ "$(lastword $(SRCS))" = "$<" ]; then 			\
-		echo "  │   │   └── $(BUILD_MSG) $<"; 	\
-	else 												\
-		echo "  │   │   ├── $(BUILD_MSG) $<"; 	\
+	@if [ "$(lastword $(SRCS))" = "$<" ]; then 					\
+		echo "  │   │   └── $(BUILD_MSG) $<"; 					\
+	else 														\
+		echo "  │   │   ├── $(BUILD_MSG) $<"; 					\
 	fi
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(PLUGIN_SRC_DIR)light
+##################################################################
 
 clean:
 	@echo "$(DELETE_MSG) directional light/bin"
-	@rm -f $(NAME)
-
+	@rm -rf $(BIN_DIR)
 
 fclean:	clean
+##################################################################
 
 re:	fclean all
 

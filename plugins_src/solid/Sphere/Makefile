@@ -4,15 +4,23 @@
 ## File description:
 ## Makefile
 ##
-DELETE_MSG			=		\033[1m\033[1;31m[DELETE]:\033[0m
+
+DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
+##################################################################
 
 ROOT			=		../../../
-
 PLUGIN_DIR		=		$(ROOT)plugins/
-
 PLUGIN_SRC_DIR	=		$(ROOT)plugins_src/
 
+SRCS			=		Sphere.cpp 								\
+
+OBJS_DIR		=		bin
+SUPER_OBJS		=		../bin/*.o
+OBJS			=		$(SRCS:%.cpp=$(OBJS_DIR)/%.o)
+
 CXX				=		g++
+
+NAME			=		$(PLUGIN_DIR)sphere.so
 
 UNAME_S 		= 		$(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
@@ -20,32 +28,25 @@ ifeq ($(UNAME_S), Darwin)
 else
 	CXXFLAGS	=		-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
 endif
+##################################################################
 
-BIN_DIR			=		bin
+all:	$(NAME)
 
-SRCS			=		Sphere.cpp \
-
-OBJS			=		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
-
-SUPER_OBJS		=		../bin/*.o
-
-LIB				=		$(PLUGIN_DIR)sphere.so
-
-all:	$(LIB)
-
-$(LIB):	$(OBJS)
+$(NAME):	$(OBJS)
 	@mkdir -p $(PLUGIN_DIR)
-	$(CXX) -shared -o $(LIB) $(SUPER_OBJS) $(OBJS)
+	$(CXX) -shared -o $(NAME) $(SUPER_OBJS) $(OBJS)
 
-$(BIN_DIR)/%.o:	%.cpp
-	@mkdir -p $(BIN_DIR)
+$(OBJS_DIR)/%.o:	%.cpp
+	@mkdir -p $(OBJS_DIR)
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(PLUGIN_SRC_DIR)solid
+##################################################################
 
 clean:
 	@echo "$(DELETE_MSG) sphere/bin"
-	rm -rf $(BIN_DIR)
+	rm -rf $(OBJS_DIR)
 
 fclean:	clean
+##################################################################
 
 re:	fclean all
 
