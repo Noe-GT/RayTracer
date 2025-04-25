@@ -28,7 +28,7 @@ OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
 SUPER_OBJS	=	../bin/*.o
 
-LIB	=	$(PLUGIN_DIR)primitives_sphere.so
+LIB	=	$(PLUGIN_DIR)light_directional.so
 
 all:	$(LIB)
 

@@ -10,6 +10,7 @@
 
 #include "math/Ray.hpp"
 #include "pluginHandling/DLLoader.hpp"
+#include "pluginHandling/LibLister.hpp"
 #include "External.hpp"
 // #include "solid/sphere/Sphere.hpp"
 

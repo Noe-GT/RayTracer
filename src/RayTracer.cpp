@@ -12,6 +12,7 @@ rayTracer::RayTracer::RayTracer(const double &_pictureH, const double &_pictureW
     _pictureW(_pictureW),
     _plugins()
 {
+    this->loadPlugins();
 }
 
 rayTracer::RayTracer::~RayTracer()
@@ -49,4 +50,6 @@ math::Color rayTracer::RayTracer::ray_color(const math::Ray& r) {
 
 void rayTracer::RayTracer::loadPlugins()
 {
+    rayTracer::LibLister lister;
+    lister.display();
 }

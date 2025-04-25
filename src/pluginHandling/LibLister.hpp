@@ -15,6 +15,8 @@
 #include <sys/types.h>
 #include <dirent.h>
 
+#define PLUGINS_DIR "plugins"
+
 namespace rayTracer {
     class LibLister {
         public:
@@ -24,10 +26,13 @@ namespace rayTracer {
             std::string getLibDirectory() const;
             const std::vector<std::string> &getLibs();
             int getIndexLib(const std::string &path) const;
+            void saveLib(std::string lib);
 
         private:
             const std::string _libDirectory;
-            std::vector<std::string> _libs;
+            std::vector<std::string> _primitive;
+            std::vector<std::string> _light;
+            std::vector<std::string> _other;
     };
 };
 
