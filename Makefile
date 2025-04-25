@@ -5,59 +5,81 @@
 ## Makefile
 ##
 
-GREEN	   	=	\033[1;32m
-RED		 	=	\033[1;31m
-CYAN	=	\033[0;36m
-MAGENTA	=	\033[0;35m
-RESET	   	=	\033[0m
+BUILD_MSG		=		\033[1m\033[1;32m[BUILD]:\033[0m
+LIB_MSG			=		\033[1m\033[1;35m[LIBS]:\033[0m
+STATIC_MSG		=		\033[1m\033[1;36m[STATIC]:\033[0m
+DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
+##################################################################
 
-PLUGINS_SRC_DIR	=	plugins_src/
+PLUGINS_SRC_DIR	=		plugins_src/
 
-SRC_DIR	=	src/
-SRC	=	$(SRC_DIR)main.cpp \
-		$(SRC_DIR)RayTracer.cpp	\
-		$(SRC_DIR)Exceptions.cpp	\
-		$(SRC_DIR)pluginHandling/LibLister.cpp	\
+SRC_DIR			=		src/
+SRC				=		$(SRC_DIR)main.cpp 						\
+						$(SRC_DIR)RayTracer.cpp					\
+						$(SRC_DIR)pluginHandling/LibLister.cpp	\
+						$(SRC_DIR)Exceptions.cpp				\
 
-LIB_DIR	=	libs/
-LIBS_SRC	=	$(LIB_DIR)math	\
+OBJS_DIR		=		bin/
+OBJS			=		$(SRC:%.cpp=$(OBJS_DIR)%.o)
 
-EXEC	=	raytracer
+LIB_DIR			=		libs/
+LIBS_SRC		=		$(LIB_DIR)math							\
+##################################################################
 
-CXX	=	g++
+EXEC			=		raytracer
 
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3
+CXX				=		g++
 
-SFML_FLAGS	=	-lsfml-graphics -lsfml-window -lsfml-system
+CXXFLAGS		=		-std=c++20 -Wall -Wextra -Werror -g3
 
-OBJS_DIR	=	bin/
+SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
 
-LIBS	=	-L libs/math -lmath
-
-OBJS	=	$(SRC:cpp/%cpp=OBJS_DIR/%o)
+LIBS			=		-L libs/math -lmath
+##################################################################
 
 all: libs plugins $(EXEC)
+	@echo ""
+##################################################################
 
 plugins:
-	make -C $(PLUGINS_SRC_DIR)
+	@make -C $(PLUGINS_SRC_DIR) --silent
+	@echo "  ├─$(LIB_MSG) lib compiled !"
+
+##################################################################
 
 libs:
-	@echo -e "$(MAGENTA)[STATIC LIBRARIES]$(RESET)"
-	@$(foreach file, $(LIBS_SRC), echo -e "$(CYAN)library: $(file)$(RESET)" ; make -C $(file);)
+	@echo "\n$(BUILD_MSG) Raytracer..."
+	@echo "  ├─$(LIB_MSG) building libraries..."
+	@$(foreach file, $(LIBS_SRC),								\
+		echo "  │   ├─$(STATIC_MSG) building $(file)..." ; 		\
+		make -C $(file) --silent;)
+
+##################################################################
+
+$(OBJS_DIR)%.o: %.cpp
+	@mkdir -p $(dir $@)
+	@if [ "$(lastword $(SRC))" = "$<" ]; then \
+		echo "  └── $(BUILD_MSG) $<$(RESET)"; \
+	else \
+		echo "  ├── $(BUILD_MSG) $<$(RESET)"; \
+	fi
+	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIB_DIR) -I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
 
 $(EXEC):	$(OBJS)
-	@echo -e "$(MAGENTA)[MAIN PROGRAM]$(RESET)"
-	mkdir -p $(SRC_DIR)$(OBJS_DIR)
-	$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR) -I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
+	@mkdir -p $(SRC_DIR)$(OBJS_DIR)
+	@$(CXX) -o $(EXEC) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
+		-I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
+##################################################################
 
 clean:
-	rm -rf $(SRC_DIR)$(OBJS_DIR)
-	make clean -C $(PLUGINS_SRC_DIR)
-	$(foreach file, $(LIBS_SRC), make clean -C $(file);)
+	@rm -rf $(OBJS_DIR)*
+	@echo "$(DELETE_MSG) src/bin"
+	@make clean -C $(PLUGINS_SRC_DIR) --silent
+	@$(foreach file, $(LIBS_SRC), make clean -C $(file) --silent;)
 
 fclean:	clean
-	rm -f $(EXEC)
-	$(foreach file, $(LIBS_SRC), make fclean -C $(file);)
+	@rm -f $(EXEC)
+	@$(foreach file, $(LIBS_SRC), make fclean -C $(file) --silent;)
 
 re:	fclean all
 

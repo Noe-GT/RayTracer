@@ -4,6 +4,7 @@
 ## File description:
 ## Makefile
 ##
+DELETE_MSG   = \033[1;31m[DELETE]:\033[0m
 
 RESET	   	=	\033[0m
 CYAN	=	\033[0;36m
@@ -30,14 +31,16 @@ OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 all:	$(OBJS) plugins
 
 plugins:
-	@$(foreach file, $(PLUGINS), echo -e "$(CYAN)plugin: $(file)$(RESET)" ; make -C $(file);)
+	@$(foreach file, $(PLUGINS), make -C $(file);)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
 
 clean:
-	rm -rf $(BIN_DIR)
+
+	@rm -rf $(BIN_DIR)
+	@echo "$(DELETE_MSG) light/bin"
 	$(foreach file, $(PLUGINS), make clean -C $(file);)
 
 fclean:	clean

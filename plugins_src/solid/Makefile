@@ -5,43 +5,51 @@
 ## Makefile
 ##
 
-RESET	   	=	\033[0m
-CYAN	=	\033[0;36m
+BUILD_MSG    = \033[1m\033[1;32m[BUILD]:\033[0m
+PLUGIN_MSG   = \033[1m\033[1;36m[PLUGIN]:\033[0m
+DELETE_MSG   = \033[1;31m[DELETE]:\033[0m
 
-ROOT	=	../../
+ROOT         = ../../
+SRCS         = APrimitive.cpp
 
-SRCS	=	APrimitive.cpp	\
+PLUGINS      = Sphere
 
-PLUGINS	=	sphere	\
-
-CXX	=	g++
+CXX          = g++
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3
+	CXXFLAGS     = -std=c++20 -Wall -Wextra -Werror -g3
 else
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
+	CXXFLAGS     = -std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
 endif
 
-BIN_DIR	=	bin
+BIN_DIR      = bin
+OBJS         = $(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
+all: print $(OBJS) plugins
 
-all:	$(OBJS) plugins print
+print:
+	@echo "  │   ├─$(PLUGIN_MSG) building Sphere.so $(file)...";
 
 plugins:
-	@$(foreach file, $(PLUGINS), echo -e "$(CYAN)plugin: $(file)$(RESET)" ; make -C $(file);)
+	@$(foreach file,$(PLUGINS), make -C $(file) --no-print-directory;)
 
-$(BIN_DIR)/%.o:	%.cpp
+$(BIN_DIR)/%.o: %.cpp
 	@mkdir -p $(BIN_DIR)
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
+	@if [ "$(lastword $(SRCS))" = "$<" ]; then \
+		echo "  │   │   └── $(BUILD_MSG) $<$(RESET)"; \
+	else \
+		echo "  │   │   ├──$(BUILD_MSG) $<$(RESET)"; \
+	fi
+	@$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
 
 clean:
-	rm -rf $(BIN_DIR)
-	$(foreach file, $(PLUGINS), make clean -C $(file);)
+	@echo "$(DELETE_MSG) solid/bin"
+	@rm -rf $(BIN_DIR)
+	@$(foreach file,$(PLUGINS),make clean -C $(file) --no-print-directory;)
 
-fclean:	clean
+fclean: clean
 
-re:	fclean all
+re: fclean all
 
-.PHONY:	all clean fclean re
+.PHONY: all clean fclean re plugins
