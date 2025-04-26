@@ -13,10 +13,8 @@ DELETE_MSG   	= 		\033[1;31m[DELETE]:\033[0m
 ROOT         	= 		../../
 SRCS         	= 		APrimitive.cpp
 
-BIN_DIR      	= 		bin
+BIN_DIR      	= 		../solid_bin
 OBJS         	= 		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
-
-NAME      		=	 	Sphere
 
 CXX          	= 		g++
 
@@ -34,7 +32,7 @@ print:
 	@echo "  │   ├─$(PLUGIN_MSG) building Sphere.so $(file)...";
 
 plugins:
-	@$(foreach file,$(NAME), make -C $(file) --no-print-directory;)
+	make -C sphere/ --no-print-directory;
 ##################################################################
 
 $(BIN_DIR)/%.o: %.cpp
@@ -50,7 +48,7 @@ $(BIN_DIR)/%.o: %.cpp
 clean:
 	@echo "$(DELETE_MSG) solid/bin"
 	@rm -rf $(BIN_DIR)
-	@$(foreach file,$(NAME),make clean -C $(file) --no-print-directory;)
+	make clean -C sphere/ --no-print-directory;
 
 fclean: clean
 ##################################################################

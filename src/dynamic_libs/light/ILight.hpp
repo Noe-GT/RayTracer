@@ -8,7 +8,7 @@
 #ifndef ILIGHT_HPP_
 #define ILIGHT_HPP_
 
-#include "../../libs/math/Ray.hpp"
+#include "../../static_libs/math/Ray.hpp"
 
 namespace light {
     class ILight {

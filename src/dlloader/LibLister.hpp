@@ -11,7 +11,7 @@
 #include "External.hpp"
 #include "Config.hpp"
 #include "Exceptions.hpp"
-#include "pluginHandling/DLLoader.hpp"
+#include "DLLoader.hpp"
 #include <sys/types.h>
 #include <dirent.h>
 

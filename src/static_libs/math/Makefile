@@ -15,7 +15,7 @@ SRCS         =  	Point.cpp   								\
 					Color.cpp   								\
 					Ray.cpp     								\
 
-BIN_DIR      =  	bin
+BIN_DIR      =  	../maths_bin
 OBJS         = 		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
 LIB_DIR      =  	../

@@ -8,7 +8,7 @@
 #ifndef IPRIMITIVE_HPP_
 #define IPRIMITIVE_HPP_
 
-#include "../../libs/math/Ray.hpp"
+#include "../../static_libs/math/Ray.hpp"
 
 namespace solid {
     class IPrimitive {

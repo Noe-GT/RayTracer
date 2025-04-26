@@ -8,8 +8,8 @@
 #ifndef RAYTRACER_HPP_
 #define RAYTRACER_HPP_
 
-#include "math/Ray.hpp"
-#include "pluginHandling/DLLoader.hpp"
+#include "Ray.hpp"
+#include "../dlloader/DLLoader.hpp"
 #include "External.hpp"
 // #include "solid/sphere/Sphere.hpp"
 

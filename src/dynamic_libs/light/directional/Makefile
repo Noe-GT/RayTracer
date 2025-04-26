@@ -10,15 +10,15 @@ BUILD_MSG    	=	 	\033[1m\033[1;32m[BUILD]:\033[0m
 DELETE_MSG   	=	 	\033[1m\033[1;31m[DELETE]:\033[0m
 ##################################################################
 
-ROOT			=		../../../
-PLUGIN_DIR		=		$(ROOT)plugins/
+ROOT			=		../../
+PLUGIN_DIR		=		$(ROOT)../dynamic_libs_bin/
 
 PLUGIN_SRC_DIR	=		$(ROOT)plugins_src/
-SRCS			=		DirectionalLight.cpp \
+SRCS			=		DirectionalLight.cpp 					\
 
-BIN_DIR			=		bin
+BIN_DIR			=		../directional_bin
 OBJS			=		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
-SUPER_OBJS		=		../bin/*.o
+SUPER_OBJS		=		../../light_bin/*.o
 
 LIB				=		$(PLUGIN_DIR)DirectionalLight.so
 
@@ -48,7 +48,7 @@ $(BIN_DIR)/%.o:	%.cpp
 	else 														\
 		echo "  │   │   ├── $(BUILD_MSG) $<"; 					\
 	fi
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(PLUGIN_SRC_DIR)light
+	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(ROOT)light
 ##################################################################
 
 clean:

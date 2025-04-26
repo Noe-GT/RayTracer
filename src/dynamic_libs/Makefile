@@ -8,7 +8,7 @@
 DELETE_MSG    = \033[1;31m[DELETE]:\033[0m
 ##################################################################
 
-PLUGINS_DIR		=	../plugins/
+PLUGINS_DIR		=	../dynamic_libs_bin/
 
 PLUGINS			=	solid										\
 					light										\

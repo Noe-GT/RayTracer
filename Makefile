@@ -11,19 +11,19 @@ STATIC_MSG		=		\033[1m\033[1;36m[STATIC]:\033[0m
 DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
 ##################################################################
 
-PLUGINS_SRC_DIR	=		plugins_src/
-
-SRC_DIR			=		src/
+SRC_DIR			=		src/core/
 SRC				=		$(SRC_DIR)main.cpp 						\
 						$(SRC_DIR)RayTracer.cpp					\
-						$(SRC_DIR)pluginHandling/LibLister.cpp	\
+						$(SRC_DIR)../dlloader/LibLister.cpp		\
 						$(SRC_DIR)Exceptions.cpp				\
 
-OBJS_DIR		=		bin/
+OBJS_DIR		=		src/core_bin/
 OBJS			=		$(SRC:%.cpp=$(OBJS_DIR)%.o)
 
-LIB_DIR			=		libs/
+LIB_DIR			=		src/static_libs/
 LIBS_SRC		=		$(LIB_DIR)math							\
+
+PLUGINS_SRC_DIR	=		src/dynamic_libs/
 
 NAME			=		raytracer
 
@@ -33,7 +33,7 @@ CXXFLAGS		=		-std=c++20 -Wall -Wextra -Werror -g3
 
 SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
 
-LIBS			=		-L libs/math -lmath
+LIBS			=		-L src/static_libs/math -lmath
 ##################################################################
 
 all: libs plugins $(NAME)
@@ -62,7 +62,7 @@ $(OBJS_DIR)%.o: %.cpp
 	else \
 		echo "  ├── $(BUILD_MSG) $<$(RESET)"; \
 	fi
-	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIB_DIR) -I$(SRC_DIR) 	\
+	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIBS_SRC) -I$(SRC_DIR) 	\
 		-I$(PLUGINS_SRC_DIR)
 
 $(NAME):	$(OBJS)

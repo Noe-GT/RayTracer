@@ -5,7 +5,7 @@
 ** LibLister
 */
 
-#include "pluginHandling/LibLister.hpp"
+#include "LibLister.hpp"
 
 rayTracer::LibLister::LibLister() :
 _libDirectory(PLUGINS_DIR)
