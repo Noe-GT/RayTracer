@@ -40,7 +40,7 @@ $(BIN_DIR)/%.o:	%.cpp
 
 clean:
 	rm -rf $(BIN_DIR)
-	rm $(LIB)
+	rm -rf $(LIB)
 
 fclean:	clean
 
