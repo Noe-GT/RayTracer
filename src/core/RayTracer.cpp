@@ -1,10 +1,13 @@
 #include "RayTracer.hpp"
 
 rayTracer::RayTracer::RayTracer(const double &_pictureH,
-    const double &_pictureW)
-    : _pictureH(_pictureH), _pictureW(_pictureW), _plugins()
+    const double &_pictureW):
+    _pictureH(_pictureH),
+    _pictureW(_pictureW),
+    _plugins(),
+    _pluginHandler()
 {
-    loadPlugins();
+    // loadPlugins();
 }
 
 rayTracer::RayTracer::~RayTracer()

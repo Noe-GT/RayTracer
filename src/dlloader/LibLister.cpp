@@ -15,11 +15,11 @@ _libDirectory(PLUGINS_DIR)
     std::string tmp;
 
     if (!dir)
-        throw PathFindingException("Can't find 'lib' directory");
+        throw PathFindingException("Can't find 'lib directory: " + std::string(PLUGINS_DIR));
     dirent = readdir(dir);
     while (dirent) {
         tmp = dirent->d_name;
-        if (!(tmp[0] == '.' || tmp.size() < 11 || tmp.substr(tmp.size() - 3) != ".so"))
+        if (!(tmp[0] == '.' || tmp.size() < 4 || tmp.substr(tmp.size() - 3) != ".so"))
             this->_libs.push_back(dirent->d_name);
         dirent = readdir(dir);
     }
@@ -50,4 +50,9 @@ int rayTracer::LibLister::getIndexLib(const std::string &path) const
         index++;
     }
     return -1;
+}
+
+std::string rayTracer::LibLister::getLibDirectory() const
+{
+    return this->_libDirectory;
 }

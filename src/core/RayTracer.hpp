@@ -1,14 +1,11 @@
 #ifndef RAYTRACER_HPP_
 #define RAYTRACER_HPP_
 
-#include "../static_libs/math/Ray.hpp"
+#include "math/Ray.hpp"
 #include "../dlloader/DLLoader.hpp"
 #include "External.hpp"
 #include "IPrimitive.hpp"
-#include <string>
-#include <iostream>
-#include <memory>
-#include <vector>
+#include "PluginHandler.hpp"
 
 namespace rayTracer {
     class RayTracer {
@@ -23,6 +20,7 @@ namespace rayTracer {
         const double _pictureH;
         const double _pictureW;
         std::vector<std::unique_ptr<IPrimitive>> _plugins;
+        rayTracer::PluginHandler _pluginHandler;
     };
 }
 

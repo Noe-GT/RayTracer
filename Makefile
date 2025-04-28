@@ -11,21 +11,24 @@ STATIC_MSG		=		\033[1m\033[1;36m[STATIC]:\033[0m
 DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
 ##################################################################
 
-SHARED_DIR			=		src/shared/
+SRC_DIR				=		src/
 
-SRC_DIR			=		src/core/
-SRC				=		$(SRC_DIR)main.cpp 						\
-						$(SRC_DIR)RayTracer.cpp					\
-						$(SRC_DIR)../dlloader/LibLister.cpp		\
-						$(SRC_DIR)Exceptions.cpp				\
+SHARED_DIR			=		$(SRC_DIR)shared/
 
-OBJS_DIR		=		src/core_bin/
+CORE_DIR			=		$(SRC_DIR)core/
+SRC				=		$(CORE_DIR)main.cpp 						\
+						$(CORE_DIR)RayTracer.cpp					\
+						$(CORE_DIR)../dlloader/LibLister.cpp		\
+						$(CORE_DIR)Exceptions.cpp				\
+						$(CORE_DIR)PluginHandler.cpp				\
+
+OBJS_DIR		=		$(SRC_DIR)core_bin/
 OBJS			=		$(SRC:%.cpp=$(OBJS_DIR)%.o)
 
-LIB_DIR			=		src/static_libs/
+LIB_DIR			=		$(SRC_DIR)static_libs/
 LIBS_SRC		=		$(LIB_DIR)math							\
 
-PLUGINS_SRC_DIR	=		src/dynamic_libs/
+PLUGINS_SRC_DIR	=		$(SRC_DIR)dynamic_libs/
 
 NAME			=		raytracer
 
@@ -64,13 +67,15 @@ $(OBJS_DIR)%.o: %.cpp
 	else \
 		echo "  ├── $(BUILD_MSG) $<$(RESET)"; \
 	fi
-	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIBS_SRC) -I$(SRC_DIR) 	\
-		-I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR)
+	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIB_DIR) -I$(CORE_DIR) 	\
+		-I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR) -I$(SRC_DIR)
 
 $(NAME):	$(OBJS)
-	@mkdir -p $(SRC_DIR) $(OBJS_DIR)
+	@mkdir -p $(CORE_DIR) $(OBJS_DIR)
 	@$(CXX) -o $(NAME) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
-		-I$(SRC_DIR) -I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR)
+		-I$(CORE_DIR) -I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR)		\
+		-I$(SRC_DIR)
+
 ##################################################################
 
 clean:

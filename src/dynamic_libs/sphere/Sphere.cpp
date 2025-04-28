@@ -29,6 +29,11 @@ bool Sphere::Intersect(math::Ray &ray)
     return (discriminant >= 0);
 }
 
+std::unique_ptr<IPrimitive> SphereFactory::build()
+{
+    return std::make_unique<Sphere>();
+}
+
 extern "C"
 {
     IPrimitive *entryPoint()
