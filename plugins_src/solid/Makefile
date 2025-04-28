@@ -5,43 +5,56 @@
 ## Makefile
 ##
 
-RESET	   	=	\033[0m
-CYAN	=	\033[0;36m
+BUILD_MSG    	= 		\033[1m\033[1;32m[BUILD]:\033[0m
+PLUGIN_MSG   	= 		\033[1m\033[1;36m[PLUGIN]:\033[0m
+DELETE_MSG   	= 		\033[1;31m[DELETE]:\033[0m
+##################################################################
 
-ROOT	=	../../
+ROOT         	= 		../../
+SRCS         	= 		APrimitive.cpp
 
-SRCS	=	APrimitive.cpp	\
+BIN_DIR      	= 		bin
+OBJS         	= 		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-PLUGINS	=	sphere	\
+NAME      		=	 	Sphere
 
-CXX	=	g++
+CXX          	= 		g++
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3
+	CXXFLAGS    = 		-std=c++20 -Wall -Wextra -Werror -g3
 else
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
+	CXXFLAGS    = 		-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
 endif
+##################################################################
 
-BIN_DIR	=	bin
+all: print $(OBJS) plugins
 
-OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
-
-all:	$(OBJS) plugins print
+print:
+	@echo -e "  │   ├─$(PLUGIN_MSG) building Sphere.so $(file)...";
 
 plugins:
-	@$(foreach file, $(PLUGINS), echo -e "$(CYAN)plugin: $(file)$(RESET)" ; make -C $(file);)
+	@$(foreach file,$(NAME), make -C $(file) --no-print-directory;)
+##################################################################
 
-$(BIN_DIR)/%.o:	%.cpp
+$(BIN_DIR)/%.o: %.cpp
 	@mkdir -p $(BIN_DIR)
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
+	@if [ "$(lastword $(SRCS))" = "$<" ]; then 					\
+		echo -e "  │   │   └── $(BUILD_MSG) $<$(RESET)"; 			\
+	else 														\
+		echo -e "  │   │   ├──$(BUILD_MSG) $<$(RESET)"; 			\
+	fi
+	@$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
+##################################################################
 
 clean:
-	rm -rf $(BIN_DIR)
-	$(foreach file, $(PLUGINS), make clean -C $(file);)
+	@echo -e "$(DELETE_MSG) solid/bin"
+	@rm -rf $(BIN_DIR)
+	@$(foreach file,$(NAME),make clean -C $(file) --no-print-directory;)
 
-fclean:	clean
+fclean: clean
+##################################################################
 
-re:	fclean all
+re: fclean all
 
-.PHONY:	all clean fclean re
+.PHONY: all clean fclean re plugins

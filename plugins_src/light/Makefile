@@ -4,43 +4,46 @@
 ## File description:
 ## Makefile
 ##
+DELETE_MSG   	= 		\033[1;31m[DELETE]:\033[0m
+RESET	   		=		\033[0m
+##################################################################
 
-RESET	   	=	\033[0m
-CYAN	=	\033[0;36m
+ROOT			=		../../
 
-ROOT	=	../../
+SRCS			=		ALight.cpp								\
 
-SRCS	=	ALight.cpp	\
+NAME			=		directional
 
-PLUGINS	=	directional	\
+BIN_DIR			=		bin
+OBJS			=		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-CXX	=	g++
+CXX				=		g++
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3
+	CXXFLAGS	=		-std=c++20 -Wall -Wextra -Werror -g3
 else
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
+	CXXFLAGS	=		-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
 endif
-
-BIN_DIR	=	bin
-
-OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
+##################################################################
 
 all:	$(OBJS) plugins
 
 plugins:
-	@$(foreach file, $(PLUGINS), echo -e "$(CYAN)plugin: $(file)$(RESET)" ; make -C $(file);)
+	@$(foreach file, $(NAME), make -C $(file);)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
+##################################################################
 
 clean:
-	rm -rf $(BIN_DIR)
-	$(foreach file, $(PLUGINS), make clean -C $(file);)
+	@rm -rf $(BIN_DIR)
+	@echo -e "$(DELETE_MSG) light/bin"
+	$(foreach file, $(NAME), make clean -C $(file);)
 
 fclean:	clean
+##################################################################
 
 re:	fclean all
 

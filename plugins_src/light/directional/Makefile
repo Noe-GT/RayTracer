@@ -5,32 +5,37 @@
 ## Makefile
 ##
 
-ROOT	=	../../../
+PLUGIN_MSG   	=	 	\033[1m\033[1;36m[PLUGIN]:\033[0m
+BUILD_MSG    	=	 	\033[1m\033[1;32m[BUILD]:\033[0m
+DELETE_MSG   	=	 	\033[1m\033[1;31m[DELETE]:\033[0m
+##################################################################
 
-PLUGIN_DIR	=	$(ROOT)plugins/
+ROOT			=		../../../
+PLUGIN_DIR		=		$(ROOT)plugins/
 
-PLUGIN_SRC_DIR	=	$(ROOT)plugins_src/
+PLUGIN_SRC_DIR	=		$(ROOT)plugins_src/
+SRCS			=		DirectionalLight.cpp \
 
-CXX	=	g++
+BIN_DIR			=		bin
+OBJS			=		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
+SUPER_OBJS		=		../bin/*.o
+
+LIB				=		$(PLUGIN_DIR)DirectionalLight.so
+
+CXX				=		g++
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3
+	CXXFLAGS	=		-std=c++20 -Wall -Wextra -Werror -g3
 else
-CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
+	CXXFLAGS	=		-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
 endif
+##################################################################
 
-BIN_DIR	=	bin
+all:	print $(LIB)
 
-SRCS	=	DirectionalLight.cpp \
-
-OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
-
-SUPER_OBJS	=	../bin/*.o
-
-LIB	=	$(PLUGIN_DIR)light_directional.so
-
-all:	$(LIB)
+print:
+	@echo -e "  │   ├─$(PLUGIN_MSG) building DirectionalLight.so ...";
 
 $(LIB):	$(OBJS)
 	@mkdir -p $(PLUGIN_DIR)
@@ -38,13 +43,20 @@ $(LIB):	$(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
+	@if [ "$(lastword $(SRCS))" = "$<" ]; then 					\
+		echo -e "  │   │   └── $(BUILD_MSG) $<"; 					\
+	else 														\
+		echo -e "  │   │   ├── $(BUILD_MSG) $<"; 					\
+	fi
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(PLUGIN_SRC_DIR)light
+##################################################################
 
 clean:
-	rm -rf $(BIN_DIR)
-	rm -f $(LIB)
+	@echo -e "$(DELETE_MSG) directional light/bin"
+	@rm -rf $(BIN_DIR)
 
 fclean:	clean
+##################################################################
 
 re:	fclean all
 

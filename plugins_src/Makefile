@@ -5,28 +5,27 @@
 ## Makefile
 ##
 
-RESET	   	=	\033[0m
-MAGENTA	=	\033[0;35m
+DELETE_MSG    = \033[1;31m[DELETE]:\033[0m
+##################################################################
 
-PLUGINS_DIR	=	../plugins/
+PLUGINS_DIR		=	../plugins/
 
-PLUGINS	=	solid	\
-			light	\
+PLUGINS			=	solid										\
+					light										\
+##################################################################
 
-all:	print build
-
-print:
-	@echo -e "$(MAGENTA)[PLUGINS]$(RESET)"
-
-build:
+all:
 	@$(foreach file, $(PLUGINS), make -C $(file);)
+##################################################################
 
 clean:
-	$(foreach file, $(PLUGINS), make clean -C $(file);)
-	rm -f $(PLUGINS_DIR)*
+	@$(foreach file, $(PLUGINS), make clean -C $(file) --silent;)
+	@echo -e "$(DELETE_MSG) plugin/bin"
+	@rm -f $(PLUGINS_DIR)*
 
 fclean:	clean
+##################################################################
 
 re:	fclean all
 
-.PHONY:	all print build clean fclean re
+.PHONY:	all build clean fclean re

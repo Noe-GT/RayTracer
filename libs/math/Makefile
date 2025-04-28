@@ -1,86 +1,54 @@
 ##
 ## EPITECH PROJECT, 2025
-## Arcade
+## Math Library
 ## File description:
 ## Makefile
 ##
 
-# LIB_DIR	=	../
+BUILD_MSG    = 		\033[1m\033[1;32m[BUILD]:\033[0m
+LIB_MSG      = 		\033[1m\033[0;35m[LIBRARIE]:\033[0m
+DELETE_MSG   = 		\033[1;31m[DELETE]:\033[0m
+##################################################################
 
-# CXX	=	g++
+SRCS         =  	Point.cpp   								\
+					Vector.cpp  								\
+					Color.cpp   								\
+					Ray.cpp     								\
 
-# CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
+BIN_DIR      =  	bin
+OBJS         = 		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-# BIN_DIR	=	bin
+LIB_DIR      =  	../
+NAME         = 		libmath.a
+LIB          = 		-L
 
-# LIB	=	-L
-
-# SRCS	=	Point.cpp	\
-# 			Vector.cpp	\
-# 			Color.cpp	\
-# 			Ray.cpp		\
-
-# OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
-
-# LIB	=	$(LIB_DIR)/math.a
-
-# all:	create
-
-# create: ${OBJS}
-# 	ar rc $(LIB) $(OBJS)
-
-# $(BIN_DIR)/%.o:	%.cpp
-# 	@mkdir -p $(BIN_DIR)
-# 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
-
-# clean:
-# 	rm -rf $(BIN_DIR)
-# 	rm $(LIB)
-
-# fclean:	clean
-
-# re:	fclean all
-
-# .PHONY:	all clean fclean re
-
-
-##
-## EPITECH PROJECT, 2023
-## Makefile
-## File description:
-## Makefile
-##
-
-LIB_DIR	=	../
-
-BIN_DIR	=	bin
-
-SRCS	=	Point.cpp	\
-			Vector.cpp	\
-			Color.cpp	\
-			Ray.cpp		\
-
-OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
-
-NAME	=	libmath.a
-
-LIB	=	-L
-
-CFLAGS	=	-g3
+CFLAGS       = 		-g3
+CXXFLAGS     = 		-Wall -Wextra -Werror
+##################################################################
 
 all: $(NAME)
 
 $(NAME): ${OBJS}
-	ar rc $(NAME) $(OBJS)
+	@ar rc $(NAME) $(OBJS)
 
-$(BIN_DIR)/%.o:	%.cpp
+$(BIN_DIR)/%.o: %.cpp
 	@mkdir -p $(BIN_DIR)
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
+	@if [ "$(lastword $(SRCS))" = "$<" ]; then 					\
+		echo -e "  │   │   └── $(BUILD_MSG) $<"; 					\
+	else 														\
+		echo -e "  │   │   ├── $(BUILD_MSG) $<"; 					\
+	fi
+	@$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
+##################################################################
 
 clean:
-	rm -rf $(BIN_DIR)
+	@echo -e "$(DELETE_MSG) math/bin"
+	@rm -rf $(BIN_DIR)
 
-fclean:clean
-	rm -f $(NAME)
+fclean: clean
+	@rm -f $(NAME)
 
+##################################################################
 re: fclean all
+
+.PHONY: all clean fclean re
