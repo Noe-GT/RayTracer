@@ -11,6 +11,8 @@ STATIC_MSG		=		\033[1m\033[1;36m[STATIC]:\033[0m
 DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
 ##################################################################
 
+SHARED_DIR			=		src/shared/
+
 SRC_DIR			=		src/core/
 SRC				=		$(SRC_DIR)main.cpp 						\
 						$(SRC_DIR)RayTracer.cpp					\
@@ -63,12 +65,12 @@ $(OBJS_DIR)%.o: %.cpp
 		echo "  ├── $(BUILD_MSG) $<$(RESET)"; \
 	fi
 	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIBS_SRC) -I$(SRC_DIR) 	\
-		-I$(PLUGINS_SRC_DIR)
+		-I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR)
 
 $(NAME):	$(OBJS)
 	@mkdir -p $(SRC_DIR) $(OBJS_DIR)
 	@$(CXX) -o $(NAME) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
-		-I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
+		-I$(SRC_DIR) -I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR)
 ##################################################################
 
 clean:
