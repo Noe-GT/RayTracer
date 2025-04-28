@@ -13,7 +13,7 @@ rayTracer::RayTracer::RayTracer(const double &_pictureH, const double &_pictureW
     _plugins(),
     _primitivePLoaders()
 {
-    // this->loadPlugins();
+    this->loadPlugins();
 }
 
 rayTracer::RayTracer::~RayTracer()

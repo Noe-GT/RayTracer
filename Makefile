@@ -47,7 +47,7 @@ plugins:
 ##################################################################
 
 libs:
-	@echo -e "\n$(BUILD_MSG) building Raytracer..."
+	@echo "\n$(BUILD_MSG) building Raytracer..."
 	@echo -e "  ├─$(LIB_MSG) building libraries..."
 	@$(foreach file, $(LIBS_SRC),								\
 		echo -e "  │   ├─$(STATIC_MSG) building $(file)..." ; 		\
