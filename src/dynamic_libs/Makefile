@@ -15,7 +15,8 @@ PLUGINS			=	sphere										\
 ##################################################################
 
 all:
-	@$(foreach file, $(PLUGINS), echo "  │   ├─$(STATIC_MSG) $(file)...";make -C $(file);)
+	@$(foreach file, $(PLUGINS), echo "  │   ├─$(STATIC_MSG) 	\
+		$(file)..."; make -C $(file);)
 ##################################################################
 
 clean:

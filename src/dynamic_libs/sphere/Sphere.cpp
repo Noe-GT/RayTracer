@@ -8,13 +8,14 @@
 #include "Sphere.hpp"
 
 Sphere::Sphere():
+    _origin(),
     _radius(0)
 {
 }
 
 Sphere::Sphere(math::Point origin, double radius) :
-    _radius(radius),
-    _origin(origin)
+    _origin(origin),
+    _radius(radius)
 {
 }
 

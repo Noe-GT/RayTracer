@@ -19,8 +19,8 @@ class Sphere: public IPrimitive {
         bool Intersect(math::Ray &ray) final;
 
     private:
-    double _radius;
     math::Point _origin;
+    double _radius;
 };
 
 #endif /* !SPHERE_HPP_ */

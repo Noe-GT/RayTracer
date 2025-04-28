@@ -36,7 +36,7 @@ all:	$(NAME)
 
 $(NAME):	$(OBJS)
 	@mkdir -p $(PLUGIN_DIR)
-	$(CXX) -shared -o $(NAME) $(OBJS)
+	$(CXX) -shared -o $(NAME) $(OBJS) -L../../static_libs/ -lmath
 
 $(OBJS_DIR)/%.o:	%.cpp
 	@mkdir -p $(OBJS_DIR)

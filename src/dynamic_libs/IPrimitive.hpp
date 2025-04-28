@@ -12,7 +12,7 @@
 
 class IPrimitive {
     public:
-        ~IPrimitive() = default;
+        virtual ~IPrimitive() = default;
         virtual bool Intersect(math::Ray &ray) = 0;
 };
 

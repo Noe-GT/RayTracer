@@ -66,20 +66,21 @@ $(OBJS_DIR)%.o: %.cpp
 		-I$(PLUGINS_SRC_DIR)
 
 $(NAME):	$(OBJS)
-	@mkdir -p $(SRC_DIR)$(OBJS_DIR)
+	@mkdir -p $(SRC_DIR) $(OBJS_DIR)
 	@$(CXX) -o $(NAME) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
 		-I$(SRC_DIR) -I$(PLUGINS_SRC_DIR)
 ##################################################################
 
 clean:
 	@rm -rf $(OBJS_DIR)*
-	@rm -rf $(OBJS_DIR)*
+	@rm -rf $(OBJS_DIR)
 	@echo "$(DELETE_MSG) src/bin"
 	@make clean -C $(PLUGINS_SRC_DIR) --silent
 	@$(foreach file, $(LIBS_SRC), make clean -C $(file) --silent;)
 
 fclean:	clean
 	@rm -rf $(NAME)
+	@rm -rf dynamic_libs_bin
 	@$(foreach file, $(LIBS_SRC), make fclean -C $(file) --silent;)
 
 re:	fclean all
