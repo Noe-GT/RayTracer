@@ -33,7 +33,7 @@ CXXFLAGS		=		-std=c++20 -Wall -Wextra -Werror -g3
 
 SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
 
-LIBS			=		-L src/static_libs/math -lmath
+LIBS			=		-L src/static_libs -lmath
 ##################################################################
 
 all: libs plugins $(NAME)
@@ -73,12 +73,13 @@ $(NAME):	$(OBJS)
 
 clean:
 	@rm -rf $(OBJS_DIR)*
+	@rm -rf $(OBJS_DIR)*
 	@echo "$(DELETE_MSG) src/bin"
 	@make clean -C $(PLUGINS_SRC_DIR) --silent
 	@$(foreach file, $(LIBS_SRC), make clean -C $(file) --silent;)
 
 fclean:	clean
-	@rm -f $(NAME)
+	@rm -rf $(NAME)
 	@$(foreach file, $(LIBS_SRC), make fclean -C $(file) --silent;)
 
 re:	fclean all

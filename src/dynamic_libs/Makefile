@@ -4,24 +4,24 @@
 ## File description:
 ## Makefile
 ##
-
-DELETE_MSG    = \033[1;31m[DELETE]:\033[0m
+STATIC_MSG		=	\033[1m\033[1;36m[DYNAMIC]:\033[0m
+DELETE_MSG    	= 	\033[1;31m[DELETE]:\033[0m
 ##################################################################
 
 PLUGINS_DIR		=	../dynamic_libs_bin/
 
-PLUGINS			=	solid										\
-					light										\
+PLUGINS			=	sphere										\
+					directional									\
 ##################################################################
 
 all:
-	@$(foreach file, $(PLUGINS), make -C $(file);)
+	@$(foreach file, $(PLUGINS), echo "  │   ├─$(STATIC_MSG) $(file)...";make -C $(file);)
 ##################################################################
 
 clean:
 	@$(foreach file, $(PLUGINS), make clean -C $(file) --silent;)
 	@echo "$(DELETE_MSG) plugin/bin"
-	@rm -f $(PLUGINS_DIR)*
+	@rm -rf $(PLUGINS_DIR)*
 
 fclean:	clean
 ##################################################################

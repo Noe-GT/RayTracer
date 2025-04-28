@@ -19,7 +19,7 @@ BIN_DIR      =  	../maths_bin
 OBJS         = 		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
 LIB_DIR      =  	../
-NAME         = 		libmath.a
+NAME         = 		../libmath.a
 LIB          = 		-L
 
 CFLAGS       = 		-g3
@@ -46,7 +46,7 @@ clean:
 	@rm -rf $(BIN_DIR)
 
 fclean: clean
-	@rm -f $(NAME)
+	@rm -rf $(NAME)
 
 ##################################################################
 re: fclean all
