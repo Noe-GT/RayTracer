@@ -12,6 +12,7 @@
 #include "pluginHandling/DLLoader.hpp"
 #include "pluginHandling/LibLister.hpp"
 #include "External.hpp"
+#include "Config.hpp"
 // #include "solid/sphere/Sphere.hpp"
 
 namespace rayTracer {
@@ -27,6 +28,7 @@ namespace rayTracer {
             const double _pictureH;
             const double _pictureW;
             std::vector<rayTracer::DLLoader> _plugins;
+            std::map<std::string, std::unique_ptr<rayTracer::DLLoader>> _primitivePLoaders;
     };
 };
 

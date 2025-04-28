@@ -14,7 +14,7 @@ namespace solid {
     class IPrimitive {
         public:
             ~IPrimitive() = default;
-            virtual math::Point getOrigin() const = 0;
+            virtual const math::Point &getOrigin() const = 0;
             virtual bool hits(math::Ray ray) = 0;
     };
 };

@@ -11,5 +11,5 @@ int main()
 {
     rayTracer::RayTracer tracer(281, 500);
 
-    // tracer.run();
+    tracer.run();
 }

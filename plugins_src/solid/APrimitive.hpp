@@ -17,7 +17,7 @@ namespace solid {
             APrimitive();
             APrimitive(math::Point origin);
             ~APrimitive() = default;
-            math::Point getOrigin() const final;
+            const math::Point &getOrigin() const final;
             virtual bool hits(math::Ray ray) = 0;
 
         protected:

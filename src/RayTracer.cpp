@@ -10,9 +10,10 @@
 rayTracer::RayTracer::RayTracer(const double &_pictureH, const double &_pictureW):
     _pictureH(_pictureH),
     _pictureW(_pictureW),
-    _plugins()
+    _plugins(),
+    _primitivePLoaders()
 {
-    this->loadPlugins();
+    // this->loadPlugins();
 }
 
 rayTracer::RayTracer::~RayTracer()
@@ -52,4 +53,8 @@ void rayTracer::RayTracer::loadPlugins()
 {
     rayTracer::LibLister lister;
     lister.display();
+
+    for (std::string pName : lister.getPrimitive()) {
+        this->_primitivePLoaders.insert({pName, std::make_unique<rayTracer::DLLoader>(std::string(PLUGINS_DIR) + pName)});
+    }
 }

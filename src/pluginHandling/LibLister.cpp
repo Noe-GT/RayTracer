@@ -75,3 +75,18 @@ int rayTracer::LibLister::getIndexLib(const std::string &path) const
     }
     return -1;
 }
+
+const std::vector<std::string> &rayTracer::LibLister::getPrimitive() const
+{
+    return this->_primitive;
+}
+
+const std::vector<std::string> &rayTracer::LibLister::getLight() const
+{
+    return this->_light;
+}
+
+const std::vector<std::string> &rayTracer::LibLister::getOther() const
+{
+    return this->_other;
+}
