@@ -11,7 +11,7 @@ STATIC_MSG		=		\033[1m\033[1;36m[STATIC]:\033[0m
 DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
 ##################################################################
 
-SRC_DIR			=		src/core/
+SRC_DIR			=		src/core/src/
 SRC				=		$(SRC_DIR)main.cpp 						\
 						$(SRC_DIR)RayTracer.cpp					\
 						$(SRC_DIR)../dlloader/LibLister.cpp		\
