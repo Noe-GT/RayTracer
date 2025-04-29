@@ -11,13 +11,14 @@ STATIC_MSG		=		\033[1m\033[1;36m[STATIC]:\033[0m
 DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
 ##################################################################
 
-SHARED_DIR			=		src/shared/
+SHARED_DIR		=		src/shared/
 
 SRC_DIR			=		src/core/src/
 SRC				=		$(SRC_DIR)main.cpp 						\
 						$(SRC_DIR)RayTracer.cpp					\
-						$(SRC_DIR)../dlloader/LibLister.cpp		\
-						$(SRC_DIR)Exceptions.cpp				\
+						$(SRC_DIR)Pixel.cpp						\
+						$(SRC_DIR)Scene.cpp						\
+						$(SRC_DIR)Camera.cpp					\
 
 OBJS_DIR		=		src/core_bin/
 OBJS			=		$(SRC:%.cpp=$(OBJS_DIR)%.o)
@@ -31,7 +32,7 @@ NAME			=		raytracer
 
 CXX				=		g++
 
-CXXFLAGS		=		-std=c++20 -Wall -Wextra -Werror -g3
+CXXFLAGS		=		-std=c++20 -Wall -Wextra -g3
 
 SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
 

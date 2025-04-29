@@ -8,7 +8,7 @@
 #ifndef SPHERE_HPP_
 #define SPHERE_HPP_
 
-#include "IPrimitive.hpp"
+#include "../../shared/IPrimitive.hpp"
 
 class Sphere: public IPrimitive {
     public:

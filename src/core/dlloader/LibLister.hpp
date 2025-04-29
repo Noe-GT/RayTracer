@@ -8,7 +8,6 @@
 #ifndef LIBLISTER_HPP_
 #define LIBLISTER_HPP_
 
-#include "External.hpp"
 #include "Config.hpp"
 #include "Exceptions.hpp"
 #include "DLLoader.hpp"

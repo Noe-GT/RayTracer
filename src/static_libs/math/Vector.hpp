@@ -42,6 +42,8 @@ namespace math {
             double LengthSquared() const;
             double Length() const;
             double dotProduct(const math::Vector& other) const;
+            Vector cross(const Vector& other) const;
+            Vector normalize() const;
 
             friend std::ostream& operator<<(std::ostream& os, const math::Vector& v);
     };

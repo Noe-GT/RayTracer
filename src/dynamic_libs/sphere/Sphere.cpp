@@ -8,8 +8,8 @@
 #include "Sphere.hpp"
 
 Sphere::Sphere():
-    _origin(),
-    _radius(0)
+    _origin(0, 0, -1),
+    _radius(0.5)
 {
 }
 
@@ -18,15 +18,23 @@ Sphere::Sphere(math::Point origin, double radius) :
     _radius(radius)
 {
 }
-
-bool Sphere::Intersect(math::Ray &ray)
+bool Sphere::Intersect(math::Ray& ray)
 {
-    math::Vector coVec(this->_origin - ray._origin);
+    math::Vector oc = ray._origin - _origin;
     double a = ray._direction.dotProduct(ray._direction);
-    double b = -2.0 * ray._direction.dotProduct(coVec);
-    double c = coVec.dotProduct(coVec) - this->_radius*this->_radius;
+    double b = 2.0 * oc.dotProduct(ray._direction);
+    double c = oc.dotProduct(oc) - _radius*_radius;
     double discriminant = b*b - 4*a*c;
-    return (discriminant >= 0);
+
+    if (discriminant < 0) {
+        ray._color = math::Color(0, 0, 1);
+        std::clog << "not Intersect\n";
+        return false;
+    }
+
+    ray._color = math::Color(1, 0, 0);
+    std::clog << "Intersect\n";
+    return true;
 }
 
 extern "C"

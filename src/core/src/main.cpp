@@ -9,7 +9,8 @@
 
 int main()
 {
-    rayTracer::RayTracer tracer(600, 600);
+    rayTracer::RayTracer tracer("");
 
-    tracer.run();
+    tracer.render();
+    tracer.out();
 }

@@ -120,3 +120,20 @@ namespace math {
         return out << v._x << ' ' << v._y << ' ' << v._z;
     }
 };
+
+
+math::Vector math::Vector::cross(const Vector& other) const
+{
+    return Vector(
+        _y * other._z - _z * other._y,
+        _z * other._x - _x * other._z,
+        _x * other._y - _y * other._x
+    );
+}
+
+math::Vector math::Vector::normalize() const
+{
+    double len = Length();
+    if (len == 0) return *this;
+    return Vector(_x / len, _y / len, _z / len);
+}
