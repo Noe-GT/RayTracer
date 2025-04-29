@@ -4,7 +4,7 @@
 #include "../static_libs/math/Ray.hpp"
 #include "../dlloader/DLLoader.hpp"
 #include "External.hpp"
-#include "../dynamic_libs/IPrimitive.hpp"
+#include "IPrimitive.hpp"
 #include <string>
 #include <iostream>
 #include <memory>

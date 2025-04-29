@@ -13,6 +13,8 @@ DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
 ROOT			=		../
 PLUGIN_DIR		=		$(ROOT)../../dynamic_libs_bin/
 
+SHARED_DIR		=		$(ROOT)../shared
+
 SRCS			=		Sphere.cpp 								\
 
 OBJS_DIR		=		../sphere_bin
@@ -45,7 +47,7 @@ $(OBJS_DIR)/%.o:	%.cpp
 	else 														\
 		echo "  │   │   ├── $(BUILD_MSG) $<$(RESET)"; 			\
 	fi
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(ROOT)
+	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(ROOT) -I$(SHARED_DIR)
 ##################################################################
 
 clean:
