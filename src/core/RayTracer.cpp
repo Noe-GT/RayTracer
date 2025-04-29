@@ -7,7 +7,6 @@ rayTracer::RayTracer::RayTracer(const double &_pictureH,
     _plugins(),
     _pluginHandler()
 {
-    // loadPlugins();
 }
 
 rayTracer::RayTracer::~RayTracer()
