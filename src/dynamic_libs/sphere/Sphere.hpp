@@ -18,17 +18,18 @@ class Sphere: public IPrimitive {
         Sphere(math::Point origin, double radius);
         ~Sphere() = default;
 
-        bool Intersect(math::Ray &ray) final;
+        bool intersect(math::Ray &ray) final;
 
     private:
-    math::Point _origin;
-    double _radius;
+        math::Point _origin;
+        double _radius;
 };
 
 class SphereFactory: public rayTracer::IFactory {
     public:
         SphereFactory() = default;
         ~SphereFactory() = default;
+
         std::unique_ptr<IPrimitive> build() final;
 };
 

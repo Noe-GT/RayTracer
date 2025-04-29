@@ -49,7 +49,7 @@ math::Color rayTracer::RayTracer::ray_color(const math::Ray &r)
             continue;
         }
         math::Ray rayCopy = r;
-        if (primitive->Intersect(rayCopy)) {
+        if (primitive->intersect(rayCopy)) {
             return math::Color(1, 1, 1);
         }
     }

@@ -27,7 +27,7 @@ namespace rayTracer {
                     ~Plugin() = default;
 
                     std::unique_ptr<rayTracer::DLLoader> _loader;
-                    // rayTracer::IFactory _factory;
+                    std::unique_ptr<rayTracer::IFactory> _factory;
             };
 
             PluginHandler();

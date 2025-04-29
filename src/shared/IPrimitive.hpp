@@ -13,7 +13,7 @@
 class IPrimitive {
     public:
         virtual ~IPrimitive() = default;
-        virtual bool Intersect(math::Ray &ray) = 0;
+        virtual bool intersect(math::Ray &ray) = 0;
 };
 
 #endif /* !IPRIMITIVE_HPP_ */

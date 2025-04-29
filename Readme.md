@@ -59,7 +59,7 @@ classDiagram
     %% Primitive et Matériaux
     class IPrimitive {
         <<interface>>
-        +Intersect(Ray ray) bool
+        +intersect(Ray ray) bool
     }
 
     class Material {
@@ -73,14 +73,14 @@ classDiagram
         -Point _center
         -float _radius
         -Material material
-        +Intersect(Ray ray) bool
+        +intersect(Ray ray) bool
     }
 
     class Plane {
         -Point _referencePoint
         -Vector _normal
         -Material material
-        +Intersect(Ray ray) bool
+        +intersect(Ray ray) bool
     }
 
     RayTracer "1" --> "1" Simulation

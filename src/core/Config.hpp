@@ -8,3 +8,4 @@
 #pragma once
 
 #define PLUGINS_DIR "dynamic_libs_bin/"
+#define LOADER_INSTANCE_NAME "entryPoint"

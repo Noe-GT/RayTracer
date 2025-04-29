@@ -19,7 +19,7 @@ Sphere::Sphere(math::Point origin, double radius) :
 {
 }
 
-bool Sphere::Intersect(math::Ray &ray)
+bool Sphere::intersect(math::Ray &ray)
 {
     math::Vector coVec(this->_origin - ray._origin);
     double a = ray._direction.dotProduct(ray._direction);
@@ -36,8 +36,8 @@ std::unique_ptr<IPrimitive> SphereFactory::build()
 
 extern "C"
 {
-    IPrimitive *entryPoint()
+    rayTracer::IFactory *entryPoint()
     {
-        return new Sphere;
+        return new SphereFactory;
     }
 }

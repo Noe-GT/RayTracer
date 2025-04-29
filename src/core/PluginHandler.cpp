@@ -7,7 +7,7 @@
 
 #include "PluginHandler.hpp"
 
-rayTracer::PluginHandler::PluginHandler() :
+rayTracer::PluginHandler::PluginHandler():
     _plugins()
 {
     LibLister lister;
@@ -18,21 +18,24 @@ rayTracer::PluginHandler::PluginHandler() :
     }
 }
 
-rayTracer::PluginHandler::Plugin::Plugin(std::string path) :
-_loader(std::make_unique<rayTracer::DLLoader>(path))
+rayTracer::PluginHandler::Plugin::Plugin(std::string path):
+    _loader(std::make_unique<rayTracer::DLLoader>(path))
+// _factory(std::move(this->_loader->getInstance(std::string(LOADER_INSTANCE_NAME))))
+{
+    this->_factory = std::move(this->_loader->getInstance<rayTracer::IFactory>(LOADER_INSTANCE_NAME));
+}
+
+rayTracer::PluginHandler::Plugin::Plugin(Plugin&& other) noexcept:
+    _loader(std::move(other._loader)),
+    _factory(std::move(other._factory))
 {
 }
 
-// Move constructor
-rayTracer::PluginHandler::Plugin::Plugin(Plugin&& other) noexcept :
-    _loader(std::move(other._loader)) // Transfer ownership of the unique_ptr
+rayTracer::PluginHandler::Plugin& rayTracer::PluginHandler::Plugin::operator=(Plugin&& other) noexcept
 {
-}
-
-// Move assignment operator
-rayTracer::PluginHandler::Plugin& rayTracer::PluginHandler::Plugin::operator=(Plugin&& other) noexcept {
     if (this != &other) {
-        _loader = std::move(other._loader); // Transfer ownership of the unique_ptr
+        this->_loader = std::move(other._loader);
+        this->_factory = std::move(other._factory);
     }
     return *this;
 }
