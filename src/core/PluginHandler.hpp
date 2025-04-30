@@ -11,6 +11,7 @@
 #include "dlloader/DLLoader.hpp"
 #include "dlloader/LibLister.hpp"
 #include "IFactory.hpp"
+#include "External.hpp"
 #include "Config.hpp"
 
 namespace rayTracer {
@@ -19,22 +20,28 @@ namespace rayTracer {
             class Plugin {
                 public:
                     Plugin(std::string path);
-                    Plugin(Plugin&& other) noexcept;
-                    Plugin& operator=(Plugin&& other) noexcept;
-                    Plugin(const Plugin&) = delete;
-                    Plugin& operator=(const Plugin&) = delete;
+                    Plugin(std::string path, std::string name);
+                    Plugin(const rayTracer::PluginHandler::Plugin&) noexcept;
+                    Plugin& operator=(const rayTracer::PluginHandler::Plugin&) noexcept;
 
-                    ~Plugin() = default;
+                    ~Plugin();
 
-                    std::unique_ptr<rayTracer::DLLoader> _loader;
-                    std::unique_ptr<rayTracer::IFactory> _factory;
+                    std::shared_ptr<rayTracer::DLLoader> _loader;
+                    std::shared_ptr<rayTracer::IFactory> _factory;
+                    std::string _name;
+
+                    friend std::ostream& operator<<(std::ostream& os, const rayTracer::PluginHandler::Plugin& plugin);
             };
 
             PluginHandler();
             ~PluginHandler() = default;
 
+            void cstrPlugin(const std::string &name, const LibLister &lister);
+            std::map<rayTracer::IFactory::ObjectType, std::vector<rayTracer::PluginHandler::Plugin>> &getPlugins();
+            void display() const;
+
         private:
-            std::vector<rayTracer::PluginHandler::Plugin> _plugins;
+            std::map<rayTracer::IFactory::ObjectType, std::vector<rayTracer::PluginHandler::Plugin>> _plugins;
     };
 };
 

@@ -34,6 +34,11 @@ std::unique_ptr<IPrimitive> SphereFactory::build()
     return std::make_unique<Sphere>();
 }
 
+rayTracer::IFactory::ObjectType SphereFactory::getObjectType() const
+{
+    return rayTracer::IFactory::ObjectType::PRIMITIVE;
+}
+
 extern "C"
 {
     rayTracer::IFactory *entryPoint()

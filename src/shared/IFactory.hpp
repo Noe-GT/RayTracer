@@ -13,8 +13,14 @@
 namespace rayTracer {
     class IFactory {
         public:
+            enum ObjectType {
+                PRIMITIVE,
+                OTHER
+            };
+
             ~IFactory() = default;
             virtual std::unique_ptr<IPrimitive> build() = 0;
+            virtual rayTracer::IFactory::ObjectType getObjectType() const = 0;
     };
 };
 

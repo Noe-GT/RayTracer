@@ -11,3 +11,5 @@
 #include <string>
 #include <iostream>
 #include <memory>
+#include <map>
+#include <ostream>

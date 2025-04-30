@@ -31,6 +31,7 @@ class DirectionalLightFactory: public rayTracer::IFactory {
         ~DirectionalLightFactory() = default;
 
         std::unique_ptr<IPrimitive> build() final;
+        rayTracer::IFactory::ObjectType getObjectType() const final;
 };
 
 #endif /* !DIRECTIONALLIGHT_HPP_ */

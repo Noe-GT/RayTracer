@@ -33,6 +33,11 @@ std::unique_ptr<IPrimitive> DirectionalLightFactory::build()
     return std::make_unique<DirectionalLight>();
 }
 
+rayTracer::IFactory::ObjectType DirectionalLightFactory::getObjectType() const
+{
+    return rayTracer::IFactory::ObjectType::PRIMITIVE;
+}
+
 extern "C"
 {
     rayTracer::IFactory *entryPoint()
