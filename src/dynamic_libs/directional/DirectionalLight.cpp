@@ -33,15 +33,15 @@ std::shared_ptr<IPrimitive> DirectionalLightFactory::build()
     return std::make_unique<DirectionalLight>();
 }
 
-rayTracer::IFactory::ObjectType DirectionalLightFactory::getObjectType() const
-{
-    return rayTracer::IFactory::ObjectType::PRIMITIVE;
-}
-
 extern "C"
 {
-    rayTracer::IFactory *entryPoint()
+    rayTracer::IFactory<IPrimitive> *entryPoint()
     {
         return new DirectionalLightFactory;
+    }
+
+    rayTracer::PluginType getLibType()
+    {
+        return rayTracer::PluginType::PRIMITIVE;
     }
 }

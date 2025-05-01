@@ -10,6 +10,7 @@
 
 #include "IPrimitive.hpp"
 #include "IFactory.hpp"
+#include "PluginTypes.hpp"
 
 class DirectionalLight: public IPrimitive{
     public:
@@ -25,13 +26,12 @@ class DirectionalLight: public IPrimitive{
         math::Color _color;
 };
 
-class DirectionalLightFactory: public rayTracer::IFactory {
+class DirectionalLightFactory: public rayTracer::IFactory<IPrimitive> {
     public:
         DirectionalLightFactory() = default;
         ~DirectionalLightFactory() = default;
 
         std::shared_ptr<IPrimitive> build() final;
-        rayTracer::IFactory::ObjectType getObjectType() const final;
 };
 
 #endif /* !DIRECTIONALLIGHT_HPP_ */

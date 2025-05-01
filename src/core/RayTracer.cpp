@@ -6,10 +6,8 @@ rayTracer::RayTracer::RayTracer(const double &_pictureH, const double &_pictureW
     _plugins(),
     _pluginHandler()
 {
-    // rayTracer::Parser parse;
-
     (void)configFile;
-    // this->_pluginHandler.buildPlugin<IPrimitive>(rayTracer::IFactory::ObjectType::PRIMITIVE, std::string("sphere"));
+    // rayTracer::Parser parse;
     // parse.loadConfig(configFile);
 }
 

@@ -13,3 +13,4 @@
 #include <memory>
 #include <map>
 #include <ostream>
+#include <optional>

@@ -32,7 +32,6 @@ class SphereFactory: public rayTracer::IFactory<IPrimitive> {
         ~SphereFactory() = default;
 
         std::shared_ptr<IPrimitive> build() final;
-        rayTracer::IFactory<IPrimitive>::ObjectType getObjectType() const final;
 };
 
 #endif /* !SPHERE_HPP_ */
