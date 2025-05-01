@@ -28,7 +28,7 @@ bool DirectionalLight::intersect(math::Ray &ray)
     return false;
 }
 
-std::unique_ptr<IPrimitive> DirectionalLightFactory::build()
+std::shared_ptr<IPrimitive> DirectionalLightFactory::build()
 {
     return std::make_unique<DirectionalLight>();
 }

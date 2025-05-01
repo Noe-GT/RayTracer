@@ -7,11 +7,11 @@
 
 #include "Parser.hpp"
 
-Parser::Parser()
+rayTracer::Parser::Parser()
 {
 }
 
-void Parser::loadConfig(const std::string &filePath)
+void rayTracer::Parser::loadConfig(const std::string &filePath)
 {
     try {
         config.readFile(filePath.c_str());
@@ -22,21 +22,24 @@ void Parser::loadConfig(const std::string &filePath)
         throw std::runtime_error("Parse error at " + std::string(pex.getFile()) + ":" +
                                  std::to_string(pex.getLine()) + " - " + pex.getError());
     }
+    this->parseCamera();
+    this->parsePrimitives();
 }
 
-void Parser::parseCamera()
+void rayTracer::Parser::parseCamera()
 {
     try {
         const libconfig::Setting &camera = config.lookup("camera");
         const libconfig::Setting &resolution = camera["resolution"];
+
         int width = resolution["width"];
         int height = resolution["height"];
         std::cout << "Camera resolution: " << width << "x" << height << std::endl;
 
         const libconfig::Setting &position = camera["position"];
-        float x = position["x"];
-        float y = position["y"];
-        float z = position["z"];
+        int x = position["x"];
+        int y = position["y"];
+        int z = position["z"];
         std::cout << "Camera position: (" << x << ", " << y << ", " << z << ")" << std::endl;
 
         float fieldOfView = camera["fieldOfView"];
@@ -46,7 +49,7 @@ void Parser::parseCamera()
     }
 }
 
-void Parser::parsePrimitives()
+void rayTracer::Parser::parsePrimitives()
 {
     try {
         const libconfig::Setting &primitives = config.lookup("primitives");
@@ -54,10 +57,10 @@ void Parser::parsePrimitives()
         const libconfig::Setting &spheres = primitives["spheres"];
         for (int i = 0; i < spheres.getLength(); ++i) {
             const libconfig::Setting &sphere = spheres[i];
-            float x = sphere["x"];
-            float y = sphere["y"];
-            float z = sphere["z"];
-            float r = sphere["r"];
+            int x = sphere["x"];
+            int y = sphere["y"];
+            int z = sphere["z"];
+            int r = sphere["r"];
             const libconfig::Setting &color = sphere["color"];
             int rColor = color["r"];
             int gColor = color["g"];
@@ -83,7 +86,7 @@ void Parser::parsePrimitives()
     }
 }
 
-void Parser::parseLights()
+void rayTracer::Parser::parseLights()
 {
     try {
         const libconfig::Setting &lights = config.lookup("lights");

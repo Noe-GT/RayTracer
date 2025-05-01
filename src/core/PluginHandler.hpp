@@ -13,13 +13,13 @@
 #include "IFactory.hpp"
 #include "External.hpp"
 #include "Config.hpp"
+#include "Exceptions.hpp"
 
 namespace rayTracer {
     class PluginHandler {
         public:
             class Plugin {
                 public:
-                    Plugin(std::string path);
                     Plugin(std::string path, std::string name);
                     Plugin(const rayTracer::PluginHandler::Plugin&) noexcept;
                     Plugin& operator=(const rayTracer::PluginHandler::Plugin&) noexcept;
@@ -36,12 +36,14 @@ namespace rayTracer {
             PluginHandler();
             ~PluginHandler() = default;
 
-            void cstrPlugin(const std::string &name, const LibLister &lister);
-            std::map<rayTracer::IFactory::ObjectType, std::vector<rayTracer::PluginHandler::Plugin>> &getPlugins();
+            std::map<rayTracer::IFactory::ObjectType, std::map<std::string, rayTracer::PluginHandler::Plugin>> &getPlugins();
             void display() const;
+            template <typename T> T buildPlugin(const rayTracer::IFactory::ObjectType type, const std::string &name) const;
 
         private:
-            std::map<rayTracer::IFactory::ObjectType, std::vector<rayTracer::PluginHandler::Plugin>> _plugins;
+            void cstrPlugin(const std::string &fileName, const LibLister &lister);
+            std::string getPluginName(const std::string &path) const;
+            std::map<rayTracer::IFactory::ObjectType, std::map<std::string, rayTracer::PluginHandler::Plugin>> _plugins;
     };
 };
 

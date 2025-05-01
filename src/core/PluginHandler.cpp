@@ -17,44 +17,53 @@ rayTracer::PluginHandler::PluginHandler():
         std::cout << "loaded: " << plugin << std::endl;
     }
     this->display();
+    std::shared_ptr<IPrimitive> prim = this->_plugins.at(rayTracer::IFactory::ObjectType::PRIMITIVE).at("Sphere")._factory->build();
 }
 
-std::map<rayTracer::IFactory::ObjectType, std::vector<rayTracer::PluginHandler::Plugin>> &rayTracer::PluginHandler::getPlugins()
+std::map<rayTracer::IFactory::ObjectType, std::map<std::string, rayTracer::PluginHandler::Plugin>> &rayTracer::PluginHandler::getPlugins()
 {
     return this->_plugins;
 }
 
-void rayTracer::PluginHandler::cstrPlugin(const std::string &name, const LibLister &lister)
+void rayTracer::PluginHandler::cstrPlugin(const std::string &fileName, const LibLister &lister)
 {
-    rayTracer::PluginHandler::Plugin plugin(lister.getLibDirectory() + name);
+    std::string pluginName = this->getPluginName(fileName);
+    rayTracer::PluginHandler::Plugin plugin(lister.getLibDirectory() + fileName, pluginName);
     rayTracer::IFactory::ObjectType type = plugin._factory->getObjectType();
 
     if (this->_plugins.find(type) == this->_plugins.end())
-        this->_plugins.insert({type, std::vector<rayTracer::PluginHandler::Plugin>()});
-    this->_plugins.at(type).push_back(plugin);
+        this->_plugins.insert({type, std::map<std::string, rayTracer::PluginHandler::Plugin>()});
+    this->_plugins.at(type).insert_or_assign(pluginName, plugin);
 }
 
 void rayTracer::PluginHandler::display() const
 {
     std::cout << "PLUGINS" << std::endl;
-    for (std::pair<rayTracer::IFactory::ObjectType, std::vector<rayTracer::PluginHandler::Plugin>> pPair : this->_plugins) {
+    for (std::pair<rayTracer::IFactory::ObjectType, std::map<std::string, rayTracer::PluginHandler::Plugin>> pPair : this->_plugins) {
         std::cout << "Type: " << pPair.first << std::endl;
-        for (const rayTracer::PluginHandler::Plugin &plugin : pPair.second) {
-            std::cout << "-" << plugin << std::endl;
+        for (const std::pair<std::string, rayTracer::PluginHandler::Plugin> plugin : pPair.second) {
+            std::cout << "-" << plugin.first << std::endl;
         }
     }
 }
 
-rayTracer::PluginHandler::Plugin::Plugin(std::string path):
-    _loader(std::make_shared<rayTracer::DLLoader>(path)),
-    _factory(this->_loader->getInstance<rayTracer::IFactory>(LOADER_INSTANCE_NAME))
+std::string rayTracer::PluginHandler::getPluginName(const std::string &path) const
 {
-    size_t sep = path.rfind("/");
-    if (sep != path.npos)
-        this->_name = path.substr(sep + 1, path.size());
-    sep = this->_name.rfind(".");
-    if (sep != this->_name.npos)
-        this->_name = this->_name.substr(0, sep);
+    std::string name = path;
+    size_t sep = name.rfind(".");
+
+    if (sep != name.npos)
+        name = name.substr(0, sep);
+    return name;
+}
+
+template <typename T> T rayTracer::PluginHandler::buildPlugin(const rayTracer::IFactory::ObjectType type, const std::string &name) const
+{
+    if (this->_plugins.find(type) == this->_plugins.end())
+        throw PluginException("Invalid plugin type");
+    if (this->_plugins.at(type).find(name) == this->_plugins.at(type).end())
+        throw PluginException("Invalid plugin name");
+    return this->_plugins.at(type).at(name)._factory->build();
 }
 
 rayTracer::PluginHandler::Plugin::Plugin(std::string path, std::string name):

@@ -30,7 +30,7 @@ class SphereFactory: public rayTracer::IFactory {
         SphereFactory() = default;
         ~SphereFactory() = default;
 
-        std::unique_ptr<IPrimitive> build() final;
+        std::shared_ptr<IPrimitive> build() final;
         rayTracer::IFactory::ObjectType getObjectType() const final;
 };
 

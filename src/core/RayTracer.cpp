@@ -1,12 +1,16 @@
 #include "RayTracer.hpp"
 
-rayTracer::RayTracer::RayTracer(const double &_pictureH,
-    const double &_pictureW):
+rayTracer::RayTracer::RayTracer(const double &_pictureH, const double &_pictureW, const std::string &configFile):
     _pictureH(_pictureH),
     _pictureW(_pictureW),
     _plugins(),
     _pluginHandler()
 {
+    // rayTracer::Parser parse;
+
+    (void)configFile;
+    // this->_pluginHandler.buildPlugin<IPrimitive>(rayTracer::IFactory::ObjectType::PRIMITIVE, std::string("sphere"));
+    // parse.loadConfig(configFile);
 }
 
 rayTracer::RayTracer::~RayTracer()

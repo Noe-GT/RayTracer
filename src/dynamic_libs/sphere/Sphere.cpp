@@ -29,9 +29,9 @@ bool Sphere::intersect(math::Ray &ray)
     return (discriminant >= 0);
 }
 
-std::unique_ptr<IPrimitive> SphereFactory::build()
+std::shared_ptr<IPrimitive> SphereFactory::build()
 {
-    return std::make_unique<Sphere>();
+    return std::make_shared<Sphere>();
 }
 
 rayTracer::IFactory::ObjectType SphereFactory::getObjectType() const

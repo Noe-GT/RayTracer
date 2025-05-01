@@ -6,11 +6,12 @@
 #include "External.hpp"
 #include "IPrimitive.hpp"
 #include "PluginHandler.hpp"
+#include "Parser.hpp"
 
 namespace rayTracer {
     class RayTracer {
     public:
-        RayTracer(const double &_pictureH, const double &_pictureW);
+        RayTracer(const double &_pictureH, const double &_pictureW, const std::string &configFile);
         ~RayTracer();
         void run();
         math::Color ray_color(const math::Ray& r);

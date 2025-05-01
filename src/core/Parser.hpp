@@ -12,16 +12,18 @@
 #include <iostream>
 #include <stdexcept>
 
-class Parser {
-    public:
-        Parser();
-        ~Parser() = default;
+namespace rayTracer {
+    class Parser {
+        public:
+            Parser();
+            ~Parser() = default;
 
-        void loadConfig(const std::string &filePath);
-        void parseCamera();
-        void parsePrimitives();
-        void parseLights();
+            void loadConfig(const std::string &filePath);
+            void parseCamera();
+            void parsePrimitives();
+            void parseLights();
 
-    private:
-        libconfig::Config config;
+        private:
+            libconfig::Config config;
+    };
 };
