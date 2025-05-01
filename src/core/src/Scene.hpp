@@ -8,14 +8,15 @@
 
 #include "../static_libs/math/Ray.hpp"
 #include <string>
-#include "../../shared/IPrimitive.hpp"
+#include "IPrimitive.hpp"
 #include "Camera.hpp"
+#include "PluginHandler.hpp"
 #include <vector>
 #include <memory>
 namespace rayTracer {
     class Scene {
         public:
-            Scene(std::string confPath);
+            Scene(std::string confPath, PluginHandler &PluginHandler);
             ~Scene();
 
             math::Color _ambiantLightColor;

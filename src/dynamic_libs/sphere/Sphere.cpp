@@ -18,7 +18,8 @@ Sphere::Sphere(math::Point origin, double radius) :
     _radius(radius)
 {
 }
-bool Sphere::Intersect(math::Ray& ray)
+
+bool Sphere::intersect(math::Ray &ray)
 {
     math::Vector oc = ray._origin - _origin;
     double a = ray._direction.dotProduct(ray._direction);
@@ -28,19 +29,29 @@ bool Sphere::Intersect(math::Ray& ray)
 
     if (discriminant < 0) {
         ray._color = math::Color(0, 0, 1);
-        std::clog << "not Intersect\n";
+        std::clog << "not intersect\n";
         return false;
     }
 
     ray._color = math::Color(1, 0, 0);
-    std::clog << "Intersect\n";
+    std::clog << "intersect\n";
     return true;
+}
+
+std::shared_ptr<IPrimitive> SphereFactory::build()
+{
+    return std::make_shared<Sphere>();
 }
 
 extern "C"
 {
-    IPrimitive *entryPoint()
+    rayTracer::IFactory<IPrimitive> *entryPoint()
     {
-        return new Sphere;
+        return new SphereFactory;
+    }
+
+    rayTracer::PluginType getLibType()
+    {
+        return rayTracer::PluginType::PRIMITIVE;
     }
 }

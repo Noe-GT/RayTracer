@@ -6,11 +6,13 @@
 */
 
 #include "RayTracer.hpp"
+#include "Exceptions.hpp"
 
-int main()
+int main(int ac, char **av)
 {
-    rayTracer::RayTracer tracer("");
-
+    if (ac != 2)
+        throw ArgumentsException("Invalid number of arguments");
+    rayTracer::RayTracer tracer(av[1]);
     tracer.render();
     tracer.out();
 }

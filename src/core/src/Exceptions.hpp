@@ -50,4 +50,18 @@ class TypeException: public Exception
         ~TypeException() noexcept = default;
 };
 
+class ArgumentsException: public Exception
+{
+    public:
+        ArgumentsException(const std::string &exception) noexcept;
+        ~ArgumentsException() noexcept = default;
+};
+
+class PluginException: public Exception
+{
+    public:
+        PluginException(const std::string &exception) noexcept;
+        ~PluginException() noexcept = default;
+};
+
 #endif /* !EXCEPTIONS_HPP_ */

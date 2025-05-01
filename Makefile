@@ -9,22 +9,32 @@ BUILD_MSG		=		\033[1m\033[1;32m[BUILD]:\033[0m
 LIB_MSG			=		\033[1m\033[1;35m[LIBS]:\033[0m
 STATIC_MSG		=		\033[1m\033[1;36m[STATIC]:\033[0m
 DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
+
 ##################################################################
 
-SHARED_DIR		=		src/shared/
+CORE_DIR			=		src/core/
 
-SRC_DIR			=		src/core/src/
+SRC_DIR			=		$(CORE_DIR)src/
+
 SRC				=		$(SRC_DIR)main.cpp 						\
 						$(SRC_DIR)RayTracer.cpp					\
 						$(SRC_DIR)Pixel.cpp						\
 						$(SRC_DIR)Scene.cpp						\
 						$(SRC_DIR)Camera.cpp					\
+						$(SRC_DIR)../dlloader/LibLister.cpp		\
+						$(SRC_DIR)Exceptions.cpp					\
+						$(SRC_DIR)PluginHandler.cpp				\
+						$(SRC_DIR)Parser.cpp
 
 OBJS_DIR		=		src/core_bin/
 OBJS			=		$(SRC:%.cpp=$(OBJS_DIR)%.o)
 
 LIB_DIR			=		src/static_libs/
 LIBS_SRC		=		$(LIB_DIR)math							\
+
+SHARED_DIR			=		src/shared/
+
+DLLOADER_DIR	=		$(CORE_DIR)dlloader/
 
 PLUGINS_SRC_DIR	=		src/dynamic_libs/
 
@@ -36,7 +46,10 @@ CXXFLAGS		=		-std=c++20 -Wall -Wextra -g3
 
 SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
 
+LCONFIG_FLAGS	=		-lconfig++
+
 LIBS			=		-L src/static_libs -lmath
+
 ##################################################################
 
 all: libs plugins $(NAME)
@@ -65,13 +78,14 @@ $(OBJS_DIR)%.o: %.cpp
 	else \
 		echo "  ├── $(BUILD_MSG) $<$(RESET)"; \
 	fi
-	@$(CXX) $(CXXFLAGS) -c $< -o $@ -I$(LIBS_SRC) -I$(SRC_DIR) 	\
-		-I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR)
+	@$(CXX) $(CXXFLAGS) $(LCONFIG_FLAGS) -c $< -o $@ -I$(LIB_DIR) 	\
+		-I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR) -I$(DLLOADER_DIR) -I$(SRC_DIR)
 
 $(NAME):	$(OBJS)
 	@mkdir -p $(SRC_DIR) $(OBJS_DIR)
-	@$(CXX) -o $(NAME) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
-		-I$(SRC_DIR) -I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR)
+	@$(CXX) $(LCONFIG_FLAGS) -o $(NAME) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
+		-I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR) -I$(DLLOADER_DIR) -I$(SRC_DIR)
+
 ##################################################################
 
 clean:

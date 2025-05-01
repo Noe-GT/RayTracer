@@ -2,7 +2,8 @@
 #define RAYTRACER_HPP_
 
 #include "../static_libs/math/Ray.hpp"
-#include "../dlloader/DLLoader.hpp"
+#include "DLLoader.hpp"
+#include "PluginHandler.hpp"
 #include "Scene.hpp"
 #include "Pixel.hpp"
 #include <string>
@@ -19,10 +20,11 @@ namespace rayTracer {
         void out();
 
     private:
+        rayTracer::PluginHandler _pluginHandler;
+        Scene _scene;
         std::vector<std::vector<Pixel>> _image;
         std::string _confPath;
         std::string _outpath;
-        Scene _scene;
     };
 }
 

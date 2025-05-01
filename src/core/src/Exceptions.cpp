@@ -37,3 +37,12 @@ TypeException::TypeException(const std::string &exception) noexcept:
 {
 }
 
+ArgumentsException::ArgumentsException(const std::string &exception) noexcept:
+    Exception(exception)
+{
+}
+
+PluginException::PluginException(const std::string &exception) noexcept:
+Exception(exception)
+{
+}

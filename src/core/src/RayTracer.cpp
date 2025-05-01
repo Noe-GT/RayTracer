@@ -6,7 +6,9 @@
 */
 #include "RayTracer.hpp"
 
-rayTracer::RayTracer::RayTracer(std::string configfilePath): _scene(configfilePath)
+rayTracer::RayTracer::RayTracer(std::string configfilePath):
+    _pluginHandler(),
+    _scene(configfilePath, this->_pluginHandler)
 {
     this->_image.resize(600);
 

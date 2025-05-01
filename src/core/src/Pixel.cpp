@@ -10,9 +10,8 @@
 rayTracer::Pixel::Pixel()
     : _colorMean(0, 0, 0)
 {
-    double jitterX = (rand()/(double)RAND_MAX - 0.5);
-    double jitterY = (rand()/(double)RAND_MAX - 0.5);
-
+    // double jitterX = (rand()/(double)RAND_MAX - 0.5);
+    // double jitterY = (rand()/(double)RAND_MAX - 0.5);
 }
 
 rayTracer::Pixel::Pixel(int definition, int x, int y, int imageWidth, int imageHeight, const Scene& scene)
@@ -40,7 +39,7 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
 
     for (auto& ray : _rays) {
         for (const auto& obj : scene._obj) {
-            obj->Intersect(ray);
+            obj->intersect(ray);
         }
         ray._color = ray._color * scene._ambiantLightIntensity;
         ray._color += {(scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))};
