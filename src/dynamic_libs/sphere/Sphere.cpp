@@ -34,15 +34,20 @@ std::shared_ptr<IPrimitive> SphereFactory::build()
     return std::make_shared<Sphere>();
 }
 
-rayTracer::IFactory::ObjectType SphereFactory::getObjectType() const
+rayTracer::IFactory<IPrimitive>::ObjectType SphereFactory::getObjectType() const
 {
-    return rayTracer::IFactory::ObjectType::PRIMITIVE;
+    return rayTracer::IFactory<IPrimitive>::ObjectType::PRIMITIVE;
 }
 
 extern "C"
 {
-    rayTracer::IFactory *entryPoint()
+    rayTracer::IFactory<IPrimitive> *entryPoint()
     {
         return new SphereFactory;
+    }
+
+    rayTracer::PluginType getLibType()
+    {
+        return rayTracer::PluginType::PRIMITIVE;
     }
 }

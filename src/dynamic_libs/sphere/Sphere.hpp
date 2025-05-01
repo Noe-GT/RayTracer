@@ -11,6 +11,7 @@
 #include "IPrimitive.hpp"
 #include "IFactory.hpp"
 #include <memory>
+#include "PluginTypes.hpp"
 
 class Sphere: public IPrimitive {
     public:
@@ -25,13 +26,13 @@ class Sphere: public IPrimitive {
         double _radius;
 };
 
-class SphereFactory: public rayTracer::IFactory {
+class SphereFactory: public rayTracer::IFactory<IPrimitive> {
     public:
         SphereFactory() = default;
         ~SphereFactory() = default;
 
         std::shared_ptr<IPrimitive> build() final;
-        rayTracer::IFactory::ObjectType getObjectType() const final;
+        rayTracer::IFactory<IPrimitive>::ObjectType getObjectType() const final;
 };
 
 #endif /* !SPHERE_HPP_ */

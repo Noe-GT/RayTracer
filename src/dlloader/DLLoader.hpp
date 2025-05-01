@@ -7,6 +7,7 @@
 #include <memory>
 #include <functional>
 #include "Exceptions.hpp"
+#include "PluginTypes.hpp"
 
 namespace rayTracer {
     class DLLoader {
@@ -43,6 +44,15 @@ namespace rayTracer {
 
             return std::unique_ptr<T>(func());
         }
+
+        rayTracer::PluginType getLibType() const
+        {
+            std::function<rayTracer::PluginType()> func = reinterpret_cast<rayTracer::PluginType (*)()>(dlsym(this->_lib, "getLibType"));
+
+            if (!func)
+                throw LibraryLoadingException(dlerror());
+            return func();
+        };
 
     private:
         void* _lib;
