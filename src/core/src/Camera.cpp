@@ -12,7 +12,7 @@ namespace {
 }
 
 rayTracer::Camera::Camera():
-    _fov(90),
+    _fov(100),
     _position(0, 0, 0),
     _direction(0, 0, -1)
 {
@@ -49,5 +49,5 @@ math::Ray rayTracer::Camera::generateRay(double x, double y, int imageWidth, int
 
     math::Vector rayDir = right * ndcX + up * ndcY;
     rayDir += _direction;
-    return math::Ray(_position, rayDir.normalize());
+    return math::Ray(_position, rayDir.normalize() , {0.3, 0.7, 1});
 }

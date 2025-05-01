@@ -21,6 +21,7 @@ namespace rayTracer {
             math::Color _ambiantLightColor;
             double _ambiantLightIntensity;
             Camera _camera;
-            std::vector<std::unique_ptr< IPrimitive>> _obj; //TODO:  change type to use composite;
-    };
+            std::vector<std::unique_ptr<IPrimitive>> _obj; //TODO:  change type to use composite;
+            std::vector<math::Point> _lightPoses;
+        };
 };

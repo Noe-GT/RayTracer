@@ -10,27 +10,24 @@
 rayTracer::Pixel::Pixel()
     : _colorMean(0, 0, 0)
 {
-    double jitterX = (rand()/(double)RAND_MAX - 0.5);
-    double jitterY = (rand()/(double)RAND_MAX - 0.5);
-
 }
 
 rayTracer::Pixel::Pixel(int definition, int x, int y, int imageWidth, int imageHeight, const Scene& scene)
     : _x(x), _y(y)
 {
-    if (definition <= 0) throw std::invalid_argument("Definition must be > 0");
+    if (definition <= 0)
+        throw std::invalid_argument("Definition must be > 0");
 
-    _rays.reserve(definition);
+    this->_rays.reserve(definition);
     for (int i = 0; i < definition; i++) {
-        double jitterX = (rand()/(double)RAND_MAX - 0.5);
-        double jitterY = (rand()/(double)RAND_MAX - 0.5);
+        double jitterX = (rand() / (double) RAND_MAX - 0.5);
+        double jitterY = (rand() / (double) RAND_MAX - 0.5);
 
         math::Ray ray = scene._camera.generateRay(x + jitterX, y + jitterY, imageWidth, imageHeight);
         if (ray._direction.Length() < 0.0001) {
             throw std::runtime_error("Generated ray has zero direction");
         }
-
-        _rays.push_back(ray);
+        this->_rays.push_back(ray);
     }
 }
 
@@ -40,7 +37,8 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
 
     for (auto& ray : _rays) {
         for (const auto& obj : scene._obj) {
-            obj->Intersect(ray);
+            if (obj->Intersect(ray, scene._lightPoses, scene._obj))
+                break;
         }
         ray._color = ray._color * scene._ambiantLightIntensity;
         ray._color += {(scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))};

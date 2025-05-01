@@ -28,6 +28,15 @@ math::Point& math::Point::operator-() const
     return * result;
 }
 
+math::Point& math::Point::operator=(const Point &other) {
+    if (this != &other) {
+        this->_x = other._x;
+        this->_y = other._y;
+        this->_z = other._z;
+    }
+    return *this;
+}
+
 math::Point& math::Point::operator+=(const math::Point& other)
 {
     this->_x += other._x;
