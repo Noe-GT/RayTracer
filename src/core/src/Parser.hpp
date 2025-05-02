@@ -10,24 +10,26 @@
 #include <libconfig.h++>
 #include <string>
 #include <iostream>
-#include <stdexcept>
 #include "IFactory.hpp"
 #include "PluginHandler.hpp"
 #include "Scene.hpp"
 #include "Exceptions.hpp"
 
 namespace rayTracer {
+    class RayTracer;
+
     class Parser {
         public:
             Parser(rayTracer::PluginHandler &pluginHandler);
             ~Parser() = default;
 
-            rayTracer::Scene loadConfig(const std::string &filePath);
-            void parseCamera(rayTracer::Scene &scene);
-            void parsePrimitives(rayTracer::Scene &scene);
-            void parseLights();
+            void loadConfig(const std::string &filePath, rayTracer::RayTracer &rayTracer);
 
         private:
+            void parsePrimitives(rayTracer::Scene &scene);
+            void parseCamera(rayTracer::Scene &scene);
+            void parseGraphical(rayTracer::RayTracer &rayTracer);
+
             const rayTracer::PluginHandler &_pluginHandler;
             libconfig::Config config;
     };

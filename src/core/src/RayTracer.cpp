@@ -8,9 +8,10 @@
 
 rayTracer::RayTracer::RayTracer(std::string configfilePath):
     _pluginHandler(),
-    _parser(_pluginHandler),
-    _scene(this->_parser.loadConfig(configfilePath))
+    _parser(this->_pluginHandler),
+    _scene(this->_pluginHandler)
 {
+    this->_parser.loadConfig(configfilePath, *this);
     this->_image.resize(600);
 
     for (int y = 0; y < 600; ++y) {
@@ -43,4 +44,9 @@ void rayTracer::RayTracer::out()
             std::cout << this->_image[x][y].getColor();
         }
     }
+}
+
+rayTracer::Scene &rayTracer::RayTracer::getScene()
+{
+    return this->_scene;
 }

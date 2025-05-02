@@ -15,6 +15,7 @@
 #include "Config.hpp"
 #include "Exceptions.hpp"
 #include "PluginTypes.hpp"
+#include "IGraphical.hpp"
 
 namespace rayTracer {
     class PluginHandler {
@@ -70,11 +71,13 @@ namespace rayTracer {
             void display() const;
             template <typename T> std::shared_ptr<rayTracer::IFactory<T>> getPluginFactory(rayTracer::PluginType type, const std::string &name) const;
             const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &getPrimitivePlugins() const;
+            const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &getGraphicalPlugins() const;
 
         private:
             void cstrPlugin(const std::string &fileName, const LibLister &lister);
             std::string getPluginName(const std::string &path) const;
             std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> _primitivePlugins;
+            std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> _graphicalPlugins;
     };
 };
 

@@ -23,10 +23,14 @@ void rayTracer::PluginHandler::cstrPlugin(const std::string &fileName, const Lib
     std::string pluginName = this->getPluginName(fileName);
     std::shared_ptr<rayTracer::DLLoader> loader = std::make_shared<rayTracer::DLLoader>(lister.getLibDirectory() + fileName);
 
+    std::cout << "Loading plugin: " << fileName << std::endl;
     switch (loader->getLibType())
     {
         case rayTracer::PluginType::PRIMITIVE:
             this->_primitivePlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<IPrimitive>(loader, pluginName));
+            break;
+        case rayTracer::PluginType::GRAPHICAL:
+            this->_graphicalPlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<IGraphical>(loader, pluginName));
             break;
         default:
             break;
@@ -68,6 +72,11 @@ std::shared_ptr<rayTracer::IFactory<T>> rayTracer::PluginHandler::getPluginFacto
 const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &rayTracer::PluginHandler::getPrimitivePlugins() const
 {
     return this->_primitivePlugins;
+}
+
+const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &rayTracer::PluginHandler::getGraphicalPlugins() const
+{
+    return this->_graphicalPlugins;
 }
 
 // template <typename T>

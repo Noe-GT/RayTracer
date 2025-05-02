@@ -14,20 +14,21 @@
 
 namespace rayTracer {
     class RayTracer {
-    public:
-        RayTracer(std::string configfilePath);
-        ~RayTracer();
-        void render();
-        void out();
+        public:
+            RayTracer(std::string configfilePath);
+            ~RayTracer();
+            void render();
+            void out();
+            Scene &getScene();
 
-    private:
-        rayTracer::PluginHandler _pluginHandler;
-        rayTracer::Parser _parser;
-        Scene _scene;
-        std::vector<std::vector<Pixel>> _image;
-        std::string _confPath;
-        std::string _outpath;
-    };
+        private:
+            rayTracer::PluginHandler _pluginHandler;
+            rayTracer::Parser _parser;
+            Scene _scene;
+            std::vector<std::vector<Pixel>> _image;
+            std::string _confPath;
+            std::string _outpath;
+        };
 }
 
 #endif /* !RAYTRACER_HPP_ */

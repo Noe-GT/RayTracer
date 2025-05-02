@@ -6,29 +6,27 @@
 */
 
 #include "Parser.hpp"
+#include "RayTracer.hpp"
 
 rayTracer::Parser::Parser(rayTracer::PluginHandler &pluginHandler):
     _pluginHandler(pluginHandler)
 {
 }
 
-rayTracer::Scene rayTracer::Parser::loadConfig(const std::string &filePath)
+void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTracer &rayTracer)
 {
-    rayTracer::Scene scene(this->_pluginHandler);
-
     try {
         config.readFile(filePath.c_str());
         if (config.exists("primitives"))
-        this->parsePrimitives(scene);
+        this->parsePrimitives(rayTracer.getScene());
         if (config.exists("camera"))
-            this->parseCamera(scene);
+            this->parseCamera(rayTracer.getScene());
     } catch (const libconfig::FileIOException &fioex) {
         throw rayTracer::ConfigException("I/O error while reading file.");
     } catch (const libconfig::ParseException &pex) {
         throw rayTracer::ConfigException("Parse error at " + std::string(pex.getFile()) + ":" +
             std::to_string(pex.getLine()) + " - " + pex.getError());
     }
-    return scene;
 }
 
 void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
@@ -40,6 +38,21 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
         if (primitives.exists(pPair.first + "s")) {
             scene._obj.push_back(pPair.second.getFactory()->build());
             scene._obj.back()->configure(primitives[pPair.first + "s"]);
+        }
+    }
+}
+
+void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
+{
+    (void) rayTracer;
+    const libconfig::Setting &graphicals = config.lookup("graphical");
+    const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &gPlugins = this->_pluginHandler.getGraphicalPlugins();
+
+    for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> gPair : gPlugins) {
+        if (graphicals.exists(gPair.first)) {
+            // scene._obj.push_back(gPair.second.getFactory()->build());
+            // scene._obj.back()->configure(graphicals[gPair.first]);
+            return;
         }
     }
 }

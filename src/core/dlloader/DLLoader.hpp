@@ -37,6 +37,8 @@ namespace rayTracer {
 
         rayTracer::PluginType getLibType() const
         {
+            if (!_lib)
+                throw rayTracer::LibraryLoadingException("lib not loaded");
             std::function<rayTracer::PluginType()> func = reinterpret_cast<rayTracer::PluginType (*)()>(dlsym(this->_lib, "getLibType"));
 
             if (!func)
