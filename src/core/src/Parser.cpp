@@ -18,17 +18,16 @@ rayTracer::Scene rayTracer::Parser::loadConfig(const std::string &filePath)
 
     try {
         config.readFile(filePath.c_str());
-        // std::cout << "Configuration file loaded successfully: " << filePath << std::endl;
+        if (config.exists("primitives"))
+        this->parsePrimitives(scene);
+        if (config.exists("camera"))
+            this->parseCamera(scene);
     } catch (const libconfig::FileIOException &fioex) {
         throw rayTracer::ConfigException("I/O error while reading file.");
     } catch (const libconfig::ParseException &pex) {
         throw rayTracer::ConfigException("Parse error at " + std::string(pex.getFile()) + ":" +
-                                 std::to_string(pex.getLine()) + " - " + pex.getError());
+            std::to_string(pex.getLine()) + " - " + pex.getError());
     }
-    if (config.exists("primitives"))
-        this->parsePrimitives(scene);
-    if (config.exists("camera"))
-        this->parseCamera(scene);
     return scene;
 }
 
@@ -54,20 +53,16 @@ void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
     //     cameraConf.exists("resolution.height")) {
     //     scene._camera.setResolution(cameraConf["resolution"]["width"], cameraConf["resolution"]["height"]);
     // }
-    try {
-        if (cameraConf.exists("position")) {
-            const libconfig::Setting &posConf = cameraConf.lookup("position");
-            if (posConf.exists("x") && posConf.exists("y") && posConf.exists("z")) {
-                scene._camera.setPosition(math::Point(
-                    static_cast<double>(static_cast<int>(posConf["x"])),
-                    static_cast<double>(static_cast<int>(posConf["y"])),
-                    static_cast<double>(static_cast<int>(posConf["z"]))));
-            }
+    if (cameraConf.exists("position")) {
+        const libconfig::Setting &posConf = cameraConf.lookup("position");
+        if (posConf.exists("x") && posConf.exists("y") && posConf.exists("z")) {
+            scene._camera.setPosition(math::Point(
+                static_cast<double>(static_cast<int>(posConf["x"])),
+                static_cast<double>(static_cast<int>(posConf["y"])),
+                static_cast<double>(static_cast<int>(posConf["z"]))));
         }
-        if (cameraConf.exists("fieldOfView")) {
-            scene._camera.setFov(cameraConf["fieldOfView"]);
-        }
-    } catch (const libconfig::SettingTypeException &tex) {
-        throw rayTracer::ConfigException("Invalid type for camera configuration: " + std::string(tex.what()));
+    }
+    if (cameraConf.exists("fieldOfView")) {
+        scene._camera.setFov(cameraConf["fieldOfView"]);
     }
 }
