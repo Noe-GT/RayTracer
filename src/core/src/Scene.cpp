@@ -8,10 +8,9 @@
 #include "Scene.hpp"
 #include "../dlloader/DLLoader.hpp"
 
-rayTracer::Scene::Scene(std::string confPath, rayTracer::PluginHandler &PluginHandler)
+rayTracer::Scene::Scene(const rayTracer::PluginHandler &PluginHandler)
 {
     (void) PluginHandler;
-    (void) confPath;
     // try {
     //     DLLoader loader("./dynamic_libs_bin/Sphere.so");
     //     auto sphere = loader.getInstance<IPrimitive>("entryPoint");

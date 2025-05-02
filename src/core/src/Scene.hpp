@@ -13,15 +13,16 @@
 #include "PluginHandler.hpp"
 #include <vector>
 #include <memory>
+
 namespace rayTracer {
     class Scene {
         public:
-            Scene(std::string confPath, PluginHandler &PluginHandler);
+            Scene(const PluginHandler &PluginHandler);
             ~Scene();
 
             math::Color _ambiantLightColor;
             double _ambiantLightIntensity;
             Camera _camera;
-            std::vector<std::unique_ptr< IPrimitive>> _obj; //TODO:  change type to use composite;
+            std::vector<std::shared_ptr< IPrimitive>> _obj; //TODO:  change type to use composite;
     };
 };

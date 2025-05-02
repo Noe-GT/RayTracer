@@ -22,7 +22,7 @@ OBJS			=		$(SRCS:%.cpp=$(OBJS_DIR)/%.o)
 
 CXX				=		g++
 
-NAME			=		$(PLUGIN_DIR)Sphere.so
+NAME			=		$(PLUGIN_DIR)sphere.so
 
 CXXFLAGS		=		-L ../../static_libs/ -lmath
 

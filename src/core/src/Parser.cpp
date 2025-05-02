@@ -7,23 +7,41 @@
 
 #include "Parser.hpp"
 
-rayTracer::Parser::Parser()
+rayTracer::Parser::Parser(rayTracer::PluginHandler &pluginHandler):
+    _pluginHandler(pluginHandler)
 {
 }
 
-void rayTracer::Parser::loadConfig(const std::string &filePath)
+rayTracer::Scene rayTracer::Parser::loadConfig(const std::string &filePath)
 {
+    rayTracer::Scene scene(this->_pluginHandler);
+    // (void) filePath;
+
     try {
         config.readFile(filePath.c_str());
-        std::cout << "Configuration file loaded successfully: " << filePath << std::endl;
+        // std::cout << "Configuration file loaded successfully: " << filePath << std::endl;
     } catch (const libconfig::FileIOException &fioex) {
         throw std::runtime_error("I/O error while reading file.");
     } catch (const libconfig::ParseException &pex) {
         throw std::runtime_error("Parse error at " + std::string(pex.getFile()) + ":" +
                                  std::to_string(pex.getLine()) + " - " + pex.getError());
     }
-    this->parseCamera();
-    this->parsePrimitives();
+    if (config.exists("primitives"))
+        this->parsePrimitives(scene);
+    return scene;
+}
+
+void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
+{
+    const libconfig::Setting &primitives = config.lookup("primitives");
+    const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &pPlugins = this->_pluginHandler.getPrimitivePlugins();
+
+    for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> pPair : pPlugins) {
+        if (primitives.exists(pPair.first + "s")) {
+            scene._obj.push_back(pPair.second.getFactory()->build());
+            scene._obj.back()->configure(primitives[pPair.first + "s"]);
+        }
+    }
 }
 
 void rayTracer::Parser::parseCamera()
@@ -46,43 +64,6 @@ void rayTracer::Parser::parseCamera()
         std::cout << "Camera field of view: " << fieldOfView << " degrees" << std::endl;
     } catch (const libconfig::SettingNotFoundException &nfex) {
         throw std::runtime_error("Missing camera configuration: " + std::string(nfex.getPath()));
-    }
-}
-
-void rayTracer::Parser::parsePrimitives()
-{
-    try {
-        const libconfig::Setting &primitives = config.lookup("primitives");
-
-        const libconfig::Setting &spheres = primitives["spheres"];
-        for (int i = 0; i < spheres.getLength(); ++i) {
-            const libconfig::Setting &sphere = spheres[i];
-            int x = sphere["x"];
-            int y = sphere["y"];
-            int z = sphere["z"];
-            int r = sphere["r"];
-            const libconfig::Setting &color = sphere["color"];
-            int rColor = color["r"];
-            int gColor = color["g"];
-            int bColor = color["b"];
-            std::cout << "Sphere: position=(" << x << ", " << y << ", " << z << "), radius=" << r
-                      << ", color=(" << rColor << ", " << gColor << ", " << bColor << ")" << std::endl;
-        }
-
-        const libconfig::Setting &planes = primitives["planes"];
-        for (int i = 0; i < planes.getLength(); ++i) {
-            const libconfig::Setting &plane = planes[i];
-            std::string axis = plane["axis"];
-            float position = plane["position"];
-            const libconfig::Setting &color = plane["color"];
-            int rColor = color["r"];
-            int gColor = color["g"];
-            int bColor = color["b"];
-            std::cout << "Plane: axis=" << axis << ", position=" << position
-                      << ", color=(" << rColor << ", " << gColor << ", " << bColor << ")" << std::endl;
-        }
-    } catch (const libconfig::SettingNotFoundException &nfex) {
-        throw std::runtime_error("Missing primitives configuration: " + std::string(nfex.getPath()));
     }
 }
 

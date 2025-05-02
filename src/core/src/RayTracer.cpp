@@ -8,7 +8,8 @@
 
 rayTracer::RayTracer::RayTracer(std::string configfilePath):
     _pluginHandler(),
-    _scene(configfilePath, this->_pluginHandler)
+    _parser(_pluginHandler),
+    _scene(this->_parser.loadConfig(configfilePath))
 {
     this->_image.resize(600);
 

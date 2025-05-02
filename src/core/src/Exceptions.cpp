@@ -46,3 +46,8 @@ PluginException::PluginException(const std::string &exception) noexcept:
 Exception(exception)
 {
 }
+
+ConfigException::ConfigException(const std::string &exception) noexcept:
+    Exception(exception)
+{
+}

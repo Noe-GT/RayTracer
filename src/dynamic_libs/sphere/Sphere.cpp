@@ -19,6 +19,18 @@ Sphere::Sphere(math::Point origin, double radius) :
 {
 }
 
+void Sphere::configure(const libconfig::Setting &setting)
+{
+    if (setting.exists("x"))
+        this->_origin._x = setting["x"];
+    if (setting.exists("y"))
+        this->_origin._y = setting["y"];
+    if (setting.exists("z"))
+        this->_origin._z = setting["z"];
+    if (setting.exists("r"))
+        this->_radius = setting["r"];
+}
+
 bool Sphere::intersect(math::Ray &ray)
 {
     math::Vector oc = ray._origin - _origin;
@@ -29,13 +41,18 @@ bool Sphere::intersect(math::Ray &ray)
 
     if (discriminant < 0) {
         ray._color = math::Color(0, 0, 1);
-        std::clog << "not intersect\n";
+        // std::clog << "not intersect\n";
         return false;
     }
 
     ray._color = math::Color(1, 0, 0);
-    std::clog << "intersect\n";
+    // std::clog << "intersect\n";
     return true;
+}
+
+void Sphere::displayData() const
+{
+    std::cout << "sphere: " << _origin << " " << _radius << std::endl;
 }
 
 std::shared_ptr<IPrimitive> SphereFactory::build()

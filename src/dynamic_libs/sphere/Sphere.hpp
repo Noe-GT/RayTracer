@@ -20,6 +20,8 @@ class Sphere: public IPrimitive {
         ~Sphere() = default;
 
         bool intersect(math::Ray &ray) final;
+        void configure(const libconfig::Setting &setting) final;
+        void displayData() const final;
 
     private:
         math::Point _origin;

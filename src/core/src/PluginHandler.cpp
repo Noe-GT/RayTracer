@@ -57,7 +57,7 @@ std::shared_ptr<rayTracer::IFactory<T>> rayTracer::PluginHandler::getPluginFacto
     switch (type) {
         case rayTracer::PluginType::PRIMITIVE:
             if (this->_primitivePlugins.find(name)!= this->_primitivePlugins.end())
-                return this->_primitivePlugins.at(name)._factory;
+                return this->_primitivePlugins.at(name).getFactory();
             break;
         default:
             break;
@@ -65,34 +65,51 @@ std::shared_ptr<rayTracer::IFactory<T>> rayTracer::PluginHandler::getPluginFacto
     return nullptr;
 }
 
-template <typename T>
-rayTracer::PluginHandler::Plugin<T>::Plugin(std::shared_ptr<rayTracer::DLLoader> loader, std::string name):
-    _loader(loader),
-    _factory(this->_loader->getInstance<rayTracer::IFactory<T>>(LOADER_INSTANCE_NAME)),
-    _name(name)
+const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &rayTracer::PluginHandler::getPrimitivePlugins() const
 {
+    return this->_primitivePlugins;
 }
 
-template <typename T>
-rayTracer::PluginHandler::Plugin<T>::Plugin(const Plugin<T>& other) noexcept:
-    _loader(other._loader),
-    _factory(other._factory),
-    _name(other._name)
-{
-}
+// template <typename T>
+// rayTracer::PluginHandler::Plugin<T>::Plugin(std::shared_ptr<rayTracer::DLLoader> loader, std::string name):
+//     _loader(loader),
+//     _factory(this->_loader->getInstance<rayTracer::IFactory<T>>(LOADER_INSTANCE_NAME)),
+//     _name(name)
+// {
+// }
 
-template <typename T>
-rayTracer::PluginHandler::Plugin<T>::~Plugin()
-{
-}
+// template <typename T>
+// rayTracer::PluginHandler::Plugin<T>::Plugin(const Plugin<T>& other) noexcept:
+//     _loader(other._loader),
+//     _factory(other._factory),
+//     _name(other._name)
+// {
+// }
 
-template <typename T>
-rayTracer::PluginHandler::Plugin<T>& rayTracer::PluginHandler::Plugin<T>::operator=(const Plugin<T>& other) noexcept
-{
-    if (this != &other) {
-        this->_loader = other._loader;
-        this->_factory = other._factory;
-        this->_name = other._name;
-    }
-    return *this;
-}
+// template <typename T>
+// rayTracer::PluginHandler::Plugin<T>::~Plugin()
+// {
+// }
+
+// template <typename T>
+// rayTracer::PluginHandler::Plugin<T>& rayTracer::PluginHandler::Plugin<T>::operator=(const Plugin<T>& other) noexcept
+// {
+//     if (this != &other) {
+//         this->_loader = other._loader;
+//         this->_factory = other._factory;
+//         this->_name = other._name;
+//     }
+//     return *this;
+// }
+
+// template <typename T>
+// const std::string &rayTracer::PluginHandler::Plugin<T>::getName() const
+// {
+//     return this->_name;
+// }
+
+// template <typename T>
+// const std::shared_ptr<rayTracer::IFactory<T>> &rayTracer::PluginHandler::Plugin<T>::getFactory() const
+// {
+//     return this->_factory;
+// }

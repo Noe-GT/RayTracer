@@ -64,4 +64,11 @@ class PluginException: public Exception
         ~PluginException() noexcept = default;
 };
 
+class ConfigException: public Exception
+{
+    public:
+        ConfigException(const std::string &exception) noexcept;
+        ~ConfigException() noexcept = default;
+};
+
 #endif /* !EXCEPTIONS_HPP_ */
