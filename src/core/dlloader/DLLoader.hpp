@@ -14,6 +14,8 @@ namespace rayTracer {
     public:
         DLLoader(const std::string& libName) {
             _lib = dlopen(libName.c_str(), RTLD_LAZY | RTLD_NODELETE);
+            if (!_lib)
+                throw rayTracer::LibraryLoadingException(dlerror());
         }
 
         ~DLLoader() {
@@ -37,8 +39,6 @@ namespace rayTracer {
 
         rayTracer::PluginType getLibType() const
         {
-            if (!_lib)
-                throw rayTracer::LibraryLoadingException("lib not loaded");
             std::function<rayTracer::PluginType()> func = reinterpret_cast<rayTracer::PluginType (*)()>(dlsym(this->_lib, "getLibType"));
 
             if (!func)

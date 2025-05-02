@@ -8,10 +8,12 @@
 #ifndef IGRAPHICAL_HPP_
 #define IGRAPHICAL_HPP_
 
+#include <utility>
+
 class IGraphical {
     public:
         ~IGraphical() = default;
-        virtual void setSize(int width, int height) = 0;
+        virtual void setSize(const std::pair<int, int> &size) = 0;
         virtual void drawPixel(int x, int y, int color) = 0;
 };
 

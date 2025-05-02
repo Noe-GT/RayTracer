@@ -50,3 +50,13 @@ rayTracer::Scene &rayTracer::RayTracer::getScene()
 {
     return this->_scene;
 }
+
+void rayTracer::RayTracer::setGraphical(std::shared_ptr<IGraphical> graphical)
+{
+    this->_graphical = std::move(graphical);
+}
+
+std::pair<int, int> rayTracer::RayTracer::getImageSize() const
+{
+    return std::make_pair(this->_image.size(), this->_image[0].size());
+}

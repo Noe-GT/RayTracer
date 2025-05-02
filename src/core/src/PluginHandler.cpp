@@ -23,7 +23,6 @@ void rayTracer::PluginHandler::cstrPlugin(const std::string &fileName, const Lib
     std::string pluginName = this->getPluginName(fileName);
     std::shared_ptr<rayTracer::DLLoader> loader = std::make_shared<rayTracer::DLLoader>(lister.getLibDirectory() + fileName);
 
-    std::cout << "Loading plugin: " << fileName << std::endl;
     switch (loader->getLibType())
     {
         case rayTracer::PluginType::PRIMITIVE:

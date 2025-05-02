@@ -44,8 +44,6 @@ CXX				=		g++
 
 CXXFLAGS		=		-std=c++20 -Wall -Wextra -g3
 
-SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
-
 LCONFIG_FLAGS	=		-lconfig++
 
 LIBS			=		-L src/static_libs -lmath
@@ -78,7 +76,7 @@ $(OBJS_DIR)%.o: %.cpp
 	else \
 		echo "  ├── $(BUILD_MSG) $<$(RESET)"; \
 	fi
-	@$(CXX) $(CXXFLAGS) $(LCONFIG_FLAGS) $(SFML_FLAGS) -c $< -o $@ -I$(LIB_DIR) 	\
+	@$(CXX) $(CXXFLAGS) $(LCONFIG_FLAGS) -c $< -o $@ -I$(LIB_DIR) 	\
 		-I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR) -I$(DLLOADER_DIR) -I$(SRC_DIR)
 
 $(NAME):	$(OBJS)

@@ -21,6 +21,8 @@ void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTr
         this->parsePrimitives(rayTracer.getScene());
         if (config.exists("camera"))
             this->parseCamera(rayTracer.getScene());
+        if (config.exists("graphical"))
+            this->parseGraphical(rayTracer);
     } catch (const libconfig::FileIOException &fioex) {
         throw rayTracer::ConfigException("I/O error while reading file.");
     } catch (const libconfig::ParseException &pex) {
@@ -44,18 +46,19 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
 
 void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
 {
-    (void) rayTracer;
     const libconfig::Setting &graphicals = config.lookup("graphical");
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &gPlugins = this->_pluginHandler.getGraphicalPlugins();
 
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> gPair : gPlugins) {
         if (graphicals.exists(gPair.first)) {
-            // scene._obj.push_back(gPair.second.getFactory()->build());
-            // scene._obj.back()->configure(graphicals[gPair.first]);
+            std::shared_ptr<IGraphical> graphical = gPair.second.getFactory()->build();
+            graphical->setSize(rayTracer.getImageSize());
+            rayTracer.setGraphical(graphical);
             return;
         }
     }
 }
+
 
 void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
 {

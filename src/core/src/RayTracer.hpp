@@ -7,10 +7,7 @@
 #include "Parser.hpp"
 #include "Scene.hpp"
 #include "Pixel.hpp"
-#include <string>
-#include <iostream>
-#include <memory>
-#include <vector>
+#include "External.hpp"
 
 namespace rayTracer {
     class RayTracer {
@@ -20,8 +17,11 @@ namespace rayTracer {
             void render();
             void out();
             Scene &getScene();
+            void setGraphical(std::shared_ptr<IGraphical> graphical);
+            std::pair<int, int> getImageSize() const;
 
         private:
+            std::shared_ptr<IGraphical> _graphical;
             rayTracer::PluginHandler _pluginHandler;
             rayTracer::Parser _parser;
             Scene _scene;

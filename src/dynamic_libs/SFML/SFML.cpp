@@ -17,9 +17,9 @@ SFML::~SFML()
 {
 }
 
-void SFML::setSize(int width, int height)
+void SFML::setSize(const std::pair<int, int> &size)
 {
-    this->_window.setSize(sf::Vector2u(width, height));
+    this->_window.setSize(sf::Vector2u(size.first, size.second));
 }
 
 void SFML::drawPixel(int x, int y, int color)
