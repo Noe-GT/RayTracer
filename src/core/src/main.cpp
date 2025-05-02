@@ -11,8 +11,8 @@
 int main(int ac, char **av)
 {
     if (ac != 2)
-        throw ArgumentsException("Invalid number of arguments");
+        throw rayTracer::ArgumentsException("Invalid number of arguments");
     rayTracer::RayTracer tracer(av[1]);
     tracer.render();
-    tracer.out();
+    // tracer.out();
 }

@@ -15,7 +15,7 @@ _libDirectory(PLUGINS_DIR)
     std::string tmp;
 
     if (!dir)
-        throw PathFindingException("Can't find 'lib directory: " + std::string(PLUGINS_DIR));
+        throw rayTracer::PathFindingException("Can't find 'lib directory: " + std::string(PLUGINS_DIR));
     dirent = readdir(dir);
     while (dirent) {
         tmp = dirent->d_name;

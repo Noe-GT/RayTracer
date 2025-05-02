@@ -14,6 +14,7 @@
 #include "IFactory.hpp"
 #include "PluginHandler.hpp"
 #include "Scene.hpp"
+#include "Exceptions.hpp"
 
 namespace rayTracer {
     class Parser {
@@ -22,7 +23,7 @@ namespace rayTracer {
             ~Parser() = default;
 
             rayTracer::Scene loadConfig(const std::string &filePath);
-            void parseCamera();
+            void parseCamera(rayTracer::Scene &scene);
             void parsePrimitives(rayTracer::Scene &scene);
             void parseLights();
 

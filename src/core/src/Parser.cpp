@@ -15,19 +15,20 @@ rayTracer::Parser::Parser(rayTracer::PluginHandler &pluginHandler):
 rayTracer::Scene rayTracer::Parser::loadConfig(const std::string &filePath)
 {
     rayTracer::Scene scene(this->_pluginHandler);
-    // (void) filePath;
 
     try {
         config.readFile(filePath.c_str());
         // std::cout << "Configuration file loaded successfully: " << filePath << std::endl;
     } catch (const libconfig::FileIOException &fioex) {
-        throw std::runtime_error("I/O error while reading file.");
+        throw rayTracer::ConfigException("I/O error while reading file.");
     } catch (const libconfig::ParseException &pex) {
-        throw std::runtime_error("Parse error at " + std::string(pex.getFile()) + ":" +
+        throw rayTracer::ConfigException("Parse error at " + std::string(pex.getFile()) + ":" +
                                  std::to_string(pex.getLine()) + " - " + pex.getError());
     }
     if (config.exists("primitives"))
         this->parsePrimitives(scene);
+    if (config.exists("camera"))
+        this->parseCamera(scene);
     return scene;
 }
 
@@ -44,53 +45,29 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
     }
 }
 
-void rayTracer::Parser::parseCamera()
+void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
 {
+    const libconfig::Setting &cameraConf = config.lookup("camera");
+
+    // if (cameraConf.exists("resolution") &&
+    //     cameraConf.exists("resolution.width") &&
+    //     cameraConf.exists("resolution.height")) {
+    //     scene._camera.setResolution(cameraConf["resolution"]["width"], cameraConf["resolution"]["height"]);
+    // }
     try {
-        const libconfig::Setting &camera = config.lookup("camera");
-        const libconfig::Setting &resolution = camera["resolution"];
-
-        int width = resolution["width"];
-        int height = resolution["height"];
-        std::cout << "Camera resolution: " << width << "x" << height << std::endl;
-
-        const libconfig::Setting &position = camera["position"];
-        int x = position["x"];
-        int y = position["y"];
-        int z = position["z"];
-        std::cout << "Camera position: (" << x << ", " << y << ", " << z << ")" << std::endl;
-
-        float fieldOfView = camera["fieldOfView"];
-        std::cout << "Camera field of view: " << fieldOfView << " degrees" << std::endl;
-    } catch (const libconfig::SettingNotFoundException &nfex) {
-        throw std::runtime_error("Missing camera configuration: " + std::string(nfex.getPath()));
-    }
-}
-
-void rayTracer::Parser::parseLights()
-{
-    try {
-        const libconfig::Setting &lights = config.lookup("lights");
-
-        float ambient = lights["ambient"];
-        float diffuse = lights["diffuse"];
-        std::cout << "Lights: ambient=" << ambient << ", diffuse=" << diffuse << std::endl;
-
-        const libconfig::Setting &pointLights = lights["point"];
-        for (int i = 0; i < pointLights.getLength(); ++i) {
-            const libconfig::Setting &point = pointLights[i];
-            float x = point["x"];
-            float y = point["y"];
-            float z = point["z"];
-            std::cout << "Point light: position=(" << x << ", " << y << ", " << z << ")" << std::endl;
+        if (cameraConf.exists("position")) {
+            const libconfig::Setting &posConf = cameraConf.lookup("position");
+            if (posConf.exists("x") && posConf.exists("y") && posConf.exists("z")) {
+                scene._camera.setPosition(math::Point(
+                    static_cast<double>(static_cast<int>(posConf["x"])),
+                    static_cast<double>(static_cast<int>(posConf["y"])),
+                    static_cast<double>(static_cast<int>(posConf["z"]))));
+            }
         }
-
-        // const libconfig::Setting &directionalLights = lights["directional"];
-        // for (int i = 0; i < directionalLights.getLength(); ++i) {
-        //     const libconfig::Setting &directional = directionalLights[i];
-        // }
-    } catch (const libconfig::SettingNotFoundException &nfex) {
-        throw std::runtime_error("Missing lights configuration: " + std::string(nfex.getPath()));
+        if (cameraConf.exists("fieldOfView")) {
+            scene._camera.setFov(cameraConf["fieldOfView"]);
+        }
+    } catch (const libconfig::SettingTypeException &tex) {
+        throw rayTracer::ConfigException("Invalid type for camera configuration: " + std::string(tex.what()));
     }
 }
-

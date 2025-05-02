@@ -16,6 +16,9 @@ namespace rayTracer {
         Camera(double fov, math::Point pos, math::Vector direction);
         ~Camera() {}
 
+        void setPosition(const math::Point& position);
+        void setDirection(const math::Vector& direction);
+        void setFov(double fov);
         math::Ray generateRay(double x, double y, int imageWidth, int imageHeight) const;
 
     private:

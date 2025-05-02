@@ -7,47 +7,47 @@
 
 #include "Exceptions.hpp"
 
-Exception::Exception(const std::string &exception) noexcept:
+rayTracer::Exception::Exception(const std::string &exception) noexcept:
     _exception(exception)
 {
 }
 
-const char *Exception::what() const noexcept
+const char *rayTracer::Exception::what() const noexcept
 {
     return this->_exception.c_str();
 }
 
-LibraryLoadingException::LibraryLoadingException(const std::string &exception) noexcept:
+rayTracer::LibraryLoadingException::LibraryLoadingException(const std::string &exception) noexcept:
     Exception(exception)
 {
 }
 
-PathFindingException::PathFindingException(const std::string &exception) noexcept:
+rayTracer::PathFindingException::PathFindingException(const std::string &exception) noexcept:
     Exception(exception)
 {
 }
 
-LoadingException::LoadingException(const std::string &exception) noexcept:
+rayTracer::LoadingException::LoadingException(const std::string &exception) noexcept:
     Exception(exception)
 {
 }
 
-TypeException::TypeException(const std::string &exception) noexcept:
+rayTracer::TypeException::TypeException(const std::string &exception) noexcept:
     Exception(exception)
 {
 }
 
-ArgumentsException::ArgumentsException(const std::string &exception) noexcept:
+rayTracer::ArgumentsException::ArgumentsException(const std::string &exception) noexcept:
     Exception(exception)
 {
 }
 
-PluginException::PluginException(const std::string &exception) noexcept:
+rayTracer::PluginException::PluginException(const std::string &exception) noexcept:
 Exception(exception)
 {
 }
 
-ConfigException::ConfigException(const std::string &exception) noexcept:
+rayTracer::ConfigException::ConfigException(const std::string &exception) noexcept:
     Exception(exception)
 {
 }

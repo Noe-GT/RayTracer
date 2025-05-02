@@ -51,3 +51,18 @@ math::Ray rayTracer::Camera::generateRay(double x, double y, int imageWidth, int
     rayDir += _direction;
     return math::Ray(_position, rayDir.normalize());
 }
+
+void rayTracer::Camera::setPosition(const math::Point& position)
+{
+    _position = position;
+}
+
+void rayTracer::Camera::setDirection(const math::Vector& direction)
+{
+    _direction = direction.normalize();
+}
+
+void rayTracer::Camera::setFov(double fov)
+{
+    _fov = fov;
+}

@@ -40,7 +40,7 @@ namespace rayTracer {
             std::function<rayTracer::PluginType()> func = reinterpret_cast<rayTracer::PluginType (*)()>(dlsym(this->_lib, "getLibType"));
 
             if (!func)
-                throw LibraryLoadingException(dlerror());
+                throw rayTracer::LibraryLoadingException(dlerror());
             return func();
         };
 
