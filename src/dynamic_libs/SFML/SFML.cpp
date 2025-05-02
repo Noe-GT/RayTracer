@@ -22,9 +22,11 @@ void SFML::setSize(const std::pair<int, int> &size)
     this->_window.setSize(sf::Vector2u(size.first, size.second));
 }
 
-void SFML::drawPixel(int x, int y, int color)
+void SFML::drawPixel(int x, int y, const math::Color &color)
 {
-    sf::Vertex point(sf::Vector2f(x, y), sf::Color(color));
+    sf::Color SFMLcolor(color._r, color._g, color._b);
+    sf::Vertex point(sf::Vector2f(x, y), SFMLcolor);
+
     this->_window.draw(&point, 1, sf::Points);
     this->_window.display();
 }

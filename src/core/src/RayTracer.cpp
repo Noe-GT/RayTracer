@@ -31,6 +31,9 @@ void rayTracer::RayTracer::render()
     for (std::size_t x = 0; x != this->_image.size(); x++) {
         for (std::size_t y = 0; y != this->_image[x].size(); y++) {
             this->_image[x][y].simulateRays(this->_scene);
+            if (this->_graphical) {
+                this->_graphical->drawPixel(x, y, this->_image[x][y].getColor());
+            }
         }
     }
 }
