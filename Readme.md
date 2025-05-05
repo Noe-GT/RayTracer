@@ -103,3 +103,10 @@ classDiagram
 
     Sphere "1" --> "1" Material
     Plane "1" --> "1" Material
+```
+
+## Configuration file
+** Categories **
+- camera
+- graphical
+- primitives
