@@ -8,7 +8,7 @@
 #include "SFML.hpp"
 
 SFML::SFML(size_t width, size_t height):
-    _window(sf::VideoMode(width, height), "SFML")
+    _window(sf::VideoMode(width, height), "RayTracer")
 {
     this->_window.clear(sf::Color::Black);
 }

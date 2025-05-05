@@ -28,11 +28,11 @@ void rayTracer::RayTracer::render()
         for (std::size_t x = 0; x != this->_image[y].size(); x++) {
             this->_image[y][x].simulateRays(this->_scene);
             math::Color color = this->_image[y][x].getColor();
-            if (this->_graphical) {
+            if (this->_graphical)
                 dispVector.back().push_back(this->_image[y][x].getColor());
-            }
         }
-        this->_graphical->display(dispVector);
+        if (this->_graphical)
+            this->_graphical->display(dispVector);
     }
 }
 

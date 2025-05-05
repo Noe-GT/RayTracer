@@ -45,15 +45,15 @@ $(NAME):	$(OBJS)
 $(OBJS_DIR)/%.o:	%.cpp
 	@mkdir -p $(OBJS_DIR)
 	@if [ "$(lastword $(SRCS))" = "$<" ]; then 					\
-		echo -e "  │   │   └── $(BUILD_MSG) $<$(RESET)"; 			\
+		echo "  │   │   └── $(BUILD_MSG) $<$(RESET)"; 			\
 	else 														\
-		echo -e "  │   │   ├── $(BUILD_MSG) $<$(RESET)"; 			\
+		echo "  │   │   ├── $(BUILD_MSG) $<$(RESET)"; 			\
 	fi
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(ROOT) -I$(SHARED_DIR)
 ##################################################################
 
 clean:
-	@echo -e "$(DELETE_MSG) SFML/bin"
+	@echo "$(DELETE_MSG) SFML/bin"
 	rm -rf $(OBJS_DIR)
 
 fclean:	clean
