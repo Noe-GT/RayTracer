@@ -19,7 +19,8 @@ class SFML : public IGraphical {
         ~SFML();
 
         void setSize(const std::pair<int, int> &size) final;
-        void drawPixel(int x, int y, const math::Color &color) final;
+        void drawPixel(size_t x, size_t y, const math::Color &color) final;
+        void handleEvents();
     private:
         sf::RenderWindow _window;
 };

@@ -96,7 +96,6 @@ clean:
 fclean:	clean
 	@rm -rf $(NAME)
 	@rm -rf dynamic_libs_bin
-	@$(foreach file, $(LIBS_SRC), make fclean -C $(file) --silent;)
 
 re:	fclean all
 

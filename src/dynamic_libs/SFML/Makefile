@@ -30,9 +30,9 @@ SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
 
 UNAME_S 		= 		$(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-	CXXFLAGS	+=		-std=c++20 -Wall -Wextra -Werror -g3
+	CXXFLAGS	+=		-Wall -Wextra -Werror -g3
 else
-	CXXFLAGS	+=		-std=c++20 -Wall -Wextra -Werror -fno-gnu-unique -g3
+	CXXFLAGS	+=		-Wall -Wextra -Werror -fno-gnu-unique -g3
 endif
 ##################################################################
 
@@ -45,15 +45,15 @@ $(NAME):	$(OBJS)
 $(OBJS_DIR)/%.o:	%.cpp
 	@mkdir -p $(OBJS_DIR)
 	@if [ "$(lastword $(SRCS))" = "$<" ]; then 					\
-		echo "  │   │   └── $(BUILD_MSG) $<$(RESET)"; 			\
+		echo -e "  │   │   └── $(BUILD_MSG) $<$(RESET)"; 			\
 	else 														\
-		echo "  │   │   ├── $(BUILD_MSG) $<$(RESET)"; 			\
+		echo -e "  │   │   ├── $(BUILD_MSG) $<$(RESET)"; 			\
 	fi
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) -I$(ROOT) -I$(SHARED_DIR)
 ##################################################################
 
 clean:
-	@echo "$(DELETE_MSG) SFML/bin"
+	@echo -e "$(DELETE_MSG) SFML/bin"
 	rm -rf $(OBJS_DIR)
 
 fclean:	clean

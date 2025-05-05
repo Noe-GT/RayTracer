@@ -34,15 +34,15 @@ $(NAME): ${OBJS}
 $(BIN_DIR)/%.o: %.cpp
 	@mkdir -p $(BIN_DIR)
 	@if [ "$(lastword $(SRCS))" = "$<" ]; then 					\
-		echo "  │   │   └── $(BUILD_MSG) $<"; 					\
+		echo -e "  │   │   └── $(BUILD_MSG) $<"; 					\
 	else 														\
-		echo "  │   │   ├── $(BUILD_MSG) $<"; 					\
+		echo -e "  │   │   ├── $(BUILD_MSG) $<"; 					\
 	fi
 	@$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
 ##################################################################
 
 clean:
-	@echo "$(DELETE_MSG) math/bin"
+	@echo -e "$(DELETE_MSG) math/bin"
 	@rm -rf $(BIN_DIR)
 
 fclean: clean
