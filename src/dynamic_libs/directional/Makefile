@@ -24,8 +24,6 @@ CXX				=		g++
 
 NAME			=		$(PLUGIN_DIR)directional.so
 
-CXXFLAGS		=		-L ../../static_libs/ -lmath
-
 UNAME_S 		= 		$(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
 	CXXFLAGS	+=		-std=c++20 -Wall -Wextra -Werror -g3
