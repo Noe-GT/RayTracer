@@ -50,13 +50,13 @@ void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
 {
     const libconfig::Setting &graphicalConf = config.lookup("graphical");
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &gPlugins = this->_pluginHandler.getGraphicalPlugins();
+    std::pair<size_t, size_t> res = rayTracer.getImageResolution();
 
     if (!graphicalConf.exists("library"))
         return;
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> gPair : gPlugins) {
         if (static_cast<std::string>(graphicalConf["library"]) == gPair.first) {
-            std::shared_ptr<IGraphical> graphical = gPair.second.getFactory()->build();
-            graphical->setSize(rayTracer.getImageResolution());
+            std::shared_ptr<IGraphical> graphical = gPair.second.getFactory()->build(res.first, res.second);
             rayTracer.setGraphical(graphical);
             return;
         }

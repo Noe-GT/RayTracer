@@ -15,7 +15,6 @@
 class IGraphical {
     public:
         ~IGraphical() = default;
-        virtual void setSize(const std::pair<int, int> &size) = 0;
         virtual void drawPixel(size_t x, size_t y, const math::Color &color) = 0;
 };
 

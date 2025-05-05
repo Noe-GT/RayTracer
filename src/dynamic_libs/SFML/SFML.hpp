@@ -15,12 +15,12 @@
 
 class SFML : public IGraphical {
     public:
-        SFML();
+        SFML(size_t width = 100, size_t height = 100);
         ~SFML();
 
-        void setSize(const std::pair<int, int> &size) final;
         void drawPixel(size_t x, size_t y, const math::Color &color) final;
         void handleEvents();
+
     private:
         sf::RenderWindow _window;
 };
@@ -31,6 +31,7 @@ class SFMLFactory: public rayTracer::IFactory<IGraphical> {
         ~SFMLFactory() = default;
 
         std::shared_ptr<IGraphical> build() final;
+        std::shared_ptr<IGraphical> build(size_t width, size_t height) final;
 };
 
 #endif /* !SFML_HPP_ */

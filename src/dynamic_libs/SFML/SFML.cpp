@@ -7,19 +7,14 @@
 
 #include "SFML.hpp"
 
-SFML::SFML():
-    _window(sf::VideoMode(500, 500), "SFML")
+SFML::SFML(size_t width, size_t height):
+    _window(sf::VideoMode(width, height), "SFML")
 {
     this->_window.clear(sf::Color::Black);
 }
 
 SFML::~SFML()
 {
-}
-
-void SFML::setSize(const std::pair<int, int> &size)
-{
-    this->_window.setSize(sf::Vector2u(size.first, size.second));
 }
 
 void SFML::drawPixel(size_t x, size_t y, const math::Color &color)
@@ -48,6 +43,11 @@ void SFML::handleEvents()
 std::shared_ptr<IGraphical> SFMLFactory::build()
 {
     return std::make_shared<SFML>();
+}
+
+std::shared_ptr<IGraphical> SFMLFactory::build(size_t width, size_t height)
+{
+    return std::make_shared<SFML>(width, height);
 }
 
 extern "C"
