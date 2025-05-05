@@ -65,7 +65,7 @@ const math::Color& rayTracer::Pixel::getColor() const
     return _colorMean;
 }
 
-std::pair<int, int> rayTracer::Pixel::getPos() const
+std::pair<size_t, size_t> rayTracer::Pixel::getPos() const
 {
     return std::pair<size_t, size_t>(this->_x, this->_y);
 }

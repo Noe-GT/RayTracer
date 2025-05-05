@@ -19,13 +19,13 @@ namespace rayTracer {
 
         const math::Color& getColor() const;
         void simulateRays(const Scene& scene);
-        std::pair<int, int> getPos() const;
+        std::pair<size_t, size_t> getPos() const;
 
     private:
         std::vector<math::Ray> _rays;
         math::Color _colorMean;
-        int _x;
-        int _y;
+        size_t _x;
+        size_t _y;
 
         void calculateMeanColor();
     };
