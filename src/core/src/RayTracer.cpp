@@ -20,14 +20,19 @@ rayTracer::RayTracer::~RayTracer()
 
 void rayTracer::RayTracer::render()
 {
+    std::vector<std::vector<math::Color>> dispVector;
+
     for (std::size_t y = 0; y != this->_image.size(); y++) {
+        if (this->_graphical)
+            dispVector.push_back(std::vector<math::Color>());
         for (std::size_t x = 0; x != this->_image[y].size(); x++) {
             this->_image[y][x].simulateRays(this->_scene);
             math::Color color = this->_image[y][x].getColor();
             if (this->_graphical) {
-                this->_graphical->drawPixel(x, y, this->_image[y][x].getColor());
+                dispVector.back().push_back(this->_image[y][x].getColor());
             }
         }
+        this->_graphical->display(dispVector);
     }
 }
 

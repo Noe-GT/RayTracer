@@ -16,6 +16,7 @@ class IGraphical {
     public:
         ~IGraphical() = default;
         virtual void drawPixel(size_t x, size_t y, const math::Color &color) = 0;
+        virtual void display(std::vector<std::vector<math::Color>> image) = 0;
 };
 
 #endif /* !IGRAPHICAL_HPP_ */

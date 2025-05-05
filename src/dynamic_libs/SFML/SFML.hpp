@@ -18,10 +18,12 @@ class SFML : public IGraphical {
         SFML(size_t width = 100, size_t height = 100);
         ~SFML();
 
-        void drawPixel(size_t x, size_t y, const math::Color &color) final;
+        void display(std::vector<std::vector<math::Color>> image) final;
         void handleEvents();
 
     private:
+        void drawPixel(size_t x, size_t y, const math::Color &color);
+
         sf::RenderWindow _window;
 };
 

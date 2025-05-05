@@ -19,14 +19,22 @@ SFML::~SFML()
 
 void SFML::drawPixel(size_t x, size_t y, const math::Color &color)
 {
-    (void)color;
-
-    if (!this->_window.isOpen())
-        return;
-    this->handleEvents();
     sf::Color SFMLcolor(color._r * 255.999, color._g * 255.999, color._b * 255.999);
     sf::Vertex pixel(sf::Vector2f(x, y), SFMLcolor);
     this->_window.draw(&pixel, 1, sf::Points);
+}
+
+void SFML::display(std::vector<std::vector<math::Color>> image)
+{
+    if (!this->_window.isOpen())
+        return;
+    this->handleEvents();
+    this->_window.clear(sf::Color::Black);
+    for (size_t y = 0; y < image.size(); ++y) {
+        for (size_t x = 0; x < image[y].size(); ++x) {
+            this->drawPixel(x, y, image[y][x]);
+        }
+    }
     this->_window.display();
 }
 
