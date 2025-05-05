@@ -6,3 +6,8 @@ scenes/
 *.ppm
 .vscode/*
 raytracer
+vgcore*
+*.sh
+*.png
+*.jpg
+*.jpeg
