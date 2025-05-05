@@ -12,13 +12,14 @@
 namespace rayTracer {
     class RayTracer {
         public:
-            RayTracer(std::string configfilePath);
+            RayTracer(std::string configFilePath);
             ~RayTracer();
             void render();
             void out();
             Scene &getScene();
             void setGraphical(std::shared_ptr<IGraphical> graphical);
-            std::pair<int, int> getImageSize() const;
+            void setImage(const std::pair<size_t, size_t> &resolution);
+            std::pair<size_t, size_t>getImageResolution() const;
 
         private:
             std::shared_ptr<IGraphical> _graphical;

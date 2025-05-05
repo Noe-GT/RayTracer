@@ -10,6 +10,7 @@
 SFML::SFML():
     _window(sf::VideoMode(500, 500), "SFML")
 {
+    this->_window.clear();
     this->_window.display();
 }
 

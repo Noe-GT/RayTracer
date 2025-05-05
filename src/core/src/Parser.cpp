@@ -21,6 +21,8 @@ void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTr
         this->parsePrimitives(rayTracer.getScene());
         if (config.exists("camera"))
             this->parseCamera(rayTracer.getScene());
+        if (config.exists("image"))
+            this->parseImage(rayTracer);
         if (config.exists("graphical"))
             this->parseGraphical(rayTracer);
     } catch (const libconfig::FileIOException &fioex) {
@@ -46,29 +48,45 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
 
 void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
 {
-    const libconfig::Setting &graphicals = config.lookup("graphical");
+    const libconfig::Setting &graphicalConf = config.lookup("graphical");
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &gPlugins = this->_pluginHandler.getGraphicalPlugins();
 
+    if (!graphicalConf.exists("library"))
+        return;
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> gPair : gPlugins) {
-        if (graphicals.exists(gPair.first)) {
+        if (static_cast<std::string>(graphicalConf["library"]) == gPair.first) {
             std::shared_ptr<IGraphical> graphical = gPair.second.getFactory()->build();
-            graphical->setSize(rayTracer.getImageSize());
+            graphical->setSize(rayTracer.getImageResolution());
             rayTracer.setGraphical(graphical);
             return;
         }
     }
 }
 
+void rayTracer::Parser::parseImage(rayTracer::RayTracer &rayTracer)
+{
+    const libconfig::Setting &imgConf = config.lookup("image");
+    int width;
+    int height;
+
+    if (imgConf.exists("resolution")) {
+        const libconfig::Setting &resConf = imgConf.lookup("resolution");
+        if (resConf.exists("width") && resConf.exists("height")) {
+            width = imgConf["resolution"]["width"];
+            height = imgConf["resolution"]["height"];
+            if (width < 0)
+                width = 0;
+            if (height < 0)
+                height = 0;
+            rayTracer.setImage(std::pair<size_t, size_t>(width, height));
+        }
+    }
+}
 
 void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
 {
     const libconfig::Setting &cameraConf = config.lookup("camera");
 
-    // if (cameraConf.exists("resolution") &&
-    //     cameraConf.exists("resolution.width") &&
-    //     cameraConf.exists("resolution.height")) {
-    //     scene._camera.setResolution(cameraConf["resolution"]["width"], cameraConf["resolution"]["height"]);
-    // }
     if (cameraConf.exists("position")) {
         const libconfig::Setting &posConf = cameraConf.lookup("position");
         if (posConf.exists("x") && posConf.exists("y") && posConf.exists("z")) {

@@ -6,20 +6,12 @@
 */
 #include "RayTracer.hpp"
 
-rayTracer::RayTracer::RayTracer(std::string configfilePath):
+rayTracer::RayTracer::RayTracer(std::string configFilePath):
     _pluginHandler(),
     _parser(this->_pluginHandler),
     _scene(this->_pluginHandler)
 {
-    this->_parser.loadConfig(configfilePath, *this);
-    this->_image.resize(600);
-
-    for (int y = 0; y < 600; ++y) {
-        this->_image[y].resize(600);
-        for (int x = 0; x < 600; ++x) {
-            this->_image[y][x] = rayTracer::Pixel(5, x, y, 600, 600, this->_scene);
-        }
-    }
+    this->_parser.loadConfig(configFilePath, *this);
 }
 
 rayTracer::RayTracer::~RayTracer()
@@ -28,11 +20,11 @@ rayTracer::RayTracer::~RayTracer()
 
 void rayTracer::RayTracer::render()
 {
-    for (std::size_t x = 0; x != this->_image.size(); x++) {
-        for (std::size_t y = 0; y != this->_image[x].size(); y++) {
-            this->_image[x][y].simulateRays(this->_scene);
+    for (std::size_t y = 0; y != this->_image.size(); y++) {
+        for (std::size_t x = 0; x != this->_image[y].size(); x++) {
+            this->_image[y][x].simulateRays(this->_scene);
             if (this->_graphical) {
-                this->_graphical->drawPixel(x, y, this->_image[x][y].getColor());
+                this->_graphical->drawPixel(x, y, this->_image[y][x].getColor());
             }
         }
     }
@@ -40,11 +32,12 @@ void rayTracer::RayTracer::render()
 
 void rayTracer::RayTracer::out()
 {
-    std::cout << "P3\n" << "600 600 " << "\n255\n";
+    const std::pair<int, int> &res = this->getImageResolution();
 
-    for (int y = 0; y < 600; ++y) {
-        for (int x = 0; x < 600; ++x) {
-            std::cout << this->_image[x][y].getColor();
+    std::cout << "P3\n" << res.first << " "<< res.second << " \n255\n";
+    for (int y = 0; y < res.second; ++y) {
+        for (int x = 0; x < res.first; ++x) {
+            std::cout << this->_image[y][x].getColor();
         }
     }
 }
@@ -59,7 +52,20 @@ void rayTracer::RayTracer::setGraphical(std::shared_ptr<IGraphical> graphical)
     this->_graphical = std::move(graphical);
 }
 
-std::pair<int, int> rayTracer::RayTracer::getImageSize() const
+std::pair<size_t, size_t> rayTracer::RayTracer::getImageResolution() const
 {
-    return std::make_pair(this->_image.size(), this->_image[0].size());
+    if (this->_image.size() <= 0)
+        return std::pair<size_t, size_t>(0, 0);
+    return std::pair<size_t, size_t>(this->_image[0].size(), this->_image.size());
+}
+
+void rayTracer::RayTracer::setImage(const std::pair<size_t, size_t> &resolution)
+{
+    this->_image.resize(resolution.second);
+    for (size_t y = 0; y < resolution.second; ++y) {
+        this->_image[y].resize(resolution.first);
+        for (size_t x = 0; x < resolution.first; ++x) {
+            this->_image[y][x] = rayTracer::Pixel(5, x, y, resolution.first, resolution.second, this->_scene);
+        }
+    }
 }

@@ -29,6 +29,7 @@ namespace rayTracer {
             void parsePrimitives(rayTracer::Scene &scene);
             void parseCamera(rayTracer::Scene &scene);
             void parseGraphical(rayTracer::RayTracer &rayTracer);
+            void parseImage(rayTracer::RayTracer &rayTracer);
 
             const rayTracer::PluginHandler &_pluginHandler;
             libconfig::Config config;

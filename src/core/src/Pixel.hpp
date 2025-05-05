@@ -19,6 +19,7 @@ namespace rayTracer {
 
         const math::Color& getColor() const;
         void simulateRays(const Scene& scene);
+        std::pair<int, int> getPos() const;
 
     private:
         std::vector<math::Ray> _rays;
