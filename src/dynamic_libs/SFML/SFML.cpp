@@ -48,6 +48,13 @@ void SFML::handleEvents()
     }
 }
 
+void SFML::idle()
+{
+    this->_window.display();
+    while (this->_window.isOpen())
+        this->handleEvents();
+}
+
 std::shared_ptr<IGraphical> SFMLFactory::build()
 {
     return std::make_shared<SFML>();

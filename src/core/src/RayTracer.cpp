@@ -33,7 +33,9 @@ void rayTracer::RayTracer::render()
         }
         if (this->_graphical)
             this->_graphical->display(dispVector);
-    }
+    };
+    if (this->_graphical)
+        this->_graphical->idle();
 }
 
 void rayTracer::RayTracer::out()

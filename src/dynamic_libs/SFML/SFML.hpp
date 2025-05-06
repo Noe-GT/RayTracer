@@ -19,6 +19,7 @@ class SFML : public IGraphical {
         ~SFML();
 
         void display(std::vector<std::vector<math::Color>> image) final;
+        void idle() final;
 
     private:
         void handleEvents();
