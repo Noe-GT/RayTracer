@@ -15,7 +15,6 @@ rayTracer::PluginHandler::PluginHandler():
     for (std::string plugin : lister.getLibs()) {
         this->cstrPlugin(plugin, lister);
     }
-    // this->display();
 }
 
 void rayTracer::PluginHandler::cstrPlugin(const std::string &fileName, const LibLister &lister)
@@ -77,47 +76,3 @@ const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &rayTr
 {
     return this->_graphicalPlugins;
 }
-
-// template <typename T>
-// rayTracer::PluginHandler::Plugin<T>::Plugin(std::shared_ptr<rayTracer::DLLoader> loader, std::string name):
-//     _loader(loader),
-//     _factory(this->_loader->getInstance<rayTracer::IFactory<T>>(LOADER_INSTANCE_NAME)),
-//     _name(name)
-// {
-// }
-
-// template <typename T>
-// rayTracer::PluginHandler::Plugin<T>::Plugin(const Plugin<T>& other) noexcept:
-//     _loader(other._loader),
-//     _factory(other._factory),
-//     _name(other._name)
-// {
-// }
-
-// template <typename T>
-// rayTracer::PluginHandler::Plugin<T>::~Plugin()
-// {
-// }
-
-// template <typename T>
-// rayTracer::PluginHandler::Plugin<T>& rayTracer::PluginHandler::Plugin<T>::operator=(const Plugin<T>& other) noexcept
-// {
-//     if (this != &other) {
-//         this->_loader = other._loader;
-//         this->_factory = other._factory;
-//         this->_name = other._name;
-//     }
-//     return *this;
-// }
-
-// template <typename T>
-// const std::string &rayTracer::PluginHandler::Plugin<T>::getName() const
-// {
-//     return this->_name;
-// }
-
-// template <typename T>
-// const std::shared_ptr<rayTracer::IFactory<T>> &rayTracer::PluginHandler::Plugin<T>::getFactory() const
-// {
-//     return this->_factory;
-// }

@@ -17,11 +17,11 @@ class Sphere: public IPrimitive {
     public:
         Sphere();
         Sphere(math::Point origin, double radius);
+
         ~Sphere() = default;
 
         bool intersect(math::Ray &ray) final;
         void configure(const libconfig::Setting &setting) final;
-        void displayData() const final;
 
     private:
         math::Point _origin;

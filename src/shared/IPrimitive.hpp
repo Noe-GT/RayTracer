@@ -16,7 +16,6 @@ class IPrimitive {
         virtual ~IPrimitive() = default;
         virtual bool intersect(math::Ray &ray) = 0;
         virtual void configure(const libconfig::Setting &setting) = 0;
-        virtual void displayData() const = 0;
 };
 
 #endif /* !IPRIMITIVE_HPP_ */

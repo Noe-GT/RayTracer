@@ -26,13 +26,6 @@ namespace rayTracer {
             virtual std::shared_ptr<IGraphical> build() = 0;
             virtual std::shared_ptr<IGraphical> build(size_t width, size_t height) = 0;
     };
-
-    // class IGraphicalFactory : public IFactory<IGraphical> {
-    //     public:
-    //         virtual ~IGraphicalFactory() = default;
-    //         virtual std::shared_ptr<IGraphical> build() = 0;
-    //         virtual std::shared_ptr<IGraphical> build(size_t width, size_t height) = 0;
-    // };
 };
 
 #endif /* !IFACTORY_HPP_ */

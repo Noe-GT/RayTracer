@@ -41,18 +41,11 @@ bool Sphere::intersect(math::Ray &ray)
 
     if (discriminant < 0) {
         ray._color = math::Color(0, 0, 1);
-        // std::clog << "not intersect\n";
         return false;
     }
 
     ray._color = math::Color(1, 0, 0);
-    // std::clog << "intersect\n";
     return true;
-}
-
-void Sphere::displayData() const
-{
-    std::cout << "sphere: " << _origin << " " << _radius << std::endl;
 }
 
 std::shared_ptr<IPrimitive> SphereFactory::build()
