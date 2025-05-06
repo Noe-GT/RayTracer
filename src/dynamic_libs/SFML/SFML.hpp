@@ -19,9 +19,9 @@ class SFML : public IGraphical {
         ~SFML();
 
         void display(std::vector<std::vector<math::Color>> image) final;
-        void handleEvents();
 
     private:
+        void handleEvents();
         void drawPixel(size_t x, size_t y, const math::Color &color);
 
         sf::RenderWindow _window;
