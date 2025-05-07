@@ -41,7 +41,7 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> pPair : pPlugins) {
         if (primitives.exists(pPair.first + "s")) {
             scene._obj.push_back(pPair.second.getFactory()->build());
-            scene._obj.back()->configure(primitives[pPair.first + "s"]);
+            scene._obj.back()->configure(primitives.lookup(pPair.first + "s"));
         }
     }
 }
