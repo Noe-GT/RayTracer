@@ -75,15 +75,20 @@ void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
 void rayTracer::Parser::parseImage(rayTracer::RayTracer &rayTracer)
 {
     const libconfig::Setting &imgConf = config.lookup("image");
-    const libconfig::Setting &resConf = imgConf.lookup("resolution");
-    int width = resConf.lookup("width");
-    int height = resConf.lookup("height");
+    int width = 0;
+    int height = 0;
 
-    if (width < 0)
-        width = 0;
-    if (height < 0)
-        height = 0;
-    rayTracer.setImage(std::pair<size_t, size_t>(width, height));
+    if (imgConf.exists("resolution") && imgConf["resolution"].exists("width") && imgConf["resolution"].exists("height")) {
+        width = imgConf["resolution"]["width"];
+        height = imgConf["resolution"]["height"];
+        if (width < 0)
+            width = 0;
+        if (height < 0)
+            height = 0;
+        rayTracer.setImage(std::pair<size_t, size_t>(width, height));
+    }
+    if (imgConf.exists("fileName"))
+        rayTracer.setOutputFilePath(imgConf["fileName"]);
 }
 
 void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)

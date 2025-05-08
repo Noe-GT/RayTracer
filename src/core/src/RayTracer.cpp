@@ -7,6 +7,7 @@
 #include "RayTracer.hpp"
 
 rayTracer::RayTracer::RayTracer(std::string configFilePath):
+    _outputFilePath("render.ppm"),
     _pluginHandler(),
     _parser(this->_pluginHandler),
     _scene(this->_pluginHandler)
@@ -40,14 +41,16 @@ void rayTracer::RayTracer::render()
 
 void rayTracer::RayTracer::out()
 {
+    std::ofstream file(this->_outputFilePath);
     const std::pair<int, int> &res = this->getImageResolution();
 
-    std::cout << "P3\n" << res.first << " "<< res.second << " \n255\n";
+    file << "P3\n" << res.first << " "<< res.second << " \n255\n";
     for (int y = 0; y < res.second; ++y) {
         for (int x = 0; x < res.first; ++x) {
-            std::cout << this->_image[y][x].getColor();
+            file << this->_image[y][x].getColor();
         }
     }
+    file.close();
 }
 
 rayTracer::Scene &rayTracer::RayTracer::getScene()
@@ -76,4 +79,9 @@ void rayTracer::RayTracer::setImage(const std::pair<size_t, size_t> &resolution)
             this->_image[y][x] = rayTracer::Pixel(1, x, y, resolution.first, resolution.second, this->_scene);
         }
     }
+}
+
+void rayTracer::RayTracer::setOutputFilePath(const std::string &outputFilePath)
+{
+    this->_outputFilePath = outputFilePath;
 }
