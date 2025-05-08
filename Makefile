@@ -44,9 +44,7 @@ CXX				=		g++
 
 CXXFLAGS		=		-std=c++20 -Wall -Wextra -g3
 
-LCONFIG_FLAGS	=		-lconfig++
-
-LIBS			=		-L src/static_libs -lmath
+LIBS			=		-L src/static_libs -lmath -lconfig++
 
 ##################################################################
 
