@@ -20,7 +20,7 @@ Sphere::Sphere(math::Point origin, double radius) :
 
 void Sphere::configure(const libconfig::Setting &setting, int id)
 {
-    this->_id = id;
+    APrimitive::configure(setting, id);
     if (setting.exists("x"))
         this->_origin._x = setting["x"];
     if (setting.exists("y"))
@@ -29,7 +29,6 @@ void Sphere::configure(const libconfig::Setting &setting, int id)
         this->_origin._z = setting["z"];
     if (setting.exists("r"))
         this->_radius = setting["r"];
-    std::cout << "Sphere: " << this->_origin << " " << this->_radius << std::endl;
 }
 
 double Sphere::getDiscriminant(math::Ray &ray)

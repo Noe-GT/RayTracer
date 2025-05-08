@@ -22,6 +22,8 @@ class Material
         double &getRefractness();
         math::Color &GetColor();
 
+        friend std::ostream& operator<<(std::ostream& os, const Material& v);
+
     private:
         double _reflectivity;
         double _blurness;

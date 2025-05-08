@@ -50,3 +50,16 @@ double &Material::getRefractness()
 {
     return this->_refractness;
 }
+
+std::ostream& operator<<(std::ostream& os, const Material& v)
+{
+    os << "Material: " <<
+        "\ncolor: " << v._color <<
+        "reflectivity: " << v._reflectivity <<
+        "\nblurness: " << v._blurness <<
+        "\ntransparency: " << v._transparency <<
+        "\nbrightness: " << v._brightness <<
+        "\nrefractness: " << v._refractness <<
+        std::endl;
+    return os;
+}

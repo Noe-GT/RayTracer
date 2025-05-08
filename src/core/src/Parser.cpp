@@ -33,21 +33,26 @@ void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTr
 
 void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
 {
-    int id = 0;
     const libconfig::Setting &primitives = config.lookup("primitives");
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &pPlugins = this->_pluginHandler.getPrimitivePlugins();
 
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> pPair : pPlugins) {
         if (primitives.exists(pPair.first + "s")) {
             libconfig::Setting &primitiveList = primitives.lookup(pPair.first + "s");
-            for (int i = 0; i < primitiveList.getLength(); i++) {
-                const libconfig::Setting &primitive = primitiveList[i];
-                std::cout << "Loading primitive: " << pPair.first << std::endl;
-                scene._obj.push_back(pPair.second.getFactory()->build());
-                scene._obj.back()->configure(primitive, id);
-                id++;
-            }
+            this->parsePrimitive(scene, primitiveList, pPair.second);
         }
+    }
+}
+
+void rayTracer::Parser::parsePrimitive(rayTracer::Scene &scene, const libconfig::Setting &primitiveList,
+    const rayTracer::PluginHandler::Plugin<IPrimitive> &plugin)
+{
+    int id = scene._obj.size();
+
+    for (int i = 0; i < primitiveList.getLength(); i++) {
+        scene._obj.push_back(plugin.getFactory()->build());
+        scene._obj.back()->configure(primitiveList[i], id);
+        id++;
     }
 }
 
