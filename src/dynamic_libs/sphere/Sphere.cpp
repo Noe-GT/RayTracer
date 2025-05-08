@@ -8,19 +8,19 @@
 #include "Sphere.hpp"
 
 Sphere::Sphere():
-    _origin(0, 0, -1),
     _radius(0.5)
 {
 }
 
 Sphere::Sphere(math::Point origin, double radius) :
-    _origin(origin),
     _radius(radius)
 {
+    this->_origin = origin;
 }
 
-void Sphere::configure(const libconfig::Setting &setting)
+void Sphere::configure(const libconfig::Setting &setting, int id)
 {
+    this->_id = id;
     if (setting.exists("x"))
         this->_origin._x = setting["x"];
     if (setting.exists("y"))
@@ -29,6 +29,7 @@ void Sphere::configure(const libconfig::Setting &setting)
         this->_origin._z = setting["z"];
     if (setting.exists("r"))
         this->_radius = setting["r"];
+    std::cout << "Sphere: " << this->_origin << " " << this->_radius << std::endl;
 }
 
 double Sphere::getDiscriminant(math::Ray &ray)
@@ -70,6 +71,11 @@ bool Sphere::Intersect(math::Ray &ray, const std::vector<math::Point> &lights, c
     return true;
 }
 
+double &Sphere::getSize()
+{
+    return this->_radius;
+}
+
 std::shared_ptr<IPrimitive> SphereFactory::build()
 {
     return std::make_shared<Sphere>();
@@ -86,24 +92,4 @@ extern "C"
     {
         return rayTracer::PluginType::PRIMITIVE;
     }
-}
-
-
-math::Point &Sphere::getOrigin()
-{
-    return this->_origin;
-}
-
-double &Sphere::getSize()
-{
-    return this->_radius;
-}
-
-Material &Sphere::getMaterial()
-{
-    return this->_material;
-}
-
-int &Sphere::getID() {
-    return this->_ID;
 }

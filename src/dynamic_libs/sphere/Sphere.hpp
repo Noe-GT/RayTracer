@@ -8,31 +8,26 @@
 #ifndef SPHERE_HPP_
 #define SPHERE_HPP_
 
-#include "IPrimitive.hpp"
+#include "APrimitive.hpp"
 #include "IFactory.hpp"
 #include <memory>
 #include "PluginTypes.hpp"
 
-class Sphere: public IPrimitive {
+class Sphere: public APrimitive {
     public:
         Sphere();
         Sphere(math::Point origin, double radius);
-
         ~Sphere() = default;
 
         bool Intersect(math::Ray& ray, const std::vector<math::Point>& lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
-        void configure(const libconfig::Setting &setting) final;
+        void configure(const libconfig::Setting &setting, int id) final;
 
         double getDiscriminant(math::Ray& ray) final;
         double &getSize() final;
-        math::Point &getOrigin() final;
-        Material &getMaterial() final;
-        int &getID() final;
+
     private:
         Material _material;
-        math::Point _origin;
         double _radius;
-        int _ID;
 };
 
 class SphereFactory: public rayTracer::IFactory<IPrimitive> {

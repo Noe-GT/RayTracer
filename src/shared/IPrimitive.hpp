@@ -14,6 +14,7 @@
 #include "../static_libs/math/CollisionUtils.hpp"
 #include "Material.hpp"
 #include <libconfig.h++>
+
 namespace math {
     class CollisionUtils;
 };
@@ -21,7 +22,7 @@ class IPrimitive {
     public:
         virtual ~IPrimitive() = default;
         virtual bool Intersect(math::Ray& ray, const std::vector<math::Point>& lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) = 0;
-        virtual void configure(const libconfig::Setting &setting) = 0;
+        virtual void configure(const libconfig::Setting &setting, int id) = 0;
 
         virtual double getDiscriminant(math::Ray& ray) = 0;
         virtual math::Point &getOrigin() = 0;
