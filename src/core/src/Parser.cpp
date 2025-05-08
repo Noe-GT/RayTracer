@@ -80,10 +80,11 @@ void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
 
     try {
         const libconfig::Setting &posConf = cameraConf.lookup("position");
-        double x = posConf.lookup("x");
-        double y = posConf.lookup("y");
-        double z = posConf.lookup("z");
-        scene._camera.setPosition(math::Point(x, y, z));
+        int x = posConf.lookup("x");
+        int y = posConf.lookup("y");
+        int z = posConf.lookup("z");
+
+        scene._camera.setPosition(math::Point(static_cast<double>(x), static_cast<double>(y), static_cast<double>(z)));
     } catch (const libconfig::SettingNotFoundException &e) {}
     if (cameraConf.exists("fieldOfView")) {
         scene._camera.setFov(cameraConf["fieldOfView"]);

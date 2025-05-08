@@ -81,7 +81,7 @@ $(OBJS_DIR)%.o: %.cpp
 
 $(NAME):	$(OBJS)
 	@mkdir -p $(SRC_DIR) $(OBJS_DIR)
-	@$(CXX) $(LCONFIG_FLAGS) -o $(NAME) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
+	@$(CXX) $(CXXFLAGS) $(LCONFIG_FLAGS) -o $(NAME) $(OBJS) $(LIBS) -I$(LIB_DIR) 			\
 		-I$(PLUGINS_SRC_DIR) -I$(SHARED_DIR) -I$(DLLOADER_DIR) -I$(SRC_DIR)
 
 ##################################################################
