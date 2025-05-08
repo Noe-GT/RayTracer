@@ -1,0 +1,32 @@
+/*
+** EPITECH PROJECT, 2024
+** raytracer
+** File description:
+** Material.hpp
+*/
+#pragma once
+#include "../static_libs/math/Color.hpp"
+#include "../static_libs/math/Noise.hpp"
+
+class Material
+{
+    public:
+        Material();
+        Material(double reflectivity, double blurness, double transparency, double brightness, double refrectness, math::Color color);
+        ~Material() = default;
+
+        double &getReflectivity();
+        double &getBlurness();
+        double &getTransparency();
+        double &getBrightness();
+        double &getRefractness();
+        math::Color &GetColor();
+
+    private:
+        double _reflectivity;
+        double _blurness;
+        double _transparency;
+        double _brightness;
+        double _refractness;
+        math::Color _color;
+};

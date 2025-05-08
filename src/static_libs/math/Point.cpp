@@ -22,6 +22,15 @@ math::Point::Point(double x, double y, double z): _x(x), _y(y), _z(z)
 {
 }
 
+math::Point& math::Point::operator=(const Point &other) {
+    if (this != &other) {
+        this->_x = other._x;
+        this->_y = other._y;
+        this->_z = other._z;
+    }
+    return *this;
+}
+
 math::Point& math::Point::operator-() const
 {
     math::Point* result = new math::Point(-this->_x, -this->_y, -this->_z);

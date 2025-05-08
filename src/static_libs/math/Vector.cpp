@@ -36,6 +36,16 @@ math::Vector::Vector(double x, double y, double z):
 {
 }
 
+math::Vector& math::Vector::operator=(const math::Vector& other)
+{
+    if (this != &other) {
+        this->_x = other._x;
+        this->_y = other._y;
+        this->_z = other._z;
+    }
+    return *this;
+}
+
 math::Vector& math::Vector::operator-() const
 {
     math::Vector* result = new math::Vector(-this->_x, -this->_y, -this->_z);

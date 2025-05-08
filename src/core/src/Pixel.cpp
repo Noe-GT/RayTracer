@@ -39,7 +39,8 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
 
     for (auto& ray : _rays) {
         for (const auto& obj : scene._obj) {
-            obj->intersect(ray);
+            if (obj->Intersect(ray, std::vector <math::Point> (), scene._obj))
+                break;
         }
         ray._color = ray._color * scene._ambiantLightIntensity;
         ray._color += {(scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))};

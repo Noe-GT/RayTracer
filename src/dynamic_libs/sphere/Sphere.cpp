@@ -31,20 +31,42 @@ void Sphere::configure(const libconfig::Setting &setting)
         this->_radius = setting["r"];
 }
 
-bool Sphere::intersect(math::Ray &ray)
+double Sphere::getDiscriminant(math::Ray &ray)
 {
     math::Vector oc = ray._origin - _origin;
     double a = ray._direction.dotProduct(ray._direction);
-    double b = 2.0 * oc.dotProduct(ray._direction);
-    double c = oc.dotProduct(oc) - _radius*_radius;
-    double discriminant = b*b - 4*a*c;
+    double b = 2 * oc.dotProduct(ray._direction);
+    double c = oc.dotProduct(oc) - (_radius * _radius);
 
-    if (discriminant < 0) {
-        ray._color = math::Color(0, 0, 1);
+    return (b * b - 4 * a * c);
+}
+
+bool Sphere::Intersect(math::Ray &ray, const std::vector<math::Point> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs)
+{
+    math::Color ambiantColor(ray._color);
+    math::CollisionUtils CU;
+    const math::Vector oc = ray._origin - _origin;
+    CU.setA(ray._direction.dotProduct(ray._direction));
+    CU.setB(2 * oc.dotProduct(ray._direction));
+    CU.setC(oc.dotProduct(oc) - (_radius * _radius));
+    CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
+    CU.setHasCollision(CU.getDiscriminant() >= 0);
+    if (CU.getDiscriminant() < 0)
         return false;
-    }
 
-    ray._color = math::Color(1, 0, 0);
+    CU.setT((-CU.getB() - sqrt(CU.getDiscriminant())) / (2 * CU.getA()));
+    if (CU.getT() <= 0.0001)
+        return false;
+    CU.setHitPoint(ray._origin + ray._direction * CU.getT());
+    CU.setNormal((CU.getHitPoint() - _origin).normalize());
+    if (CU.getNormal().dotProduct(ray._direction) > 0)
+        CU.setNormal(CU.getNormal() * -1.0);
+
+    if (_material.getTransparency() > 0)
+        CU.computeTransparency(*this, ray, lights, objs, ambiantColor);
+    else
+        CU.computeShadows(*this, ray, lights, objs, ambiantColor);
+    CU.computeReflection(*this, ray, lights, objs, ambiantColor);
     return true;
 }
 
@@ -64,4 +86,24 @@ extern "C"
     {
         return rayTracer::PluginType::PRIMITIVE;
     }
+}
+
+
+math::Point &Sphere::getOrigin()
+{
+    return this->_origin;
+}
+
+double &Sphere::getSize()
+{
+    return this->_radius;
+}
+
+Material &Sphere::getMaterial()
+{
+    return this->_material;
+}
+
+int &Sphere::getID() {
+    return this->_ID;
 }

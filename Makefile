@@ -12,7 +12,7 @@ DELETE_MSG		=		\033[1m\033[1;31m[DELETE]:\033[0m
 
 ##################################################################
 
-CORE_DIR			=		src/core/
+CORE_DIR		=		src/core/
 
 SRC_DIR			=		$(CORE_DIR)src/
 
@@ -22,7 +22,7 @@ SRC				=		$(SRC_DIR)main.cpp 						\
 						$(SRC_DIR)Scene.cpp						\
 						$(SRC_DIR)Camera.cpp					\
 						$(SRC_DIR)../dlloader/LibLister.cpp		\
-						$(SRC_DIR)Exceptions.cpp					\
+						$(SRC_DIR)Exceptions.cpp				\
 						$(SRC_DIR)PluginHandler.cpp				\
 						$(SRC_DIR)Parser.cpp
 
@@ -32,7 +32,7 @@ OBJS			=		$(SRC:%.cpp=$(OBJS_DIR)%.o)
 LIB_DIR			=		src/static_libs/
 LIBS_SRC		=		$(LIB_DIR)math							\
 
-SHARED_DIR			=		src/shared/
+SHARED_DIR		=		src/shared/
 
 DLLOADER_DIR	=		$(CORE_DIR)dlloader/
 

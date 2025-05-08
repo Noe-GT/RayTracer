@@ -27,6 +27,7 @@ namespace math {
             Vector(const math::Point &point);
             Vector(double x, double y, double z);
             ~Vector() = default;
+            virtual math::Vector& operator=(const math::Vector&);
 
             virtual math::Vector& operator-() const;
             virtual math::Vector& operator+=(const math::Vector& v);

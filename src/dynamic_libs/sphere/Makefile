@@ -16,6 +16,7 @@ PLUGIN_DIR		=		$(ROOT)../../dynamic_libs_bin/
 SHARED_DIR		=		$(ROOT)../shared
 
 SRCS			=		Sphere.cpp 								\
+						$(SHARED_DIR)/Material.cpp				\
 
 OBJS_DIR		=		../sphere_bin
 OBJS			=		$(SRCS:%.cpp=$(OBJS_DIR)/%.o)

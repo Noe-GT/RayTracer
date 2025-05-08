@@ -14,6 +14,8 @@ SRCS         =  	Point.cpp   								\
 					Vector.cpp  								\
 					Color.cpp   								\
 					Ray.cpp     								\
+					Noise.cpp     								\
+					CollisionUtils.cpp							\
 
 BIN_DIR      =  	../maths_bin
 OBJS         = 		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
@@ -23,7 +25,7 @@ NAME         = 		../libmath.a
 LIB          = 		-L
 
 CFLAGS       = 		-g3
-CXXFLAGS     = 		-Wall -Wextra -Werror
+CXXFLAGS     = 		-Wall -Wextra
 ##################################################################
 
 all: $(NAME)

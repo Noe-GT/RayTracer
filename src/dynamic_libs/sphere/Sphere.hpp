@@ -20,12 +20,19 @@ class Sphere: public IPrimitive {
 
         ~Sphere() = default;
 
-        bool intersect(math::Ray &ray) final;
+        bool Intersect(math::Ray& ray, const std::vector<math::Point>& lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
         void configure(const libconfig::Setting &setting) final;
 
+        double getDiscriminant(math::Ray& ray) final;
+        double &getSize() final;
+        math::Point &getOrigin() final;
+        Material &getMaterial() final;
+        int &getID() final;
     private:
+        Material _material;
         math::Point _origin;
         double _radius;
+        int _ID;
 };
 
 class SphereFactory: public rayTracer::IFactory<IPrimitive> {
