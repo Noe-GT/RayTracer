@@ -15,6 +15,7 @@ math::Color::Color(const math::Color &color): _r(color._r), _g(color._g), _b(col
 {
 
 }
+
 math::Color::Color(double x, double y, double z): _r(x), _g(y), _b(z)
 {
 }

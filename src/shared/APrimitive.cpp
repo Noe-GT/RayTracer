@@ -51,9 +51,10 @@ void APrimitive::configure(const libconfig::Setting &setting, int id)
         if (setting["material"].exists("color") && setting["material"]["color"].exists("r") &&
             setting["material"]["color"].exists("g") &&
             setting["material"]["color"].exists("b"))
-            color = math::Color(static_cast<double>(static_cast<int>(setting["material"]["color"]["r"])),
-                static_cast<double>(static_cast<int>(setting["material"]["color"]["g"])),
-                static_cast<double>(static_cast<int>(setting["material"]["color"]["b"])));
+            color = math::Color(static_cast<double>(static_cast<int>(setting["material"]["color"]["r"])) / 255.999,
+                static_cast<double>(static_cast<int>(setting["material"]["color"]["g"])) / 255.999,
+                static_cast<double>(static_cast<int>(setting["material"]["color"]["b"])) / 255.999);
     }
     this->_material = Material(reflectivity, blurness, transparency, brightness, refractness, color);
+    std::cout << this->_material << std::endl;
 }
