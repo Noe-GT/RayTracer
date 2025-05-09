@@ -22,7 +22,7 @@ SRC				=		$(SRC_DIR)main.cpp 						\
 						$(SRC_DIR)Scene.cpp						\
 						$(SRC_DIR)Camera.cpp					\
 						$(SRC_DIR)../dlloader/LibLister.cpp		\
-						$(SRC_DIR)Exceptions.cpp				\
+						$(SHARED_DIR)Exceptions.cpp				\
 						$(SRC_DIR)PluginHandler.cpp				\
 						$(SRC_DIR)Parser.cpp
 

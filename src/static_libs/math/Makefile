@@ -16,6 +16,7 @@ SRCS         =  	Point.cpp   								\
 					Ray.cpp     								\
 					Noise.cpp     								\
 					CollisionUtils.cpp							\
+					Matrix.cpp							\
 
 BIN_DIR      =  	../maths_bin
 OBJS         = 		$(SRCS:%.cpp=$(BIN_DIR)/%.o)
