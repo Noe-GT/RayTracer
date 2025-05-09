@@ -14,16 +14,7 @@
 class Translation : public ATransformations<int>
 {
     public:
-        Translation(int x, int y, int z)
-        {
-            math::Matrix<int> mRef(1, 3);
-
-            mRef.setMatrix(0, 0, x);
-            mRef.setMatrix(0, 1, y);
-            mRef.setMatrix(0, 2, z);
-            this->_matrix = mRef;
-        }
-
+        Translation(int x, int y, int z);
         ~Translation() = default;
 };
 
