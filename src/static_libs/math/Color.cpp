@@ -78,6 +78,11 @@ math::Color math::Color::operator-(const math::Color& other)
     return math::Color(this->_r - other._r, this->_g - other._g, this->_b - other._b);
 }
 
+math::Color math::Color::operator*(const math::Color& other)
+{
+    return math::Color(this->_r * other._r, this->_g * other._g, this->_b * other._b);
+}
+
 math::Color math::Color::operator*(double scalar)
 {
     return math::Color(this->_r * scalar, this->_g * scalar, this->_b * scalar);

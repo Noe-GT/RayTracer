@@ -22,7 +22,8 @@ class APrimitive : public IPrimitive {
         virtual int &getID() final;
         virtual Material &getMaterial() final;
         virtual math::Point &getOrigin() override;
-        virtual bool Intersect(math::Ray& ray, const std::vector<math::Point>& lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) = 0;
+        virtual bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) = 0;
+        virtual bool Collide(math::Ray& ray) = 0;
         virtual void configure(const libconfig::Setting &setting, int id) override;
         virtual double getDiscriminant(math::Ray& ray) = 0;
         virtual double &getSize() = 0;

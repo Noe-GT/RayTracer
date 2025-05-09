@@ -24,7 +24,8 @@ SRC				=		$(SRC_DIR)main.cpp 						\
 						$(SRC_DIR)../dlloader/LibLister.cpp		\
 						$(SRC_DIR)Exceptions.cpp				\
 						$(SRC_DIR)PluginHandler.cpp				\
-						$(SRC_DIR)Parser.cpp
+						$(SRC_DIR)Parser.cpp					\
+						$(SHARED_DIR)Material.cpp
 
 OBJS_DIR		=		src/core_bin/
 OBJS			=		$(SRC:%.cpp=$(OBJS_DIR)%.o)
