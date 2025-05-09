@@ -12,11 +12,14 @@
 #include <type_traits>
 #include "../../shared/Exceptions.hpp"
 
-namespace math {
+namespace math
+{
     template<typename T>
-    class Matrix {
+    class Matrix
+    {
         public:
-            class MatrixException : public rayTracer::Exception {
+            class MatrixException : public rayTracer::Exception
+            {
                 public:
                     MatrixException(const std::string &exception) noexcept :
                         Exception(exception)
@@ -35,18 +38,11 @@ namespace math {
                     this->_matrix[i].resize(0, x);
             }
 
-            Matrix(const Matrix &matrix)
-            {
-                if (!std::is_arithmetic_v<T>)
-                    rayTracer::TypeException("Matrix: T type must be arithmetic");
-                this->_matrix = matrix._matrix;
-            }
+            Matrix(const Matrix &matrix) = default;
 
-            Matrix(const Matrix &&matrix)
+            Matrix(const Matrix &&matrix) :
+                _matrix(matrix._matrix)
             {
-                if (!std::is_arithmetic_v<T>)
-                    rayTracer::TypeException("Matrix: T type must be arithmetic");
-                this->_matrix = matrix._matrix;
             }
 
             ~Matrix() = default;
