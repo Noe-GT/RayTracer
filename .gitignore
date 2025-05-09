@@ -4,7 +4,7 @@
 *.so
 scenes/
 *.ppm
-.vscode/*
+.vscode
 raytracer
 vgcore*
 *.sh
