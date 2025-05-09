@@ -103,6 +103,22 @@ math::Matrix &math::Matrix::operator*=(const math::Matrix &matrix)
     return *this;
 }
 
+math::Matrix math::Matrix::operator*(int n) const
+{
+    Matrix res(*this);
+
+    res *= n;
+    return res;
+}
+
+math::Matrix &math::Matrix::operator*=(int n)
+{
+    for (size_t y = 0; y < this->getHeight(); y++)
+        for (size_t x = 0; x < this->getWidth(); x++)
+            this->_matrix[y][x] *= n;
+    return *this;
+}
+
 void math::Matrix::reset(size_t x, size_t y)
 {
     for (size_t i = 0; i < y; i++)

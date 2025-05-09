@@ -33,6 +33,8 @@ namespace math {
             Matrix &operator-=(const Matrix &matrix);
             Matrix operator*(const Matrix &matrix) const;
             Matrix &operator*=(const Matrix &matrix);
+            Matrix operator*(int n) const;
+            Matrix &operator*=(int n);
 
             void reset(size_t x, size_t y);
             void resize(size_t x, size_t y);
