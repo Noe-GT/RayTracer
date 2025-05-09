@@ -13,16 +13,12 @@
 #include "../../shared/Exceptions.hpp"
 #include <cmath>
 
-template<typename T>
-class Rotation : public ATransformations<T>
+class Rotation : public ATransformations<double>
 {
     public:
-        Rotation(T x, T y, T z)
+        Rotation(double x, double y, double z)
         {
-            if (!std::is_arithmetic_v<T>)
-                rayTracer::TypeException("Rotation: T type must be arithmetic");
-
-            math::Matrix<T> mRef(3, 3);
+            math::Matrix<double> mRef(3, 3);
             for (size_t i = 0; i <= 2; i++)
                 mRef.setMatrix(i, i, 1.0);
 
