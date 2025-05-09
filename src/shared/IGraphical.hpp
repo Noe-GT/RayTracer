@@ -14,7 +14,7 @@
 
 class IGraphical {
     public:
-        ~IGraphical() = default;
+        virtual ~IGraphical() = default;
         virtual void display(std::vector<std::vector<math::Color>> image) = 0;
         virtual void idle() = 0;
 };
