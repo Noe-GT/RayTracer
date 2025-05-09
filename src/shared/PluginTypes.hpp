@@ -12,6 +12,7 @@ namespace rayTracer {
     enum class PluginType {
         PRIMITIVE,
         GRAPHICAL,
+        TRANSFORMATION,
         OTHER
     };
 };

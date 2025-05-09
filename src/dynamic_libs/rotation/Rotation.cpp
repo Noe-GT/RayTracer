@@ -33,3 +33,21 @@ Rotation::Rotation(double x, double y, double z) :
 
     this->_matrix = mZ * (mY * mX);
 }
+
+std::shared_ptr<ITransformations<double>> RotationFactory::build(double x, double y, double z)
+{
+    return std::make_shared<Rotation>(x, y, z);
+}
+
+extern "C"
+{
+    rayTracer::IFactory<ITransformations<double>> *entryPoint()
+    {
+        return new RotationFactory;
+    }
+
+    rayTracer::PluginType getLibType()
+    {
+        return rayTracer::PluginType::TRANSFORMATION;
+    }
+}

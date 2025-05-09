@@ -10,6 +10,7 @@
 
 #include "IPrimitive.hpp"
 #include "IGraphical.hpp"
+#include "ITransformations.hpp"
 
 namespace rayTracer {
     template <typename T>
@@ -25,6 +26,13 @@ namespace rayTracer {
             virtual ~IFactory() = default;
             virtual std::shared_ptr<IGraphical> build() = 0;
             virtual std::shared_ptr<IGraphical> build(size_t width, size_t height) = 0;
+    };
+
+    template <typename T>
+    class IFactory<ITransformations<T>> {
+        public:
+            virtual ~IFactory() = default;
+            virtual std::shared_ptr<ITransformations<T>> build(T x, T y, T z) = 0;
     };
 };
 

@@ -14,3 +14,21 @@ Translation::Translation(int x, int y, int z) :
     this->_matrix.setMatrix(0, 1, y);
     this->_matrix.setMatrix(0, 2, z);
 }
+
+std::shared_ptr<ITransformations<int>> TranslationFactory::build(int x, int y, int z)
+{
+    return std::make_shared<Translation>(x, y, z);
+}
+
+extern "C"
+{
+    rayTracer::IFactory<ITransformations<int>> *entryPoint()
+    {
+        return new TranslationFactory;
+    }
+
+    rayTracer::PluginType getLibType()
+    {
+        return rayTracer::PluginType::TRANSFORMATION;
+    }
+}
