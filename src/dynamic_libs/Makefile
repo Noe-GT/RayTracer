@@ -12,6 +12,9 @@ PLUGINS_DIR		=	../dynamic_libs_bin/
 
 PLUGINS			=	sphere										\
 					SFML										\
+					scaling										\
+					translation									\
+					rotation									\
 					# directional									\
 ##################################################################
 
