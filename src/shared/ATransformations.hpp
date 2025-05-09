@@ -15,7 +15,8 @@ template<typename T>
 class ATransformations : public ITransformations<T>
 {
     public:
-        ATransformations()
+        ATransformations(size_t x, size_t y) :
+            _matrix(x, y)
         {
         }
 
