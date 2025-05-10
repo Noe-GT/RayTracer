@@ -168,25 +168,20 @@ void math::CollisionUtils::computeShadows(
         math::Ray shadowRay;
         shadowRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
         shadowRay._direction = lightDir;
-
+        float shadowFactor = 1.0f;
         for (auto &obj : objs) {
             if (obj->getID() == primitive.getID())
                 continue;
             if (obj->getID() == light->getID())
                 continue;
-            double discr = obj->getDiscriminant(shadowRay);
-            if (discr >= 0) {
-                math::Vector oc = shadowRay._origin - obj->getOrigin();
-                double a = shadowRay._direction.dotProduct(shadowRay._direction);
-                double b = 2 * oc.dotProduct(shadowRay._direction);
-                double t = (-b - sqrt(discr)) / (2 * a);
-                if (t > 0.001f && t < distToLight) {
-                    inShadow = true;
-                    break;
+            math::CollisionUtils tmp = obj->Collide(shadowRay);
+            if (tmp.getDiscriminant() >= 0) {
+                if (tmp.getT() > 0.001f && tmp.getT() < distToLight) {
+                    shadowFactor -= std::max(0.1, 1.0 - obj->getMaterial().getTransparency());
                 }
             }
         }
-        float diffuse = std::max(0.0, _normal.dotProduct(lightDir)) * (inShadow ? 0.1f : 1.0f);
+        float diffuse = std::max(0.0, _normal.dotProduct(lightDir)) * (shadowFactor);
         finalColor += materialColor * (diffuse * (1 / light->getMaterial().getBrightness()));
         finalColor._r = std::min(1.0, finalColor._r);
         finalColor._g = std::min(1.0, finalColor._g);
