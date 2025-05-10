@@ -5,8 +5,8 @@
 ** Material.hpp
 */
 #pragma once
-#include "../static_libs/math/Color.hpp"
-#include "../static_libs/math/Noise.hpp"
+#include "Color.hpp"
+#include "Noise.hpp"
 
 class Material
 {

@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2024
-** raytracer
+** EPITECH PROJECT, 2025
+** Raytracer
 ** File description:
-** main.cpp
+** Main
 */
 
 #include "RayTracer.hpp"

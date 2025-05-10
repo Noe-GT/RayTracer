@@ -9,7 +9,7 @@
 #define ROTATION_HPP_
 
 #include "ATransformations.hpp"
-#include "../../static_libs/math/Matrix.hpp"
+#include "Matrix.hpp"
 #include "IFactory.hpp"
 #include "PluginTypes.hpp"
 #include <cmath>

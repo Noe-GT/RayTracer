@@ -6,7 +6,7 @@
 */
 
 #pragma once
-#include "../static_libs/math/Ray.hpp"
+#include "Ray.hpp"
 #include "Scene.hpp"
 #include <vector>
 #include <memory>

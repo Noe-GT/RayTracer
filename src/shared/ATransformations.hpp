@@ -9,7 +9,7 @@
 #define ATRANSFORMATIONS_HPP_
 
 #include "ITransformations.hpp"
-#include "../static_libs/math/Matrix.hpp"
+#include "Matrix.hpp"
 
 template<typename T>
 class ATransformations : public ITransformations<T>

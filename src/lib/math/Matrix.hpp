@@ -10,7 +10,7 @@
 #include <vector>
 #include <utility>
 #include <type_traits>
-#include "../../shared/Exceptions.hpp"
+#include "Exceptions.hpp"
 
 namespace math
 {

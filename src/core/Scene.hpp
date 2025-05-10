@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include "../static_libs/math/Ray.hpp"
+#include "Ray.hpp"
 #include <string>
 #include "IPrimitive.hpp"
 #include "Camera.hpp"

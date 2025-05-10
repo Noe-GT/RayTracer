@@ -8,16 +8,16 @@
 #ifndef IPRIMITIVE_HPP_
 #define IPRIMITIVE_HPP_
 
-#include "../static_libs/math/Ray.hpp"
-#include "../static_libs/math/Ray.hpp"
-#include "../static_libs/math/Noise.hpp"
-#include "../static_libs/math/CollisionUtils.hpp"
+#include "Ray.hpp"
+#include "Noise.hpp"
+#include "CollisionUtils.hpp"
 #include "Material.hpp"
 #include <libconfig.h++>
 
 namespace math {
     class CollisionUtils;
 };
+
 class IPrimitive {
     public:
         virtual ~IPrimitive() = default;

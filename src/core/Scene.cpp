@@ -6,7 +6,7 @@
 */
 
 #include "Scene.hpp"
-#include "../dlloader/DLLoader.hpp"
+#include "DLLoader.hpp"
 
 rayTracer::Scene::Scene(const rayTracer::PluginHandler &PluginHandler)
 {

@@ -1,7 +1,7 @@
 #ifndef RAYTRACER_HPP_
 #define RAYTRACER_HPP_
 
-#include "../static_libs/math/Ray.hpp"
+#include "Ray.hpp"
 #include "DLLoader.hpp"
 #include "PluginHandler.hpp"
 #include "Parser.hpp"

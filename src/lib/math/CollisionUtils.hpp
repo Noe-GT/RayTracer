@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "../../shared/IPrimitive.hpp"
-#include "../../shared/Material.hpp"
+#include "IPrimitive.hpp"
+#include "Material.hpp"
 #include <stdexcept>
 #include <cmath>
 #include "Ray.hpp"

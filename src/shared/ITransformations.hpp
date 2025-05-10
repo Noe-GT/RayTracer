@@ -8,7 +8,7 @@
 #ifndef ITRANSFORMATIONS_HPP_
 #define ITRANSFORMATIONS_HPP_
 
-#include "../static_libs/math/Matrix.hpp"
+#include "Matrix.hpp"
 
 template<typename T>
 class ITransformations
