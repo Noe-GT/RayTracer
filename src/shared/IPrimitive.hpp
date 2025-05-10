@@ -24,7 +24,6 @@ class IPrimitive {
         virtual bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) = 0;
         virtual bool Collide(math::Ray& ray) = 0;
         virtual void configure(const libconfig::Setting &setting, int id) = 0;
-
         virtual double getDiscriminant(math::Ray& ray) = 0;
         virtual math::Point &getOrigin() = 0;
         virtual double &getSize() = 0;
