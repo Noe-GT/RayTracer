@@ -26,7 +26,7 @@ CXX				=		g++
 
 NAME			=		$(PLUGIN_DIR)sphere.so
 
-CXXFLAGS		=		-L ../../static_libs/ -lmath
+LDFLAGS			=		-L ../../static_libs/ -lmath -lconfig++
 
 UNAME_S 		= 		$(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
@@ -40,7 +40,7 @@ all:	$(NAME)
 
 $(NAME):	$(OBJS)
 	@mkdir -p $(PLUGIN_DIR)
-	$(CXX) -shared -o $(NAME) $(OBJS) -L../../static_libs/ -lmath
+	$(CXX) -shared -o $(NAME) $(OBJS) $(LDFLAGS)
 
 $(OBJS_DIR)/%.o:	%.cpp
 	@mkdir -p $(OBJS_DIR)

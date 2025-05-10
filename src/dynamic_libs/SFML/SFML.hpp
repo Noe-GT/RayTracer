@@ -16,7 +16,7 @@
 class SFML : public IGraphical {
     public:
         SFML(size_t width = 100, size_t height = 100);
-        ~SFML();
+        virtual ~SFML();
 
         void display(std::vector<std::vector<math::Color>> image) final;
         void idle() final;

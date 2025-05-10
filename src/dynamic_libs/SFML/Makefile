@@ -24,13 +24,13 @@ CXX				=		g++
 
 NAME			=		$(PLUGIN_DIR)SFML.so
 
-CXXFLAGS		=		-L ../../static_libs/ -lmath
+LDFLAGS			=		-L ../../static_libs/ -lmath
 
 SFML_FLAGS		=		-lsfml-graphics -lsfml-window -lsfml-system
 
 UNAME_S 		= 		$(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-	CXXFLAGS	+=		-Wall -Wextra -Werror -g3
+	CXXFLAGS	+=		-Wall -Wextra -g3 -std=c++20
 else
 	CXXFLAGS	+=		-Wall -Wextra -Werror -fno-gnu-unique -g3
 endif
@@ -40,7 +40,7 @@ all:	$(NAME)
 
 $(NAME):	$(OBJS)
 	@mkdir -p $(PLUGIN_DIR)
-	$(CXX) -shared -o $(NAME) $(OBJS) $(SFML_FLAGS)
+	$(CXX) -shared -o $(NAME) $(OBJS) $(SFML_FLAGS) $(LDFLAGS)
 
 $(OBJS_DIR)/%.o:	%.cpp
 	@mkdir -p $(OBJS_DIR)

@@ -24,14 +24,25 @@ LIB_DIR      =  	../
 NAME         = 		../libmath.a
 LIB          = 		-L
 
+UNAME := $(shell uname)
+
+AR := ar
+AR_FLAGS := rc
+
+ifeq ($(UNAME), Darwin)
+    AR := libtool
+    AR_FLAGS := -static -o
+endif
+
 CFLAGS       = 		-g3
-CXXFLAGS     = 		-Wall -Wextra
+CXXFLAGS     = 		-Wall -Wextra -std=c++20
 ##################################################################
 
 all: $(NAME)
 
 $(NAME): ${OBJS}
-	@ar rc $(NAME) $(OBJS)
+	@rm -f $(NAME)
+	@$(AR) $(AR_FLAGS) $(NAME) $(OBJS)
 
 $(BIN_DIR)/%.o: %.cpp
 	@mkdir -p $(BIN_DIR)
