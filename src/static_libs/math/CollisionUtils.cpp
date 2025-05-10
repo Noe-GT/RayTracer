@@ -96,7 +96,7 @@ void math::CollisionUtils::setHasCollision(bool newVal)
 void math::CollisionUtils::computeReflection(
     IPrimitive &primitive,
     math::Ray &ray,
-    const std::vector<math::Point> &lights,
+    const std::vector<std::shared_ptr<IPrimitive>> &lights,
     const std::vector<std::shared_ptr<IPrimitive>> &objs,
     const math::Color &ambiantColor)
 {
@@ -151,26 +151,28 @@ void math::CollisionUtils::computeReflection(
 void math::CollisionUtils::computeShadows(
     IPrimitive &primitive,
     math::Ray &ray,
-    const std::vector<math::Point> &lights,
+    const std::vector<std::shared_ptr<IPrimitive>> &lights,
     const std::vector<std::shared_ptr<IPrimitive>> &objs,
     const math::Color &ambiantColor)
 {
-    (void) ambiantColor;
     math::Color materialColor = primitive.getMaterial().GetColor();
     float lightIntensity = 1.0f / std::max(1.0f, static_cast<float>(lights.size()));
-    math::Vector epsilon = _normal * 0.00000001f;
-    math::Color finalColor(0.1f, 0.1f, 0.1f);
+    math::Color finalColor = {ambiantColor._r * 0.2f, ambiantColor._g * 0.2f, ambiantColor._b * 0.2f};
 
     for (const auto &light : lights) {
-        math::Vector lightPos(light._x, light._y, light._z);
-        math::Vector lightDir = (lightPos - _hitPoint).normalize();
-        double distToLight = (lightPos - _hitPoint).Length();
+        math::Vector lightDir = (light->getOrigin() - _hitPoint);
+        double distToLight = lightDir.Length();
+        lightDir.normalize();
+        bool inShadow = false;
+        math::Vector epsilon = _normal * 0.001f;
         math::Ray shadowRay;
         shadowRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
         shadowRay._direction = lightDir;
-        bool inShadow = false;
+
         for (auto &obj : objs) {
             if (obj->getID() == primitive.getID())
+                continue;
+            if (obj->getID() == light->getID())
                 continue;
             double discr = obj->getDiscriminant(shadowRay);
             if (discr >= 0) {
@@ -184,9 +186,12 @@ void math::CollisionUtils::computeShadows(
                 }
             }
         }
-
         float diffuse = std::max(0.0, _normal.dotProduct(lightDir)) * (inShadow ? 0.1f : 1.0f);
-        finalColor += materialColor * (diffuse * lightIntensity);
+        finalColor += materialColor * (diffuse * (1 / light->getMaterial().getBrightness()));
+        finalColor._r = std::min(1.0, finalColor._r);
+        finalColor._g = std::min(1.0, finalColor._g);
+        finalColor._b = std::min(1.0, finalColor._b);
+        finalColor += (light->getMaterial().GetColor() / 2) * (diffuse * (1 / light->getMaterial().getBrightness()));
     }
     finalColor._r = std::min(1.0, finalColor._r);
     finalColor._g = std::min(1.0, finalColor._g);
@@ -194,7 +199,13 @@ void math::CollisionUtils::computeShadows(
     ray._color = finalColor;
 }
 
-void math::CollisionUtils::computeTransparency(IPrimitive &primitive, math::Ray &ray, const std::vector<math::Point> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs, const math::Color &ambiantColor)
+
+void math::CollisionUtils::computeTransparency(
+    IPrimitive &primitive,
+    math::Ray &ray,
+    const std::vector<std::shared_ptr<IPrimitive>> &lights,
+    const std::vector<std::shared_ptr<IPrimitive>> &objs,
+    const math::Color &ambiantColor)
 {
     double refractiveIndex = primitive.getMaterial().getRefractness();
     double transparency = primitive.getMaterial().getTransparency();
@@ -279,6 +290,5 @@ void math::CollisionUtils::computeTransparency(IPrimitive &primitive, math::Ray 
     }
     if (numRays > 1)
         finalRefractedColor /= numRays;
-    computeShadows(primitive, ray, lights, objs, ambiantColor);
     ray._color = ray._color * (1 - transparency) + finalRefractedColor * transparency;
 }

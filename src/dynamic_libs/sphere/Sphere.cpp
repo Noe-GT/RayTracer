@@ -41,7 +41,21 @@ double Sphere::getDiscriminant(math::Ray &ray)
     return (b * b - 4 * a * c);
 }
 
-bool Sphere::Intersect(math::Ray &ray, const std::vector<math::Point> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs)
+bool Sphere::Collide(math::Ray& ray)
+{
+    math::CollisionUtils CU;
+    const math::Vector oc = ray._origin - _origin;
+    CU.setA(ray._direction.dotProduct(ray._direction));
+    CU.setB(2 * oc.dotProduct(ray._direction));
+    CU.setC(oc.dotProduct(oc) - (_radius * _radius));
+    CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
+    CU.setHasCollision(CU.getDiscriminant() >= 0);
+    if (CU.getDiscriminant() < 0)
+        return false;
+    return true;
+}
+
+bool Sphere::Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs)
 {
     math::Color ambiantColor(ray._color);
     math::CollisionUtils CU;
@@ -62,10 +76,8 @@ bool Sphere::Intersect(math::Ray &ray, const std::vector<math::Point> &lights, c
     if (CU.getNormal().dotProduct(ray._direction) > 0)
         CU.setNormal(CU.getNormal() * -1.0);
 
-    if (_material.getTransparency() > 0)
-        CU.computeTransparency(*this, ray, lights, objs, ambiantColor);
-    else
-        CU.computeShadows(*this, ray, lights, objs, ambiantColor);
+    CU.computeShadows(*this, ray, lights, objs, ambiantColor);
+    CU.computeTransparency(*this, ray, lights, objs, ambiantColor);
     CU.computeReflection(*this, ray, lights, objs, ambiantColor);
     return true;
 }

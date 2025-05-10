@@ -19,7 +19,8 @@ class Sphere: public APrimitive {
         Sphere(math::Point origin, double radius);
         ~Sphere() = default;
 
-        bool Intersect(math::Ray& ray, const std::vector<math::Point>& lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
+        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
+        bool Collide(math::Ray& ray) final;
         void configure(const libconfig::Setting &setting, int id) final;
 
         double getDiscriminant(math::Ray& ray) final;
