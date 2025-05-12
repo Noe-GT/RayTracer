@@ -31,6 +31,8 @@ namespace rayTracer {
         std::unique_ptr<T> getInstance(const std::string& instanceName) const {
             std::function<T *()> func = reinterpret_cast<T *(*)()>(dlsym(_lib, instanceName.c_str()));
 
+            if (!func)
+                throw rayTracer::LibraryLoadingException(dlerror());
             return std::unique_ptr<T>(func());
         }
 
