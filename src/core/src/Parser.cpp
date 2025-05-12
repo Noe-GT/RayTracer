@@ -21,9 +21,8 @@ void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTr
         this->parseCamera(rayTracer.getScene());
         this->parseImage(rayTracer);
         this->parseGraphical(rayTracer);
-        std::cout << "Configuration loaded successfully." << std::endl;
     } catch (const libconfig::FileIOException &fioex) {
-        throw rayTracer::ConfigException("I/O error while reading file.");
+        throw rayTracer::ConfigException("Invalid config file.");
     } catch (const libconfig::ParseException &pex) {
         throw rayTracer::ConfigException("Parse error at " + std::string(pex.getFile()) + ":" +
             std::to_string(pex.getLine()) + " - " + pex.getError());

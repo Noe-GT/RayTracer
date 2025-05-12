@@ -76,7 +76,7 @@ void rayTracer::RayTracer::setImage(const std::pair<size_t, size_t> &resolution)
     for (size_t y = 0; y < resolution.second; ++y) {
         this->_image[y].resize(resolution.first);
         for (size_t x = 0; x < resolution.first; ++x) {
-            this->_image[y][x] = rayTracer::Pixel(5, x, y, resolution.first, resolution.second, this->_scene);
+            this->_image[y][x] = rayTracer::Pixel(1, x, y, resolution.first, resolution.second, this->_scene);
         }
     }
 }
