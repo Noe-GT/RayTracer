@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <ctime>
 #include <numeric>
+#include <stdexcept>
+
 
 math::Noise::Noise() : _seed(std::time(nullptr))
 {

@@ -16,6 +16,7 @@ rayTracer::Parser::Parser(rayTracer::PluginHandler &pluginHandler):
 void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTracer &rayTracer)
 {
     try {
+        config.setOptions(libconfig::Config::OptionAutoConvert);
         config.readFile(filePath.c_str());
         this->parsePrimitives(rayTracer.getScene());
         this->parseCamera(rayTracer.getScene());
@@ -101,7 +102,7 @@ void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
         int y = posConf.lookup("y");
         int z = posConf.lookup("z");
 
-        scene._camera.setPosition(math::Point(static_cast<double>(x), static_cast<double>(y), static_cast<double>(z)));
+        scene._camera.setPosition(math::Point(x, y, z));
     } catch (const libconfig::SettingNotFoundException &e) {}
     if (cameraConf.exists("fieldOfView")) {
         scene._camera.setFov(cameraConf["fieldOfView"]);
