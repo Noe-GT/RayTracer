@@ -133,7 +133,7 @@ void math::CollisionUtils::computeReflection(
         secondaryRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
         secondaryRay._direction = perturbedDir;
         bool hasIntersection = false;
-        for (const auto &obj : objs) {
+        for (const std::shared_ptr<IPrimitive> &obj : objs) {
             if (obj->getID() != primitive.getID() && obj->Intersect(secondaryRay, lights, objs)) {
                 finalReflectedColor += secondaryRay._color;
                 hasIntersection = true;
@@ -158,7 +158,7 @@ void math::CollisionUtils::computeShadows(
     math::Color materialColor = primitive.getMaterial().GetColor();
     math::Color finalColor = {ambiantColor._r * 0.2f, ambiantColor._g * 0.2f, ambiantColor._b * 0.2f};
 
-    for (const auto &light : lights) {
+    for (const std::shared_ptr<IPrimitive> &light : lights) {
         math::Vector lightDir = (light->getOrigin() - _hitPoint);
         double distToLight = lightDir.Length();
         lightDir.normalize();
@@ -168,7 +168,7 @@ void math::CollisionUtils::computeShadows(
         shadowRay._direction = lightDir;
         float shadowFactor = 1.0f;
         float tmpShadowFactor;
-        for (auto &obj : objs) {
+        for (const std::shared_ptr<IPrimitive> &obj : objs) {
             if (obj->getID() == primitive.getID())
                 continue;
             if (obj->getID() == light->getID())
@@ -272,7 +272,7 @@ void math::CollisionUtils::computeTransparency(
             finalRay._color = ray._color;
 
             bool hasRefraction = false;
-            for (const auto &obj : objs) {
+            for (const std::shared_ptr<IPrimitive> &obj : objs) {
                 if (obj.get()->getID() != primitive.getID() && obj->Intersect(finalRay, lights, objs)) {
                     finalRefractedColor += finalRay._color;
                     hasRefraction = true;

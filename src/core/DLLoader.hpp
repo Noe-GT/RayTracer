@@ -29,10 +29,7 @@ namespace rayTracer {
 
         template<typename T>
         std::unique_ptr<T> getInstance(const std::string& instanceName) const {
-            void* sym = dlsym(_lib, instanceName.c_str());
-
-            using CreatorFunc = T*(*)();
-            auto func = reinterpret_cast<CreatorFunc>(sym);
+            std::function<T *()> func = reinterpret_cast<T *(*)()>(dlsym(_lib, instanceName.c_str()));
 
             return std::unique_ptr<T>(func());
         }

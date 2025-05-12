@@ -38,13 +38,13 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
     if (_rays.empty())
         return;
     std::vector<std::shared_ptr<IPrimitive>> light;
-    for (const auto& obj : scene._obj) {
+    for (const std::shared_ptr<IPrimitive> &obj : scene._obj) {
         if (obj->getMaterial().getBrightness() != 0) {
             light.push_back(obj);
         }
     }
-    for (auto& ray : _rays) {
-        for (const auto& obj : scene._obj) {
+    for (math::Ray &ray : _rays) {
+        for (const std::shared_ptr<IPrimitive> &obj : scene._obj) {
             if (obj->Intersect(ray, light, scene._obj))
                 break;
         }
@@ -61,7 +61,7 @@ void rayTracer::Pixel::calculateMeanColor() {
     }
 
     _colorMean = {0, 0, 0};
-    for (const auto& ray : _rays) {
+    for (const math::Ray &ray : _rays) {
         _colorMean += ray._color;
     }
     _colorMean /= static_cast<double>(_rays.size());
