@@ -14,7 +14,7 @@
 namespace rayTracer {
     class IConfigInterpreter {
         public:
-            ~IConfigInterpreter() = default;
+            virtual ~IConfigInterpreter() = default;
     };
 };
 

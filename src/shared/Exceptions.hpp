@@ -16,7 +16,7 @@ namespace rayTracer {
     {
         public:
             Exception(const std::string &exception) noexcept;
-            ~Exception() noexcept = default;
+            ~Exception() noexcept override = default;
             const char *what() const noexcept final;
 
         private:
