@@ -11,7 +11,8 @@
 rayTracer::Scene::Scene(const rayTracer::PluginHandler &PluginHandler)
 {
     (void) PluginHandler;
-    this->_ambiantLightIntensity = 5;
+    this->_ambiantLightIntensity = 1;
+    this->_ambiantLightColor = {1, 1, 1};
 }
 
 rayTracer::Scene::~Scene()

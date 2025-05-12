@@ -40,17 +40,17 @@ namespace math {
 
             void computeReflection(IPrimitive &me,
                 math::Ray &ray,
-                const std::vector<math::Point> &lights,
+                const std::vector<std::shared_ptr<IPrimitive>> &light,
                 const std::vector<std::shared_ptr<IPrimitive>> &objs,
                 const math::Color &ambiantColor);
             void computeShadows(IPrimitive &me,
                 math::Ray &ray,
-                const std::vector<math::Point> &lights,
+                const std::vector<std::shared_ptr<IPrimitive>> &light,
                 const std::vector<std::shared_ptr<IPrimitive>> &objs,
                 const math::Color &ambiantColor);
             void computeTransparency(IPrimitive &me,
                 math::Ray &ray,
-                const std::vector<math::Point> &lights,
+                const std::vector<std::shared_ptr<IPrimitive>> &light,
                 const std::vector<std::shared_ptr<IPrimitive>> &objs,
                 const math::Color &ambiantColor);
 

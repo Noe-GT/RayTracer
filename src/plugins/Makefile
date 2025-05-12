@@ -10,7 +10,7 @@ PLUGINS	=	rotation	\
 			SFML	\
 			sphere	\
 			translation	\
-			# directional	\
+			infinite_plan	\
 
 PLUGINS_DIR	=	../../plugins
 

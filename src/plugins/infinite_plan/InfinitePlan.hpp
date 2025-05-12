@@ -2,22 +2,21 @@
 ** EPITECH PROJECT, 2025
 ** Raytracer
 ** File description:
-** Sphere
+** InfinitePlan
 */
 
-#ifndef SPHERE_HPP_
-#define SPHERE_HPP_
+#pragma once
 
 #include "APrimitive.hpp"
 #include "IFactory.hpp"
 #include <memory>
 #include "PluginTypes.hpp"
 
-class Sphere: public APrimitive {
+class InfinitePlan: public APrimitive {
     public:
-        Sphere();
-        Sphere(math::Point origin, double radius);
-        ~Sphere() = default;
+        InfinitePlan();
+        InfinitePlan(math::Point origin, double radius);
+        ~InfinitePlan() = default;
 
         bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
         math::CollisionUtils Collide(math::Ray& ray) final;
@@ -31,12 +30,10 @@ class Sphere: public APrimitive {
         double _radius;
 };
 
-class SphereFactory: public rayTracer::IFactory<IPrimitive> {
+class InfinitePlanFactory: public rayTracer::IFactory<IPrimitive> {
     public:
-        SphereFactory() = default;
-        ~SphereFactory() = default;
+        InfinitePlanFactory() = default;
+        ~InfinitePlanFactory() = default;
 
         std::shared_ptr<IPrimitive> build() final;
 };
-
-#endif /* !SPHERE_HPP_ */

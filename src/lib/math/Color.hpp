@@ -34,6 +34,7 @@ namespace math {
 
             virtual math::Color operator+(const math::Color& v);
             virtual math::Color operator-(const math::Color& v);
+            virtual math::Color operator*(const math::Color& v);
             virtual math::Color operator*(double t);
             virtual math::Color operator/(double t);
 

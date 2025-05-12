@@ -25,7 +25,7 @@ namespace rayTracer {
                 public:
                     Plugin(std::shared_ptr<rayTracer::DLLoader> loader, std::string name):
                         _loader(loader),
-                        _factory(this->_loader->getInstance<rayTracer::IFactory<T>>(LOADER_INSTANCE_NAME)),
+                        _factory(this->_loader->template getInstance<rayTracer::IFactory<T>>(LOADER_INSTANCE_NAME)),
                         _name(name)
                     {
                     }

@@ -21,13 +21,13 @@ CPPFLAGS	=	\
 BIN_DIR	=	bin
 PLUGINS_DIR	=	$(ROOT)/plugins
 
-SRCS	=	DirectionalLight.cpp	\
+SRCS	=	InfinitePlan.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
 SHARED_OBJS	=	$(SRCS_DIR)/shared/bin/*.o
 
-PLUGIN	=	$(PLUGINS_DIR)/directional_light.so
+PLUGIN	=	$(PLUGINS_DIR)/infinite_plan.so
 
 all:	$(PLUGIN)
 
