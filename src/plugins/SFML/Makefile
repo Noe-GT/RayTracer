@@ -15,7 +15,8 @@ CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
 ifneq ($(shell uname -s), Darwin)
 	CXXFLAGS	+=	-fno-gnu-unique
 endif
-LDFLAGS	=	-L$(SRCS_DIR)/lib/math/ -lmath
+LDFLAGS	=	-L$(SRCS_DIR)/lib/math/ -lmath	\
+			-lsfml-graphics -lsfml-window -lsfml-system
 CPPFLAGS	=	\
 
 BIN_DIR	=	bin
