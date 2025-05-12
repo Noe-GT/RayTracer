@@ -30,7 +30,7 @@ namespace rayTracer {
             Scene _scene;
             std::vector<std::vector<Pixel>> _image;
             std::string _confPath;
-        };
+    };
 }
 
 #endif /* !RAYTRACER_HPP_ */

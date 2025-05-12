@@ -16,8 +16,8 @@ int main(int ac, char **av)
     }
     try {
         rayTracer::RayTracer tracer(av[1]);
-        // tracer.render();
-        // tracer.out();
+        tracer.render();
+        tracer.out();
     } catch (const rayTracer::ConfigException &e) {
         std::cerr << e.what() << std::endl;
         return 84;
