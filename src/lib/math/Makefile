@@ -12,6 +12,14 @@ CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
 				-I. -I$(SRCS_DIR)/shared
 CPPFLAGS	=	\
 
+ifeq ($(shell uname), Darwin)
+    AR = libtool
+    AR_FLAGS = -static -o
+else
+	AR = ar
+	AR_FLAGS = rc
+endif
+
 BIN_DIR	=	bin
 
 SRCS	=	CollisionUtils.cpp	\
@@ -28,7 +36,7 @@ LIB	=	libmath.a
 all:	$(LIB)
 
 $(LIB):	$(OBJS)
-	ar rc -o $(LIB) $(OBJS)
+	$(AR) $(AR_FLAGS) -o $(LIB) $(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
