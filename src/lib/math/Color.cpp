@@ -20,10 +20,9 @@ math::Color::Color(double x, double y, double z): _r(x), _g(y), _b(z)
 {
 }
 
-math::Color& math::Color::operator-() const
+math::Color math::Color::operator-() const
 {
-    math::Color* result = new math::Color(-this->_r, -this->_g, -this->_b);
-    return * result;
+    return Color(-this->_r, -this->_g, -this->_b);
 }
 
 math::Color& math::Color::operator=(const math::Color& other)

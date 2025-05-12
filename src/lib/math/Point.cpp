@@ -31,10 +31,9 @@ math::Point& math::Point::operator=(const Point &other) {
     return *this;
 }
 
-math::Point& math::Point::operator-() const
+math::Point math::Point::operator-() const
 {
-    math::Point* result = new math::Point(-this->_x, -this->_y, -this->_z);
-    return * result;
+    return Point(-this->_x, -this->_y, -this->_z);
 }
 
 math::Point& math::Point::operator+=(const math::Point& other)

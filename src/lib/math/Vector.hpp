@@ -29,7 +29,7 @@ namespace math {
             ~Vector() = default;
             virtual math::Vector& operator=(const math::Vector&);
 
-            virtual math::Vector& operator-() const;
+            virtual math::Vector operator-() const;
             virtual math::Vector& operator+=(const math::Vector& v);
             virtual math::Vector& operator-=(const math::Vector& v);
             virtual math::Vector& operator*=(double t);

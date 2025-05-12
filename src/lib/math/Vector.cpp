@@ -46,10 +46,9 @@ math::Vector& math::Vector::operator=(const math::Vector& other)
     return *this;
 }
 
-math::Vector& math::Vector::operator-() const
+math::Vector math::Vector::operator-() const
 {
-    math::Vector* result = new math::Vector(-this->_x, -this->_y, -this->_z);
-    return * result;
+    return Vector(-this->_x, -this->_y, -this->_z);
 }
 
 math::Vector& math::Vector::operator+=(const math::Vector& other)

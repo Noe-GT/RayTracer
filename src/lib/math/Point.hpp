@@ -26,7 +26,7 @@ namespace math {
 
             virtual Point& operator=(const Point &other);
 
-            virtual math::Point& operator-() const;
+            virtual math::Point operator-() const;
             virtual math::Point& operator+=(const math::Point& v);
             virtual math::Point& operator-=(const math::Point& v);
             virtual math::Point& operator*=(double t);
