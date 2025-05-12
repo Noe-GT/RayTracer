@@ -25,7 +25,7 @@ all:	$(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
+	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(CPPFLAGS)
 
 clean:
 	rm -rf $(BIN_DIR)

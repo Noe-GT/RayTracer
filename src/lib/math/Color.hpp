@@ -22,7 +22,7 @@ namespace math {
             Color();
             Color(const math::Color &color);
             Color(double x, double y, double z);
-            ~Color() = default;
+            virtual ~Color() = default;
 
             virtual math::Color& operator=(const math::Color& v);
 

@@ -36,7 +36,7 @@ LIB	=	libmath.a
 all:	$(LIB)
 
 $(LIB):	$(OBJS)
-	$(AR) $(AR_FLAGS) -o $(LIB) $(OBJS)
+	$(AR) $(AR_FLAGS) $(LIB) $(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)

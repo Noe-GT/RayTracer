@@ -15,7 +15,7 @@ CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
 ifneq ($(shell uname -s), Darwin)
 	CXXFLAGS	+=	-fno-gnu-unique
 endif
-LDFLAGS	=	-L$(SRCS_DIR)/lib/math/ -lmath	\
+LDFLAGS	=	-L$(SRCS_DIR)/lib/math/ -lmath -lconfig++	\
 			-lsfml-graphics -lsfml-window -lsfml-system
 CPPFLAGS	=	\
 
@@ -26,7 +26,7 @@ SRCS	=	SFML.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-SHARED_OBJS	=	$(SRCS_DIR)/shared/bin/*.o
+SHARED_OBJS	=	$(wildcard $(SRCS_DIR)/shared/bin/*.o)
 
 PLUGIN	=	$(PLUGINS_DIR)/SFML.so
 

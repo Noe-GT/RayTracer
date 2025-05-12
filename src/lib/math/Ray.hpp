@@ -24,7 +24,7 @@ namespace math {
             Ray(double x, double y, double z);
             Ray(double ox, double oy, double oz, double dx, double dy, double dz);
             Ray(double ox, double oy, double oz, double dx, double dy, double dz, double r, double g, double b);
-            ~Ray() = default;
+            virtual ~Ray() = default;
 
             virtual math::Ray& operator+=(const math::Ray& other);
             virtual math::Ray& operator-=(const math::Ray& other);
