@@ -1,6 +1,4 @@
 .vscode
-scenes/
-screenshots/
 *.a
 *.o
 *.so
