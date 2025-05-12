@@ -156,37 +156,32 @@ void math::CollisionUtils::computeShadows(
     const math::Color &ambiantColor)
 {
     math::Color materialColor = primitive.getMaterial().GetColor();
-    float lightIntensity = 1.0f / std::max(1.0f, static_cast<float>(lights.size()));
     math::Color finalColor = {ambiantColor._r * 0.2f, ambiantColor._g * 0.2f, ambiantColor._b * 0.2f};
 
     for (const auto &light : lights) {
         math::Vector lightDir = (light->getOrigin() - _hitPoint);
         double distToLight = lightDir.Length();
         lightDir.normalize();
-        bool inShadow = false;
         math::Vector epsilon = _normal * 0.001f;
         math::Ray shadowRay;
         shadowRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
         shadowRay._direction = lightDir;
-
+        float shadowFactor = 1.0f;
+        float tmpShadowFactor;
         for (auto &obj : objs) {
             if (obj->getID() == primitive.getID())
                 continue;
             if (obj->getID() == light->getID())
                 continue;
-            double discr = obj->getDiscriminant(shadowRay);
-            if (discr >= 0) {
-                math::Vector oc = shadowRay._origin - obj->getOrigin();
-                double a = shadowRay._direction.dotProduct(shadowRay._direction);
-                double b = 2 * oc.dotProduct(shadowRay._direction);
-                double t = (-b - sqrt(discr)) / (2 * a);
-                if (t > 0.001f && t < distToLight) {
-                    inShadow = true;
-                    break;
+            math::CollisionUtils tmp = obj->Collide(shadowRay);
+            if (tmp.getDiscriminant() >= 0) {
+                if (tmp.getT() > 0.001f && tmp.getT() < distToLight) {
+                    tmpShadowFactor = std::max(0.1, obj->getMaterial().getTransparency());
+                    shadowFactor = std::min(shadowFactor, tmpShadowFactor);
                 }
             }
         }
-        float diffuse = std::max(0.0, _normal.dotProduct(lightDir)) * (inShadow ? 0.1f : 1.0f);
+        float diffuse = std::max(0.0, _normal.dotProduct(lightDir)) * (shadowFactor);
         finalColor += materialColor * (diffuse * (1 / light->getMaterial().getBrightness()));
         finalColor._r = std::min(1.0, finalColor._r);
         finalColor._g = std::min(1.0, finalColor._g);

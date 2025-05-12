@@ -41,18 +41,18 @@ double Sphere::getDiscriminant(math::Ray &ray)
     return (b * b - 4 * a * c);
 }
 
-bool Sphere::Collide(math::Ray& ray)
+math::CollisionUtils Sphere::Collide(math::Ray& ray)
 {
     math::CollisionUtils CU;
-    const math::Vector oc = ray._origin - _origin;
+    double discr = getDiscriminant(ray);
+    math::Vector oc = ray._origin - getOrigin();
+
     CU.setA(ray._direction.dotProduct(ray._direction));
     CU.setB(2 * oc.dotProduct(ray._direction));
+    CU.setT((-CU.getB() - sqrt(discr)) / (2 * CU.getA()));
     CU.setC(oc.dotProduct(oc) - (_radius * _radius));
     CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
-    CU.setHasCollision(CU.getDiscriminant() >= 0);
-    if (CU.getDiscriminant() < 0)
-        return false;
-    return true;
+    return CU;
 }
 
 bool Sphere::Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs)
