@@ -9,10 +9,11 @@ ROOT	=	../..
 
 CXX	=	g++
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
-				-L$(ROOT)/lib/math/ -lmath -I. -I../../shared -I../../lib/math
+				-I. -I../../shared -I../../lib/math
 ifneq ($(shell uname -s), Darwin)
 	CXXFLAGS	+=	-fno-gnu-unique
 endif
+LDFLAGS	=	-L$(ROOT)/lib/math/ -lmath
 CPPFLAGS	=	\
 
 BIN_DIR	=	bin
@@ -30,7 +31,7 @@ all:	$(PLUGIN)
 
 $(PLUGIN):	$(OBJS)
 	@mkdir -p $(PLUGINS_DIR)
-	$(CXX) -shared -o $(PLUGIN) $(OBJS) $(SHARED_OBJS)
+	$(CXX) -shared -o $(PLUGIN) $(OBJS) $(SHARED_OBJS) $(LDFLAGS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
