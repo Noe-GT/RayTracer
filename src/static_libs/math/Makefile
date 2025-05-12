@@ -25,7 +25,7 @@ NAME         = 		../libmath.a
 LIB          = 		-L
 
 CFLAGS       = 		-g3
-CXXFLAGS     = 		-Wall -Wextra
+CXXFLAGS     = 		-Wall -Wextra -g3
 ##################################################################
 
 all: $(NAME)

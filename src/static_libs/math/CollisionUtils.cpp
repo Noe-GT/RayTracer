@@ -156,19 +156,18 @@ void math::CollisionUtils::computeShadows(
     const math::Color &ambiantColor)
 {
     math::Color materialColor = primitive.getMaterial().GetColor();
-    float lightIntensity = 1.0f / std::max(1.0f, static_cast<float>(lights.size()));
     math::Color finalColor = {ambiantColor._r * 0.2f, ambiantColor._g * 0.2f, ambiantColor._b * 0.2f};
 
     for (const auto &light : lights) {
         math::Vector lightDir = (light->getOrigin() - _hitPoint);
         double distToLight = lightDir.Length();
         lightDir.normalize();
-        bool inShadow = false;
         math::Vector epsilon = _normal * 0.001f;
         math::Ray shadowRay;
         shadowRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
         shadowRay._direction = lightDir;
         float shadowFactor = 1.0f;
+        float tmpShadowFactor;
         for (auto &obj : objs) {
             if (obj->getID() == primitive.getID())
                 continue;
@@ -177,7 +176,8 @@ void math::CollisionUtils::computeShadows(
             math::CollisionUtils tmp = obj->Collide(shadowRay);
             if (tmp.getDiscriminant() >= 0) {
                 if (tmp.getT() > 0.001f && tmp.getT() < distToLight) {
-                    shadowFactor -= std::max(0.1, 1.0 - obj->getMaterial().getTransparency());
+                    tmpShadowFactor = std::max(0.1, obj->getMaterial().getTransparency());
+                    shadowFactor = std::min(shadowFactor, tmpShadowFactor);
                 }
             }
         }

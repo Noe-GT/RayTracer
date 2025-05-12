@@ -50,6 +50,8 @@ math::CollisionUtils Sphere::Collide(math::Ray& ray)
     CU.setA(ray._direction.dotProduct(ray._direction));
     CU.setB(2 * oc.dotProduct(ray._direction));
     CU.setT((-CU.getB() - sqrt(discr)) / (2 * CU.getA()));
+    CU.setC(oc.dotProduct(oc) - (_radius * _radius));
+    CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
     return CU;
 }
 

@@ -12,7 +12,7 @@ PLUGINS_DIR		=	../dynamic_libs_bin/
 
 PLUGINS			=	sphere										\
 					SFML										\
-					# directional									\
+					InfinitePlan								\
 ##################################################################
 
 all:
