@@ -7,5 +7,5 @@
 
 #pragma once
 
-#define PLUGINS_DIR "../../plugins"
+#define PLUGINS_DIR "plugins/"
 #define LOADER_INSTANCE_NAME "entryPoint"
