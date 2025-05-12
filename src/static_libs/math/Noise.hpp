@@ -7,17 +7,21 @@
 
 #pragma once
 
+#include <vector>
+#include <array>
+#include <random>
+
 namespace math {
     class Noise {
         public:
             Noise();
             Noise(int seed);
-            ~Noise();
-            double getNoise(double x, double y, double z,
-                double intensity = 1.0) const;
+            ~Noise() = default;
+
+            double getNoise(double x, double y, double z, double intensity = 1.0) const;
             double getNoiseFBM(double x, double y, double z, double intensity = 1.0,
-                int octaves = 4, double lacunarity = 2.0,
-                double persistence = 0.5) const;
+                            int octaves = 4, double lacunarity = 2.0,
+                            double persistence = 0.5) const;
 
             void setSeed(int seed);
 
@@ -29,7 +33,7 @@ namespace math {
             double perlin(double x, double y, double z) const;
 
             int _seed;
-            double **_gradients;
-            int _permutation[512];
+            std::vector<std::array<double, 3>> _gradients;
+            std::array<int, 512> _permutation;
     };
 };
