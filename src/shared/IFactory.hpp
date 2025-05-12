@@ -10,7 +10,7 @@
 
 #include "IPrimitive.hpp"
 #include "IGraphical.hpp"
-#include "ITransformations.hpp"
+#include "ITransformation.hpp"
 
 namespace rayTracer {
     template <typename T>
@@ -29,10 +29,10 @@ namespace rayTracer {
     };
 
     template <typename T>
-    class IFactory<ITransformations<T>> {
+    class IFactory<ITransformation<T>> {
         public:
             virtual ~IFactory() = default;
-            virtual std::shared_ptr<ITransformations<T>> build(T x, T y, T z) = 0;
+            virtual std::shared_ptr<ITransformation<T>> build(T x, T y, T z) = 0;
     };
 };
 
