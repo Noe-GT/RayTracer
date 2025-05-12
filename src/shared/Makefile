@@ -5,9 +5,11 @@
 ## Makefile
 ##
 
+SRCS_DIR	=	..
+
 CXX	=	g++
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
-				-I. -I../lib/math
+				-I. -I$(SRCS_DIR)/lib/math
 LDFLAGS	=	-lconfig++
 CPPFLAGS	=	\
 

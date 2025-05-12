@@ -5,9 +5,11 @@
 ## Makefile
 ##
 
+SRCS_DIR	=	../..
+
 CXX	=	g++
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
-				-I. -I../../shared
+				-I. -I$(SRCS_DIR)/shared
 CPPFLAGS	=	\
 
 BIN_DIR	=	bin

@@ -7,10 +7,12 @@
 
 ROOT	=	../..
 
+SRCS_DIR	=	..
+
 CXX	=	g++
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
-				-I. -I../shared -I../lib/math
-LDFLAGS	=	-lconfig++ -L../lib/math -lmath
+				-I. -I$(SRCS_DIR)/shared -I$(SRCS_DIR)/lib/math
+LDFLAGS	=	-lconfig++ -L$(SRCS_DIR)/lib/math -lmath
 CPPFLAGS	=	\
 
 BIN_DIR	=	bin
