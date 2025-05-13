@@ -9,6 +9,7 @@
 rayTracer::RayTracer::RayTracer(std::string configFilePath):
     _rayDefinition(1),
     _outputFilePath("render.ppm"),
+    _showRender(false),
     _pluginHandler(),
     _parser(this->_pluginHandler),
     _scene(this->_pluginHandler)
@@ -34,12 +35,14 @@ void rayTracer::RayTracer::render()
             if (this->_graphical)
                 dispVector.back().push_back(this->_image[y][x].getColor());
         }
-        if (this->_graphical)
+        if (this->_showRender && this->_graphical)
             this->_graphical->display(dispVector);
     };
     std::cout << "Render completed." << std::endl;
-    if (this->_graphical)
+    if (this->_graphical) {
+        this->_graphical->display(dispVector);
         this->_graphical->idle();
+    }
 }
 
 void rayTracer::RayTracer::out()
@@ -70,6 +73,11 @@ void rayTracer::RayTracer::setGraphical(std::shared_ptr<IGraphical> graphical)
 void rayTracer::RayTracer::setRayDefinition(int rayDefinition)
 {
     this->_rayDefinition = rayDefinition;
+}
+
+void rayTracer::RayTracer::setShowRender(bool showRender)
+{
+    this->_showRender = showRender;
 }
 
 std::pair<size_t, size_t> rayTracer::RayTracer::getImageResolution() const
