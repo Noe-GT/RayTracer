@@ -24,6 +24,7 @@ void rayTracer::RayTracer::render()
 {
     std::vector<std::vector<math::Color>> dispVector;
 
+    std::cout << "Rendering..." << std::endl;
     for (std::size_t y = 0; y != this->_image.size(); y++) {
         if (this->_graphical)
             dispVector.push_back(std::vector<math::Color>());
@@ -36,6 +37,7 @@ void rayTracer::RayTracer::render()
         if (this->_graphical)
             this->_graphical->display(dispVector);
     };
+    std::cout << "Render completed." << std::endl;
     if (this->_graphical)
         this->_graphical->idle();
 }
@@ -52,6 +54,7 @@ void rayTracer::RayTracer::out()
         }
     }
     file.close();
+    std::cout << "Render saved as: " << this->_outputFilePath << std::endl;
 }
 
 rayTracer::Scene &rayTracer::RayTracer::getScene()
