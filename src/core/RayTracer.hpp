@@ -20,9 +20,11 @@ namespace rayTracer {
             void setGraphical(std::shared_ptr<IGraphical> graphical);
             void setImage(const std::pair<size_t, size_t> &resolution);
             void setOutputFilePath(const std::string &outputFilePath);
+            void setRayDefinition(int rayDefinition);
             std::pair<size_t, size_t>getImageResolution() const;
 
         private:
+            int _rayDefinition;
             std::string _outputFilePath;
             std::shared_ptr<IGraphical> _graphical;
             rayTracer::PluginHandler _pluginHandler;

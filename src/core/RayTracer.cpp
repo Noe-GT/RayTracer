@@ -7,6 +7,7 @@
 #include "RayTracer.hpp"
 
 rayTracer::RayTracer::RayTracer(std::string configFilePath):
+    _rayDefinition(1),
     _outputFilePath("render.ppm"),
     _pluginHandler(),
     _parser(this->_pluginHandler),
@@ -63,6 +64,11 @@ void rayTracer::RayTracer::setGraphical(std::shared_ptr<IGraphical> graphical)
     this->_graphical = std::move(graphical);
 }
 
+void rayTracer::RayTracer::setRayDefinition(int rayDefinition)
+{
+    this->_rayDefinition = rayDefinition;
+}
+
 std::pair<size_t, size_t> rayTracer::RayTracer::getImageResolution() const
 {
     if (this->_image.size() <= 0)
@@ -76,7 +82,7 @@ void rayTracer::RayTracer::setImage(const std::pair<size_t, size_t> &resolution)
     for (size_t y = 0; y < resolution.second; ++y) {
         this->_image[y].resize(resolution.first);
         for (size_t x = 0; x < resolution.first; ++x) {
-            this->_image[y][x] = rayTracer::Pixel(1, x, y, resolution.first, resolution.second, this->_scene);
+            this->_image[y][x] = rayTracer::Pixel(this->_rayDefinition, x, y, resolution.first, resolution.second, this->_scene);
         }
     }
 }

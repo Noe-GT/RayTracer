@@ -104,3 +104,15 @@ void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
         scene._camera.setFov(cameraConf["fieldOfView"]);
     }
 }
+
+void rayTracer::Parser::parseProcessing(rayTracer::RayTracer &rayTracer)
+{
+    const libconfig::Setting &processConf = config.lookup("processing");
+    int rayDefinition;
+
+    if (processConf.exists("rayDefinition")) {
+        rayDefinition = processConf["rayDefinition"];
+        if (rayDefinition > 1)
+            rayTracer.setRayDefinition(rayDefinition);
+    }
+}
