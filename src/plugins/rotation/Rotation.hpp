@@ -8,7 +8,7 @@
 #ifndef ROTATION_HPP_
 #define ROTATION_HPP_
 
-#include "ATransformations.hpp"
+#include "ATransformation.hpp"
 #include "Matrix.hpp"
 #include "IFactory.hpp"
 #include "PluginTypes.hpp"

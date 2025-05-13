@@ -8,7 +8,7 @@
 #ifndef SCALING_HPP_
 #define SCALING_HPP_
 
-#include "ATransformations.hpp"
+#include "ATransformation.hpp"
 #include "Matrix.hpp"
 #include "IFactory.hpp"
 #include "PluginTypes.hpp"

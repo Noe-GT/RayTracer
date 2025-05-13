@@ -31,6 +31,10 @@ namespace rayTracer {
             void parseCamera(rayTracer::Scene &scene);
             void parseGraphical(rayTracer::RayTracer &rayTracer);
             void parseImage(rayTracer::RayTracer &rayTracer);
+            void parseTransformation(rayTracer::Scene &scene, const libconfig::Setting &primitive);
+            std::unique_ptr<Composite> addTransformation(rayTracer::Scene &scene, const libconfig::Setting &primitive,std::vector<Composite> &transformations);
+            std::unique_ptr<Composite> createTransformation(rayTracer::Scene &scene, const libconfig::Setting &primitive, const std::string &transformationType, std::vector<Composite> &transformations);
+            bool hasTransformations(const libconfig::Setting &primitive);
 
             const rayTracer::PluginHandler &_pluginHandler;
             libconfig::Config config;

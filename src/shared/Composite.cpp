@@ -7,10 +7,37 @@
 
 #include "Composite.hpp"
 
-Composite::Composite(IPrimitive &primitive): _primitive(std::make_unique<IPrimitive>(primitive)), _transformation(nullptr)
+Composite::Composite(std::shared_ptr<IPrimitive> primitive)
+    : _primitive(primitive), _transformation(nullptr)
 {
 }
 
-Composite::Composite(ITransformation<double> &transformation): _transformation(std::make_unique<ITransformation<double>>(transformation)), _primitive(nullptr)
+Composite::Composite(std::shared_ptr<ITransformation<double>> transformation)
+    : _primitive(nullptr), _transformation(transformation)
 {
+}
+
+void Composite::addChild(Composite child)
+{
+    _children.push_back(std::move(child));
+}
+
+std::shared_ptr<IPrimitive> Composite::getPrimitive() const
+{
+    return _primitive;
+}
+
+std::shared_ptr<ITransformation<double>> Composite::getTransformation() const
+{
+    return _transformation;
+}
+
+const std::vector<Composite>& Composite::getChildren() const
+{
+    return _children;
+}
+
+bool Composite::isSameTransformation(const std::shared_ptr<ITransformation<double>>& other) const
+{
+    return false;
 }

@@ -11,6 +11,7 @@
 #include "IPrimitive.hpp"
 #include "Camera.hpp"
 #include "PluginHandler.hpp"
+#include "Composite.hpp"
 #include <vector>
 #include <memory>
 
@@ -20,9 +21,16 @@ namespace rayTracer {
             Scene(const PluginHandler &PluginHandler);
             ~Scene();
 
+            void addComposite(const Composite &composite);
+            int getNextId();
+            const std::vector<Composite>& getComposites() const;
+
             math::Color _ambiantLightColor;
             double _ambiantLightIntensity;
             Camera _camera;
-            std::vector<Composite> _obj; //TODO:  change type to use composite;
+            std::vector<Composite> _composites;
+            
+        private:
+            int _nextId;
     };
 };

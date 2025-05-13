@@ -30,6 +30,9 @@ void rayTracer::PluginHandler::cstrPlugin(const std::string &fileName, const Lib
         case rayTracer::PluginType::GRAPHICAL:
             this->_graphicalPlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<IGraphical>(loader, pluginName));
             break;
+        case rayTracer::PluginType::TRANSFORMATION:
+            this->_transformationPlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<ITransformation<double>>(loader, pluginName));
+            break;
         default:
             break;
     }
@@ -75,4 +78,9 @@ const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &rayTr
 const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &rayTracer::PluginHandler::getGraphicalPlugins() const
 {
     return this->_graphicalPlugins;
+}
+
+const std::map<std::string, rayTracer::PluginHandler::Plugin<ITransformation<double>>> &rayTracer::PluginHandler::getTransformationPlugins() const
+{
+    return this->_transformationPlugins;
 }
