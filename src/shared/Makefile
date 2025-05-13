@@ -10,7 +10,6 @@ SRCS_DIR	=	..
 CXX	=	g++
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
 				-I. -I$(SRCS_DIR)/lib/math
-LDFLAGS	=	-lconfig++
 CPPFLAGS	=	\
 
 BIN_DIR	=	bin
@@ -25,7 +24,7 @@ all:	$(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
+	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(CPPFLAGS)
 
 clean:
 	rm -rf $(BIN_DIR)
