@@ -182,11 +182,11 @@ void math::CollisionUtils::computeShadows(
             }
         }
         float diffuse = std::max(0.0, _normal.dotProduct(lightDir)) * (shadowFactor);
-        finalColor += materialColor * (diffuse * (1 / light->getMaterial().getBrightness()));
+        finalColor += materialColor * (diffuse * (light->getMaterial().getBrightness()));
         finalColor._r = std::min(1.0, finalColor._r);
         finalColor._g = std::min(1.0, finalColor._g);
         finalColor._b = std::min(1.0, finalColor._b);
-        finalColor += (light->getMaterial().GetColor() / 2) * (diffuse * (1 / light->getMaterial().getBrightness()));
+        finalColor += (light->getMaterial().GetColor() / 2) * (diffuse * (light->getMaterial().getBrightness()));
     }
     finalColor._r = std::min(1.0, finalColor._r);
     finalColor._g = std::min(1.0, finalColor._g);
