@@ -1,6 +1,6 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
-#include "../src/shared/include/Ray.hpp"
+#include "../src/Ray.hpp"
 
 Test(Ray, default_constructor) {
     {

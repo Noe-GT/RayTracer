@@ -10,11 +10,11 @@
 
 #include <utility>
 #include <vector>
-#include "../static_libs/math/Color.hpp"
+#include "Color.hpp"
 
 class IGraphical {
     public:
-        ~IGraphical() = default;
+        virtual ~IGraphical() = default;
         virtual void display(std::vector<std::vector<math::Color>> image) = 0;
         virtual void idle() = 0;
 };
