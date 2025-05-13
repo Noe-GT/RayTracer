@@ -17,8 +17,19 @@ ALL_DIRS	=	$(LIBS_DIR)	\
 				$(PLUGINS_DIR)	\
 				$(CORE_DIR)	\
 
-all:
-	$(foreach file, $(ALL_DIRS), make -C $(file);)
+all:	libs shared plugins core
+
+libs:
+	make -C $(LIBS_DIR)
+
+shared:
+	make -C $(SHARED_DIR)
+
+plugins:
+	make -C $(PLUGINS_DIR)
+
+core:
+	make -C $(CORE_DIR)
 
 clean:
 	$(foreach file, $(ALL_DIRS), make clean -C $(file);)
