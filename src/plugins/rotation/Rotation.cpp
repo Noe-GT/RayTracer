@@ -8,7 +8,7 @@
 #include "Rotation.hpp"
 
 Rotation::Rotation(double x, double y, double z) :
-    ATransformations<double>(3, 3)
+    ATransformations(3, 3)
 {
     for (size_t i = 0; i <= 2; i++)
         this->_matrix.setMatrix(i, i, 1.0);
@@ -34,14 +34,14 @@ Rotation::Rotation(double x, double y, double z) :
     this->_matrix = mZ * (mY * mX);
 }
 
-std::shared_ptr<ITransformations<double>> RotationFactory::build(double x, double y, double z)
+std::shared_ptr<ITransformations> RotationFactory::build(double x, double y, double z)
 {
     return std::make_shared<Rotation>(x, y, z);
 }
 
 extern "C"
 {
-    rayTracer::IFactory<ITransformations<double>> *entryPoint()
+    rayTracer::IFactory<ITransformations> *entryPoint()
     {
         return new RotationFactory;
     }

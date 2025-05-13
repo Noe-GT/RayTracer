@@ -10,12 +10,11 @@
 
 #include "Matrix.hpp"
 
-template<typename T>
 class ITransformations
 {
     public:
         virtual ~ITransformations() = default;
-        virtual math::Matrix<T> getMatrix() const = 0;
+        virtual math::Matrix<double> getMatrix() const = 0;
 };
 
 #endif /* !ITRANSFORMATIONS_HPP_ */

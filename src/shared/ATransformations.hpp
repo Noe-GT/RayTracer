@@ -11,8 +11,7 @@
 #include "ITransformations.hpp"
 #include "Matrix.hpp"
 
-template<typename T>
-class ATransformations : public ITransformations<T>
+class ATransformations : public ITransformations
 {
     public:
         ATransformations(size_t x, size_t y) :
@@ -22,13 +21,13 @@ class ATransformations : public ITransformations<T>
 
         ~ATransformations() = default;
 
-        math::Matrix<T> getMatrix() const final
+        math::Matrix<double> getMatrix() const final
         {
             return this->_matrix;
         }
 
     protected:
-        math::Matrix<T> _matrix;
+        math::Matrix<double> _matrix;
 };
 
 #endif /* !ATRANSFORMATIONS_HPP_ */

@@ -62,5 +62,4 @@ void APrimitive::configure(const libconfig::Setting &setting, int id)
                 static_cast<double>(static_cast<int>(setting["material"]["color"]["b"])) / 255.999);
     }
     this->_material = Material(reflectivity, blurness, transparency, brightness, refractness, color);
-    std::cout << this->_material << std::endl;
 }

@@ -13,19 +13,19 @@
 #include "IFactory.hpp"
 #include "PluginTypes.hpp"
 
-class Scaling : public ATransformations<double>
+class Scaling : public ATransformations
 {
     public:
         Scaling(double x, double y, double z);
         ~Scaling() = default;
 };
 
-class ScalingFactory: public rayTracer::IFactory<ITransformations<double>> {
+class ScalingFactory: public rayTracer::IFactory<ITransformations> {
     public:
         ScalingFactory() = default;
         ~ScalingFactory() = default;
 
-        std::shared_ptr<ITransformations<double>> build(double x, double y, double z) final;
+        std::shared_ptr<ITransformations> build(double x, double y, double z) final;
 };
 
 #endif /* !SCALING_HPP_ */
