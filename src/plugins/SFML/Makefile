@@ -26,7 +26,7 @@ SRCS	=	SFML.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-SHARED_OBJS	=	$(wildcard $(SRCS_DIR)/shared/bin/*.o)
+SHARED_OBJS	=	\
 
 PLUGIN	=	$(PLUGINS_DIR)/SFML.so
 

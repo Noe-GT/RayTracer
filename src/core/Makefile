@@ -28,7 +28,8 @@ SRCS	=	Main.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-SHARED_OBJS	=	$(wildcard $(SRCS_DIR)/shared/bin/*.o)
+SHARED_OBJS	=	$(SRCS_DIR)/shared/bin/Exceptions.o	\
+				$(SRCS_DIR)/shared/bin/Material.o	\
 
 EXEC	=	$(ROOT)/raytracer
 
