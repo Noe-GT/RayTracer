@@ -5,6 +5,8 @@
 ## Makefile
 ##
 
+include ../../Messages.mk
+
 PLUGINS	=	rotation	\
 			scaling	\
 			SFML	\
@@ -17,12 +19,13 @@ PLUGINS_DIR	=	../../plugins
 all:
 	@mkdir -p $(PLUGINS_DIR)
 	$(foreach file, $(PLUGINS), make -C $(file);)
+	@echo "  $(BUILD_MSG) Plugins built"
 
 clean:
 	$(foreach file, $(PLUGINS), make clean -C $(file);)
-	@rm -rf $(PLUGINS_DIR)
 
 fclean:	clean
+	rm -rf $(PLUGINS_DIR)
 
 re:	fclean all
 
