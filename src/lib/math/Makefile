@@ -17,7 +17,7 @@ ifeq ($(shell uname), Darwin)
     AR_FLAGS = -static -o
 else
 	AR = ar
-	AR_FLAGS = rc
+	AR_FLAGS = rc -o
 endif
 
 BIN_DIR	=	bin
