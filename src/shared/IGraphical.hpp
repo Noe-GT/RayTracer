@@ -10,7 +10,7 @@
 
 #include <utility>
 #include <vector>
-#include "../static_libs/math/Color.hpp"
+#include "Color.hpp"
 
 class IGraphical {
     public:

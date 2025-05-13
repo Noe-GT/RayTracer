@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "ITransformation.hpp"
-#include "../static_libs/math/Matrix.hpp"
+#include "ITransformations.hpp"
+#include "Matrix.hpp"
 
 template<typename T>
 class ATransformation : public ITransformation<T>

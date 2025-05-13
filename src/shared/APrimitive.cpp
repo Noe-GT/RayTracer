@@ -38,14 +38,20 @@ void APrimitive::configure(const libconfig::Setting &setting, int id)
     math::Color color;
 
     if (setting.exists("material")) {
-        if (setting["material"].exists("reflectivity"))
+        if (setting["material"].exists("reflectivity")) {
             reflectivity = setting["material"]["reflectivity"];
+            reflectivity = std::clamp(reflectivity, 0.0, 1.0);
+        }
+        if (setting["material"].exists("transparency")) {
+            transparency = setting["material"]["transparency"];
+            transparency = std::clamp(transparency, 0.0, 1.0);
+        }
+        if (setting["material"].exists("brightness")) {
+            brightness = setting["material"]["brightness"];
+            brightness = std::clamp(brightness, 0.0, 1.0);
+        }
         if (setting["material"].exists("blurness"))
             blurness = setting["material"]["blurness"];
-        if (setting["material"].exists("transparency"))
-            transparency = setting["material"]["transparency"];
-        if (setting["material"].exists("brightness"))
-            brightness = setting["material"]["brightness"];
         if (setting["material"].exists("refractness"))
             refractness = setting["material"]["refractness"];
         if (setting["material"].exists("color") && setting["material"]["color"].exists("r") &&

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../static_libs/math/Matrix.hpp"
+#include "Matrix.hpp"
 
 template<typename T>
 class ITransformation
