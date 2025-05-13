@@ -25,7 +25,9 @@ SRCS	=	Translation.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-SHARED_OBJS	=	\
+SHARED_OBJS	=	$(SRCS_DIR)/shared/bin/APrimitive.o	\
+				$(SRCS_DIR)/shared/bin/Material.o	\
+				$(SRCS_DIR)/shared/bin/Exceptions.o	\
 
 PLUGIN	=	$(PLUGINS_DIR)/translation.so
 
