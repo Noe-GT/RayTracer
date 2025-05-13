@@ -1,3 +1,10 @@
+##
+## EPITECH PROJECT, 2025
+## Raytracer
+## File description:
+## Messages
+##
+
 MAKEFLAGS += -s
 BUILD_MSG=\033[1m\033[1;32m[BUILD]:\033[0m
 LIB_MSG=\033[1m\033[1;35m[LIB]:\033[0m
