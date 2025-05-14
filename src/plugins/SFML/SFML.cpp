@@ -8,7 +8,7 @@
 #include "SFML.hpp"
 
 SFML::SFML(size_t width, size_t height):
-    _window(sf::VideoMode(width, height), "RayTracer")
+    _window(sf::VideoMode(width, height), "RayTracer", sf::Style::Titlebar | sf::Style::Close)
 {
 }
 

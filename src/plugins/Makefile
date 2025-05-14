@@ -13,6 +13,7 @@ PLUGINS	=	rotation	\
 			sphere	\
 			translation	\
 			infinite_plan	\
+			cylinder	\
 
 PLUGINS_DIR	=	../../plugins
 
