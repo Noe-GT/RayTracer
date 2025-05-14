@@ -14,5 +14,6 @@ class ITransformation
 {
     public:
         virtual ~ITransformation() = default;
+        virtual const std::string getName() = 0;
         virtual math::Matrix<T> getMatrix() const = 0;
 };

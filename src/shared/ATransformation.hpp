@@ -14,8 +14,8 @@ template<typename T>
 class ATransformation : public ITransformation<T>
 {
     public:
-        ATransformation(size_t x, size_t y) :
-            _matrix(x, y)
+        ATransformation(size_t x, size_t y, std::string name) :
+            _matrix(x, y), _name(name)
         {
         }
 
@@ -26,6 +26,11 @@ class ATransformation : public ITransformation<T>
             return this->_matrix;
         }
 
+        const std::string getName() override {
+            return this->_name;
+        }
+
     protected:
         math::Matrix<T> _matrix;
+        std::string _name;
 };

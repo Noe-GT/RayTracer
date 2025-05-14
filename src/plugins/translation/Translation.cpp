@@ -8,7 +8,7 @@
 #include "Translation.hpp"
 
 Translation::Translation(int x, int y, int z) :
-    ATransformation<int>(1, 3)
+    ATransformation<int>(1, 3, "translation")
 {
     this->_matrix.setMatrix(0, 0, x);
     this->_matrix.setMatrix(0, 1, y);

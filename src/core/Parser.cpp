@@ -37,19 +37,6 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
     const libconfig::Setting &primitives = config.lookup("primitives");
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &pPlugins = this->_pluginHandler.getPrimitivePlugins();
 
-    for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> pPair : pPlugins) {
-        if (primitives.exists(pPair.first + "s")) {
-            libconfig::Setting &primitiveList = primitives.lookup(pPair.first + "s");
-            this->parsePrimitive(scene, primitiveList, pPair.second);
-        }
-    }
-}
-
-void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
-{
-    const libconfig::Setting &primitives = config.lookup("primitives");
-    const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &pPlugins = this->_pluginHandler.getPrimitivePlugins();
-
     std::vector<Composite> transformations;
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> pPair : pPlugins) {
         if (primitives.exists(pPair.first + "s")) {
@@ -62,7 +49,6 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
                 if (hasTransformations(primitiveList[i])) {
                     std::unique_ptr<Composite> transformationComposite = 
                         addTransformation(scene, primitiveList[i], transformations);
-                    
                     if (transformationComposite) {
                         transformationComposite->addChild(primitiveComposite);
                         scene.addComposite(*transformationComposite);
@@ -101,6 +87,7 @@ std::unique_ptr<Composite> rayTracer::Parser::addTransformation(rayTracer::Scene
 
 std::unique_ptr<Composite> rayTracer::Parser::createTransformation(rayTracer::Scene &scene, const libconfig::Setting &primitive, const std::string &transformationType, std::vector<Composite> &transformations)
 {
+    (void)scene;
     const libconfig::Setting &transformationSetting = primitive.lookup(transformationType);
     double x = 0.0, y = 0.0, z = 0.0;
     if (transformationSetting.exists("x"))

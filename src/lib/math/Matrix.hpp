@@ -129,6 +129,19 @@ namespace math
                 return res;
             }
 
+            Matrix operator==(const Matrix &matrix) const
+            {
+                if (this->getWidth() != matrix.getWidth() || this->getHeight() != matrix.getHeight())
+                    return false;
+                for (size_t i = 0; i != this->_matrix.end(); i++) {
+                    for (size_t j = 0; i != this->_matrix[0].end(); i++) {
+                        if (this->_matrix[i][j] != matrix.getMatrix()[i][j])
+                            return false;
+                    }
+                }
+                return true;
+            }
+
             Matrix &operator*=(int n)
             {
                 for (size_t y = 0; y < this->getHeight(); y++)

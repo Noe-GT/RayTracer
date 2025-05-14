@@ -8,7 +8,7 @@
 #include "Rotation.hpp"
 
 Rotation::Rotation(double x, double y, double z) :
-    ATransformation<double>(3, 3)
+    ATransformation<double>(3, 3, "rotation")
 {
     for (size_t i = 0; i <= 2; i++)
         this->_matrix.setMatrix(i, i, 1.0);
