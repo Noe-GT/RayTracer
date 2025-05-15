@@ -28,6 +28,8 @@ class Cone: public APrimitive {
         double &getSize() final;
 
     private:
+        bool intersectBase(math::Ray& ray, math::CollisionUtils &CU);
+        bool intersectCone(math::Ray& ray, math::CollisionUtils &CU);
         Material _material;
         double _radius;
         double _height;
