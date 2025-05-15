@@ -13,13 +13,13 @@
 #include <memory>
 #include "PluginTypes.hpp"
 
-class Cylinder: public APrimitive {
+class Cylinder : public APrimitive {
     public:
         Cylinder();
         Cylinder(math::Point origin, double radius, double height);
         ~Cylinder() = default;
 
-        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
+        bool Intersect(math::Ray& ray, const std::vector<std::shared_ptr<IPrimitive>> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs) final;
         math::CollisionUtils Collide(math::Ray& ray) final;
         void configure(const libconfig::Setting &setting, int id) final;
 
@@ -27,12 +27,12 @@ class Cylinder: public APrimitive {
         double &getSize() final;
 
     private:
-        Material _material;
         double _radius;
         double _height;
+        Material _material;
 };
 
-class CylinderFactory: public rayTracer::IFactory<IPrimitive> {
+class CylinderFactory : public rayTracer::IFactory<IPrimitive> {
     public:
         CylinderFactory() = default;
         ~CylinderFactory() = default;
