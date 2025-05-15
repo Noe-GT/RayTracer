@@ -9,8 +9,7 @@
 
 Cone::Cone():
     _radius(0.1),
-    _height(1.0),
-    _orientation(1, 0, 0)
+    _height(1.0)
 {
 }
 
@@ -29,8 +28,11 @@ void Cone::configure(const libconfig::Setting &setting, int id)
         this->_origin._y = setting["y"];
     if (setting.exists("z"))
         this->_origin._z = setting["z"];
-    if (setting.exists("radius"))
+    if (setting.exists("radius")) {
         this->_radius = setting["radius"];
+        if (this->_radius <= 0)
+            throw rayTracer::ConfigException("Cone radius must be positive.");
+    }
     if (setting.exists("height")) {
         this->_height = setting["height"];
         if (this->_height <= 0)
@@ -43,7 +45,8 @@ void Cone::configure(const libconfig::Setting &setting, int id)
         this->_orientation._x = setting["orientation"]["x"];
         this->_orientation._y = setting["orientation"]["y"];
         this->_orientation._z = setting["orientation"]["z"];
-    }
+        this->_orientation = this->_orientation.normalize();
+    } // temporary !!!
 }
 
 double Cone::getDiscriminant(math::Ray &ray)
@@ -59,19 +62,15 @@ double Cone::getDiscriminant(math::Ray &ray)
 math::CollisionUtils Cone::Collide(math::Ray& ray)
 {
     math::CollisionUtils CU;
-    math::Vector coneAxis = this->_orientation.normalize();
     math::Vector oc = ray._origin - this->_origin;
-    double k = this->_radius / this->_height; // radius to height ratio
-    math::Vector rayDir = ray._direction - coneAxis * ray._direction.dotProduct(coneAxis);
-    math::Vector rayOrigin = oc - coneAxis * oc.dotProduct(coneAxis);
+    double k = pow(this->_radius / this->_height, 2.0);
+    math::Vector rayDir = ray._direction - this->_orientation * ray._direction.dotProduct(this->_orientation);
+    math::Vector rayOrigin = oc - this->_orientation * oc.dotProduct(this->_orientation);
 
-    k *= k;
-
-    CU.setA(rayDir.dotProduct(rayDir) - k * pow(ray._direction.dotProduct(coneAxis), 2));
-    CU.setB(2 * (rayDir.dotProduct(rayOrigin) - k * ray._direction.dotProduct(coneAxis) * oc.dotProduct(coneAxis)));
-    CU.setC(rayOrigin.dotProduct(rayOrigin) - k * pow(oc.dotProduct(coneAxis), 2));
+    CU.setA(rayDir.dotProduct(rayDir) - k * pow(ray._direction.dotProduct(this->_orientation), 2));
+    CU.setB(2 * (rayDir.dotProduct(rayOrigin) - k * ray._direction.dotProduct(this->_orientation) * oc.dotProduct(this->_orientation)));
+    CU.setC(rayOrigin.dotProduct(rayOrigin) - k * pow(oc.dotProduct(this->_orientation), 2));
     CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
-
     if (CU.getDiscriminant() >= 0)
         CU.setT((-CU.getB() - sqrt(CU.getDiscriminant())) / (2 * CU.getA()));
     return CU;
@@ -79,26 +78,59 @@ math::CollisionUtils Cone::Collide(math::Ray& ray)
 
 bool Cone::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<IPrimitive>> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs)
 {
-    const math::Color ambiantColor(ray._color);
     math::CollisionUtils CU = this->Collide(ray);
+    bool hitSomething = false;
 
-    CU.setHasCollision(CU.getDiscriminant() >= 0);
-    if (CU.getDiscriminant() < 0 || CU.getT() <= 0.0001)
-        return false;
+    hitSomething = this->intersectCone(ray, CU);
+    if (!hitSomething)
+        hitSomething = this->intersectBase(ray, CU);
+    if (hitSomething) {
+        CU.computeShadows(*this, ray, lights, objs, ray._color);
+        CU.computeTransparency(*this, ray, lights, objs, ray._color);
+        CU.computeReflection(*this, ray, lights, objs, ray._color);
+        return true;
+    }
+    return false;
+}
 
-    math::Vector hitPoint = ray._origin + ray._direction * CU.getT();
-    math::Vector coneAxis = this->_orientation.normalize();
-    double heightAtHit = (hitPoint - this->_origin).dotProduct(coneAxis);
+bool Cone::intersectCone(math::Ray &ray, math::CollisionUtils &CU)
+{
+    math::Vector hitPoint;
+    double hitHeight;
 
-    if (heightAtHit < 0 || heightAtHit > this->_height)
-        return false;
+    if (CU.getDiscriminant() >= 0 && CU.getT() > 0.0001) {
+        hitPoint = ray._origin + ray._direction * CU.getT();
+        hitHeight = (hitPoint - this->_origin).dotProduct(this->_orientation);
+        if (hitHeight >= 0 && hitHeight <= this->_height) {
+            CU.setHitPoint(hitPoint);
+            CU.setNormal(((hitPoint - this->_origin) - this->_orientation * hitHeight).normalize());
+            return true;
+        }
+    }
+    return false;
+}
 
-    CU.setHitPoint(hitPoint);
-    CU.setNormal(math::Vector((hitPoint - this->_origin) - coneAxis * heightAtHit).normalize());
-    CU.computeShadows(*this, ray, lights, objs, ambiantColor);
-    CU.computeTransparency(*this, ray, lights, objs, ambiantColor);
-    CU.computeReflection(*this, ray, lights, objs, ambiantColor);
-    return true;
+bool Cone::intersectBase(math::Ray &ray, math::CollisionUtils &CU)
+{
+    math::Vector baseCenter = this->_origin + this->_orientation * this->_height;
+    math::Vector oc = ray._origin - baseCenter;
+    math::Vector hitPoint;
+    double denom = ray._direction.dotProduct(this->_orientation);
+    double t;
+
+    if (std::abs(denom) > 1e-6) {
+        t = -oc.dotProduct(this->_orientation) / denom;
+        if (t > 0.0001) {
+            hitPoint = ray._origin + ray._direction * t;
+            if ((hitPoint - baseCenter).Length() <= this->_radius) {
+                CU.setT(t);
+                CU.setHitPoint(hitPoint);
+                CU.setNormal(this->_orientation);
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 double &Cone::getSize()
