@@ -6,12 +6,10 @@
 */
 
 #include "Pixel.hpp"
-
+#include <float.h>
 rayTracer::Pixel::Pixel()
     : _colorMean(0, 0, 0)
 {
-    // double jitterX = (rand()/(double)RAND_MAX - 0.5);
-    // double jitterY = (rand()/(double)RAND_MAX - 0.5);
 }
 
 rayTracer::Pixel::Pixel(int definition, int x, int y, int imageWidth, int imageHeight, const Scene& scene)
@@ -25,6 +23,7 @@ rayTracer::Pixel::Pixel(int definition, int x, int y, int imageWidth, int imageH
         double jitterY = (rand()/(double)RAND_MAX - 0.5);
 
         math::Ray ray = scene._camera.generateRay(x + jitterX, y + jitterY, imageWidth, imageHeight);
+        ray._direction.normalize();
         if (ray._direction.Length() < 0.0001) {
             throw std::runtime_error("Generated ray has zero direction");
         }
@@ -35,6 +34,8 @@ rayTracer::Pixel::Pixel(int definition, int x, int y, int imageWidth, int imageH
 
 void rayTracer::Pixel::simulateRays(const Scene& scene)
 {
+    double closestDistance = DBL_MAX;
+
     if (_rays.empty())
         return;
     std::vector<std::shared_ptr<IPrimitive>> light;
@@ -44,13 +45,23 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
         }
     }
     for (math::Ray &ray : _rays) {
-        for (const std::shared_ptr<IPrimitive> &obj : scene._obj) {
-            if (obj->Intersect(ray, light, scene._obj))
-                break;
+        math::Color color;
+        ray._direction.normalize();
+        for (auto &obj : scene._obj) {
+            math::CollisionUtils CU = obj->Collide(ray);
+            if (CU.hasCollision()) {
+                if (CU.getE() < closestDistance) {
+                    if (closestDistance != DBL_MAX)
+                    ray._color = color;
+                    std::clog << CU.getE() << " | " << closestDistance << std::endl;
+                    obj->Intersect(ray, light, scene._obj);
+                    closestDistance = CU.getE();
+                }
+            }
         }
         ray._color = ray._color * scene._ambiantLightIntensity;
         ray._color += {(scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))};
-        }
+    }
     calculateMeanColor();
 }
 

@@ -44,14 +44,36 @@ double InfinitePlan::getDiscriminant(math::Ray &ray)
 math::CollisionUtils InfinitePlan::Collide(math::Ray& ray)
 {
     math::CollisionUtils CU;
-    double discr = getDiscriminant(ray);
-    math::Vector oc = ray._origin - getOrigin();
+    float denom = ray._direction._y;
+    CU.setA(0.0f);
+    CU.setB(0.0f);
+    CU.setC(0.0f);
+    CU.setDiscriminant(-1.0f);
+    CU.setT(-1.0f);
+    CU.setE(0.0f);
+    CU.setHasCollision(false);
+    CU.setHitPoint(math::Vector(0, 0, 0));
+    CU.setNormal(math::Vector(0, 0, 0));
 
-    CU.setA(ray._direction.dotProduct(ray._direction));
-    CU.setB(2 * oc.dotProduct(ray._direction));
-    CU.setT((-CU.getB() - sqrt(discr)) / (2 * CU.getA()));
-    CU.setC(oc.dotProduct(oc) - (_radius * _radius));
-    CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
+    if (fabs(denom) > 0.0001f) {
+        float t = -(ray._origin._y - _origin._y) / denom;
+        if (t >= 0.0001f) {
+            CU.setA(1.0f);
+            CU.setB(0.0f);
+            CU.setC(0.0f);
+            CU.setDiscriminant(1.0f);
+            CU.setT(t);
+            CU.setHasCollision(true);
+            math::Vector hitPoint = ray._origin + ray._direction * t;
+            CU.setHitPoint(hitPoint);
+            CU.setE(30);
+            // CU.setE((hitPoint - ray._origin).Length());
+            math::Vector normal(0, 1, 0);
+            if (denom > 0)
+                normal = math::Vector(0, -1, 0);
+            CU.setNormal(normal);
+        }
+    }
     return CU;
 }
 

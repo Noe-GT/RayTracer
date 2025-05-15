@@ -24,6 +24,7 @@ namespace math {
             double getB() const;
             double getC() const;
             double getT() const;
+            double getE() const;
             double getDiscriminant() const;
             math::Vector getHitPoint() const;
             math::Vector getNormal() const;
@@ -35,6 +36,7 @@ namespace math {
             void setA(double newVal);
             void setB(double newVal);
             void setC(double newVal);
+            void setE(double newVal);
             void setDiscriminant(double newVal);
             void setHasCollision(bool newVal);
 
@@ -59,6 +61,7 @@ namespace math {
         double _b;
         double _c;
         double _t;
+        double _e;
         double _discriminant;
         bool _hasCollision;
         math::Vector _hitPoint;

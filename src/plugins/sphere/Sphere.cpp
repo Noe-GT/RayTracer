@@ -33,6 +33,8 @@ void Sphere::configure(const libconfig::Setting &setting, int id)
 
 double Sphere::getDiscriminant(math::Ray &ray)
 {
+    ray._direction.normalize();
+
     math::Vector oc = ray._origin - _origin;
     double a = ray._direction.dotProduct(ray._direction);
     double b = 2 * oc.dotProduct(ray._direction);
@@ -49,9 +51,14 @@ math::CollisionUtils Sphere::Collide(math::Ray& ray)
 
     CU.setA(ray._direction.dotProduct(ray._direction));
     CU.setB(2 * oc.dotProduct(ray._direction));
-    CU.setT((-CU.getB() - sqrt(discr)) / (2 * CU.getA()));
+    CU.setT((-CU.getB() - sqrt(abs(discr))) / (2 * CU.getA()));
+    std::clog << CU.getT() << std::endl;
+    CU.setHitPoint(ray._origin + ray._direction * CU.getT());
+    math::Vector tmp = {CU.getHitPoint()._x - ray._origin._x, CU.getHitPoint()._y - ray._origin._y, CU.getHitPoint()._z - ray._origin._z};
+    CU.setE(tmp.Length());
     CU.setC(oc.dotProduct(oc) - (_radius * _radius));
-    CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
+    CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA()  * CU.getC()));
+    CU.setHasCollision(CU.getDiscriminant() >= 0);
     return CU;
 }
 
@@ -65,17 +72,11 @@ bool Sphere::Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimi
     CU.setC(oc.dotProduct(oc) - (_radius * _radius));
     CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
     CU.setHasCollision(CU.getDiscriminant() >= 0);
-    if (CU.getDiscriminant() < 0)
-        return false;
-
     CU.setT((-CU.getB() - sqrt(CU.getDiscriminant())) / (2 * CU.getA()));
-    if (CU.getT() <= 0.0001)
-        return false;
     CU.setHitPoint(ray._origin + ray._direction * CU.getT());
     CU.setNormal((CU.getHitPoint() - _origin).normalize());
     if (CU.getNormal().dotProduct(ray._direction) > 0)
         CU.setNormal(CU.getNormal() * -1.0);
-
     CU.computeShadows(*this, ray, lights, objs, ambiantColor);
     CU.computeTransparency(*this, ray, lights, objs, ambiantColor);
     CU.computeReflection(*this, ray, lights, objs, ambiantColor);

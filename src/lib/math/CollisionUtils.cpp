@@ -31,6 +31,11 @@ double math::CollisionUtils::getT() const
     return _t;
 }
 
+double math::CollisionUtils::getE() const
+{
+    return _e;
+}
+
 double math::CollisionUtils::getDiscriminant() const
 {
     return _discriminant;
@@ -76,6 +81,11 @@ void math::CollisionUtils::setA(double newVal)
 void math::CollisionUtils::setB(double newVal)
 {
     this->_b = newVal;
+}
+
+void math::CollisionUtils::setE(double newVal)
+{
+    this->_e = newVal;
 }
 
 void math::CollisionUtils::setC(double newVal)
@@ -176,7 +186,7 @@ void math::CollisionUtils::computeShadows(
             math::CollisionUtils tmp = obj->Collide(shadowRay);
             if (tmp.getDiscriminant() >= 0) {
                 if (tmp.getT() > 0.001f && tmp.getT() < distToLight) {
-                    tmpShadowFactor = std::max(0.1, obj->getMaterial().getTransparency());
+                    tmpShadowFactor = std::max(0.2, obj->getMaterial().getTransparency());
                     shadowFactor = std::min(shadowFactor, tmpShadowFactor);
                 }
             }
