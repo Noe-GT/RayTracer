@@ -16,7 +16,7 @@
 class Translation : public ATransformation<int>
 {
     public:
-        Translation(double x, double y, double z);
+        Translation(int x, int y, int z);
         ~Translation() = default;
 };
 

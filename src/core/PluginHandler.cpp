@@ -48,10 +48,10 @@ void rayTracer::PluginHandler::display() const
     for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> plugin : this->_graphicalPlugins) {
         std::cout << "+--" << plugin.first << std::endl;
     }
-    std::cout << "#Transformations:" << std::endl;
-    for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<ITransformations>> plugin : this->_transformationPlugins) {
-        std::cout << "+--" << plugin.first << std::endl;
-    }
+            std::cout << "#Transformations:" << std::endl;
+            for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<ITransformation<double>>> plugin : this->_transformationPlugins) {
+                std::cout << "+--" << plugin.first << std::endl;
+            }
 }
 
 std::string rayTracer::PluginHandler::getPluginName(const std::string &path) const
