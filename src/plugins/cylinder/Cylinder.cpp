@@ -7,9 +7,9 @@
 
 #include "Cylinder.hpp"
 
-Cylinder::Cylinder():
+Cylinder::Cylinder() :
     _radius(0.5),
-    _height(1)
+    _height(1.0)
 {
 }
 
@@ -42,34 +42,73 @@ double Cylinder::getDiscriminant(math::Ray &ray)
     double b = 2 * oc.dotProduct(ray._direction);
     double c = oc.dotProduct(oc) - (this->_radius * this->_radius);
 
-    return (b * b - 4 * a * c);
+    return b * b - 4 * a * c;
 }
 
 math::CollisionUtils Cylinder::Collide(math::Ray& ray)
 {
     math::CollisionUtils CU;
-    const math::Vector oc = ray._origin - this->_origin;
+    math::Vector oc = ray._origin - _origin;
 
-    CU.setA(ray._direction.dotProduct(ray._direction));
-    CU.setB(2 * oc.dotProduct(ray._direction));
-    CU.setC(oc.dotProduct(oc) - (this->_radius * this->_radius));
-    CU.setDiscriminant((CU.getB() * CU.getB()) - (4 * CU.getA() * CU.getC()));
-    CU.setT((-CU.getB() - sqrt(CU.getDiscriminant())) / (2 * CU.getA()));
+    // Partie latérale : ignore la composante Y (cylindre vertical)
+    double a = ray._direction._x * ray._direction._x + ray._direction._z * ray._direction._z;
+    double b = 2.0 * (oc._x * ray._direction._x + oc._z * ray._direction._z);
+    double c = oc._x * oc._x + oc._z * oc._z - _radius * _radius;
+    double discriminant = b * b - 4 * a * c;
+
+    CU.setA(a);
+    CU.setB(b);
+    CU.setC(c);
+    CU.setDiscriminant(discriminant);
+    CU.setHasCollision(false);
+
+    double tMin = std::numeric_limits<double>::max();
+    math::Point bestHit;
+    math::Vector bestNormal;
+
+    // === Surface latérale ===
+    if (discriminant >= 0 && fabs(a) > 1e-6) {
+        double sqrtDiscr = std::sqrt(discriminant);
+        double t1 = (-b - sqrtDiscr) / (2 * a);
+        double t2 = (-b + sqrtDiscr) / (2 * a);
+
+        for (double t : {t1, t2}) {
+            if (t > 1e-4) {
+                math::Point p = ray._origin + ray._direction * t;
+                double yMin = _origin._y;
+                double yMax = _origin._y + _height;
+
+                if (p._y >= yMin && p._y <= yMax && t < tMin) {
+                    tMin = t;
+                    bestHit = p;
+                    bestNormal = math::Vector(p._x - _origin._x, 0, p._z - _origin._z).normalize();
+                    CU.setHasCollision(true);
+                }
+            }
+        }
+    }
+
+    if (CU.hasCollision()) {
+        CU.setT(tMin);
+        CU.setHitPoint(bestHit);
+        CU.setNormal(bestNormal);
+    }
+
     return CU;
 }
 
-bool Cylinder::Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights, const std::vector <std::shared_ptr<IPrimitive>> &objs)
+bool Cylinder::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<IPrimitive>> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs)
 {
-    const math::Color ambiantColor(ray._color);
-    math::CollisionUtils CU = this->Collide(ray);
-
-    CU.setHasCollision(CU.getDiscriminant() >= 0);
-    if (CU.getDiscriminant() < 0 || CU.getT() <= 0.0001)
+    math::CollisionUtils CU = Collide(ray);
+    if (!CU.hasCollision())
         return false;
-    CU.setHitPoint(ray._origin + ray._direction * CU.getT());
-    CU.setNormal((CU.getHitPoint() - _origin).normalize());
+    if (CU.getT() <= 0.0001)
+        return false;
+
     if (CU.getNormal().dotProduct(ray._direction) > 0)
         CU.setNormal(CU.getNormal() * -1.0);
+
+    math::Color ambiantColor(ray._color);
     CU.computeShadows(*this, ray, lights, objs, ambiantColor);
     CU.computeTransparency(*this, ray, lights, objs, ambiantColor);
     CU.computeReflection(*this, ray, lights, objs, ambiantColor);
