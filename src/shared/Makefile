@@ -16,6 +16,7 @@ BIN_DIR	=	bin
 
 SRCS	=	APrimitive.cpp	\
 			Exceptions.cpp	\
+			Composite.cpp	\
 			Material.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)

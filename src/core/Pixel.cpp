@@ -35,24 +35,23 @@ rayTracer::Pixel::Pixel(int definition, int x, int y, int imageWidth, int imageH
 
 void rayTracer::Pixel::simulateRays(const Scene& scene)
 {
-    (void)scene;
-    // if (_rays.empty())
-    //     return;
-    // std::vector<std::shared_ptr<IPrimitive>> light;
-    // for (const std::shared_ptr<IPrimitive> &obj : scene._composites) {
-    //     if (obj->getMaterial().getBrightness() != 0) {
-    //         light.push_back(obj);
-    //     }
-    // }
-    // for (math::Ray &ray : _rays) {
-    //     for (const std::shared_ptr<IPrimitive> &obj : scene._composites) {
-    //         if (obj->Intersect(ray, light, scene._composites))
-    //             break;
-    //     }
-    //     ray._color = ray._color * scene._ambiantLightIntensity;
-    //     ray._color += {(scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))};
-    //     }
-    // calculateMeanColor();
+    if (_rays.empty())
+        return;
+    std::vector<std::shared_ptr<IPrimitive>> light;
+    for (const std::shared_ptr<IPrimitive> &obj : scene._composites) {
+        if (obj->getMaterial().getBrightness() != 0) {
+            light.push_back(obj);
+        }
+    }
+    for (math::Ray &ray : _rays) {
+        for (const std::shared_ptr<IPrimitive> &obj : scene._composites) {
+            if (obj->Intersect(ray, light, scene._composites))
+                break;
+        }
+        ray._color = ray._color * scene._ambiantLightIntensity;
+        ray._color += {(scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))};
+        }
+    calculateMeanColor();
 }
 
 void rayTracer::Pixel::calculateMeanColor() {

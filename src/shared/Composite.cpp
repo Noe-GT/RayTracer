@@ -37,12 +37,15 @@ const std::vector<Composite>& Composite::getChildren() const
     return _children;
 }
 
+
 bool Composite::isSameTransformation(const std::shared_ptr<ITransformation<double>>& other) const
 {
     if (this->_transformation == nullptr)
         return false;
+    
     if (this->_transformation.get()->getName() != other.get()->getName())
         return false;
-    if (this->_transformation.get()->getMatrix() == other.get()->getMatrix())
+    if (this->_transformation.get()->getMatrix() != other.get()->getMatrix())
+        return false;
     return true;
 }

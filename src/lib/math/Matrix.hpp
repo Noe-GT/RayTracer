@@ -10,6 +10,7 @@
 #include <vector>
 #include <utility>
 #include <type_traits>
+#include <iostream>
 #include "Exceptions.hpp"
 
 namespace math
@@ -31,11 +32,12 @@ namespace math
 
             Matrix(size_t x, size_t y)
             {
+                std::cout << "x " << x << " y: " << y << std::endl;
                 if (!std::is_arithmetic_v<T>)
                     rayTracer::TypeException("Matrix: T type must be arithmetic");
                 this->_matrix.resize(y, std::vector<T>());
                 for (size_t i = 0; i < y; i++)
-                    this->_matrix[i].resize(static_cast<T>(0), x);
+                    this->_matrix[i].resize(x, static_cast<T>(0));
             }
 
             Matrix(const Matrix &matrix) = default;
@@ -129,17 +131,22 @@ namespace math
                 return res;
             }
 
-            Matrix operator==(const Matrix &matrix) const
+            bool operator==(const Matrix &matrix) const
             {
                 if (this->getWidth() != matrix.getWidth() || this->getHeight() != matrix.getHeight())
                     return false;
-                for (size_t i = 0; i != this->_matrix.end(); i++) {
-                    for (size_t j = 0; i != this->_matrix[0].end(); i++) {
-                        if (this->_matrix[i][j] != matrix.getMatrix()[i][j])
+                for (size_t i = 0; i < this->getHeight(); i++) {
+                    for (size_t j = 0; j < this->getWidth(); j++) {
+                        if (this->_matrix[i][j] != matrix._matrix[i][j])
                             return false;
                     }
                 }
                 return true;
+            }
+
+            bool operator!=(const Matrix &matrix) const
+            {
+                return !(*this == matrix);
             }
 
             Matrix &operator*=(int n)
@@ -189,10 +196,14 @@ namespace math
 
             void setMatrix(size_t x, size_t y, T newVal)
             {
-                if (y >= this->getHeight())
+                if (y >= this->getHeight()) {
+                    std::cerr << "y: " << y << std::endl;
                     throw MatrixException("setMatrix: invalid y index");
-                if (x >= this->getWidth())
+                }
+                if (x >= this->getWidth()) {
+                    std::cerr << "x: " << x << " width: " << this->getWidth() <<  std::endl;
                     throw MatrixException("setMatrix: invalid x index");
+                }
                 this->_matrix[y][x] = newVal;
             }
     

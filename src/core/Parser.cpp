@@ -36,8 +36,8 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
 {
     const libconfig::Setting &primitives = config.lookup("primitives");
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &pPlugins = this->_pluginHandler.getPrimitivePlugins();
-
     std::vector<Composite> transformations;
+
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> pPair : pPlugins) {
         if (primitives.exists(pPair.first + "s")) {
             libconfig::Setting &primitiveList = primitives.lookup(pPair.first + "s");
@@ -46,19 +46,35 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
                 int id = scene.getNextId();
                 primitive->configure(primitiveList[i], id);
                 Composite primitiveComposite(primitive);
+                
                 if (hasTransformations(primitiveList[i])) {
                     std::unique_ptr<Composite> transformationComposite = 
                         addTransformation(scene, primitiveList[i], transformations);
                     if (transformationComposite) {
                         transformationComposite->addChild(primitiveComposite);
                         scene.addComposite(*transformationComposite);
-                    } else {
+                    } else
                         scene.addComposite(primitiveComposite);
-                    }
                 } else {
                     scene.addComposite(primitiveComposite);
                 }
             }
+        }
+    }
+}
+
+void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
+{
+    const libconfig::Setting &graphicalConf = config.lookup("graphical");
+    std::string libraryName = graphicalConf.lookup("library");
+    const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &gPlugins = this->_pluginHandler.getGraphicalPlugins();
+    std::pair<size_t, size_t> res = rayTracer.getImageResolution();
+
+    for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> gPair : gPlugins) {
+        if (libraryName == gPair.first) {
+            std::shared_ptr<IGraphical> graphical = gPair.second.getFactory()->build(res.first, res.second);
+            rayTracer.setGraphical(graphical);
+            return;
         }
     }
 }
@@ -89,28 +105,29 @@ std::unique_ptr<Composite> rayTracer::Parser::createTransformation(rayTracer::Sc
 {
     (void)scene;
     const libconfig::Setting &transformationSetting = primitive.lookup(transformationType);
-    double x = 0.0, y = 0.0, z = 0.0;
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
     if (transformationSetting.exists("x"))
         x = transformationSetting["x"];
     if (transformationSetting.exists("y"))
         y = transformationSetting["y"];
     if (transformationSetting.exists("z"))
         z = transformationSetting["z"];
+              
     const auto &plugins = this->_pluginHandler.getTransformationPlugins();
     auto it = plugins.find(transformationType);
     if (it != plugins.end()) {
         std::shared_ptr<ITransformation<double>> transform = 
             it->second.getFactory()->build(x, y, z);
         for (auto &existing : transformations) {
-            if (existing.isSameTransformation(transform)) {
+            if (existing.isSameTransformation(transform))
                 return std::make_unique<Composite>(existing);
-            }
         }
         Composite transformComposite(transform);
         transformations.push_back(transformComposite);
         return std::make_unique<Composite>(transformations.back());
     }
-    
     return nullptr;
 }
 

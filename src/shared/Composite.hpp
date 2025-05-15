@@ -20,8 +20,6 @@ class Composite {
         ~Composite() = default;
 
         void addChild(Composite child);
-        bool hasTransformation() const;
-        bool hasPrimitive() const;
         std::shared_ptr<IPrimitive> getPrimitive() const;
         std::shared_ptr<ITransformation<double>> getTransformation() const;
         const std::vector<Composite>& getChildren() const;
