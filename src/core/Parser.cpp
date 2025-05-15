@@ -121,7 +121,7 @@ std::unique_ptr<Composite> rayTracer::Parser::createTransformation(rayTracer::Sc
     const auto &plugins = this->_pluginHandler.getTransformationPlugins();
     auto it = plugins.find(transformationType);
     if (it != plugins.end()) {
-        std::shared_ptr<ITransformation<double>> transform = 
+        std::shared_ptr<ITransformation> transform = 
             it->second.getFactory()->build(x, y, z);
         for (auto &existing : transformations) {
             if (existing.isSameTransformation(transform))

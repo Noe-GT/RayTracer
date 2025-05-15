@@ -12,7 +12,7 @@ Composite::Composite(std::shared_ptr<IPrimitive> primitive)
 {
 }
 
-Composite::Composite(std::shared_ptr<ITransformation<double>> transformation)
+Composite::Composite(std::shared_ptr<ITransformation> transformation)
     : _primitive(nullptr), _transformation(transformation)
 {
 }
@@ -27,7 +27,7 @@ std::shared_ptr<IPrimitive> Composite::getPrimitive() const
     return _primitive;
 }
 
-std::shared_ptr<ITransformation<double>> Composite::getTransformation() const
+std::shared_ptr<ITransformation> Composite::getTransformation() const
 {
     return _transformation;
 }
@@ -38,7 +38,7 @@ const std::vector<Composite>& Composite::getChildren() const
 }
 
 
-bool Composite::isSameTransformation(const std::shared_ptr<ITransformation<double>>& other) const
+bool Composite::isSameTransformation(const std::shared_ptr<ITransformation>& other) const
 {
     if (this->_transformation == nullptr)
         return false;

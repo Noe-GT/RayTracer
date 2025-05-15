@@ -28,11 +28,11 @@ namespace rayTracer {
             virtual std::shared_ptr<IGraphical> build(size_t width, size_t height) = 0;
     };
 
-    template <typename T>
-    class IFactory<ITransformation<T>> {
+    template <>
+    class IFactory<ITransformation> {
         public:
             virtual ~IFactory() = default;
-            virtual std::shared_ptr<ITransformation<T>> build(T x, T y, T z) = 0;
+            virtual std::shared_ptr<ITransformation> build(double x, double y, double z) = 0;
     };
 };
 

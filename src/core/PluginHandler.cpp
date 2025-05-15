@@ -30,7 +30,7 @@ void rayTracer::PluginHandler::cstrPlugin(const std::string &fileName, const Lib
             this->_graphicalPlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<IGraphical>(loader, pluginName));
             break;
         case rayTracer::PluginType::TRANSFORMATION:
-            this->_transformationPlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<ITransformation<double>>(loader, pluginName));
+            this->_transformationPlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<ITransformation>(loader, pluginName));
             break;
         default:
             break;
@@ -49,7 +49,7 @@ void rayTracer::PluginHandler::display() const
         std::cout << "+--" << plugin.first << std::endl;
     }
             std::cout << "#Transformations:" << std::endl;
-            for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<ITransformation<double>>> plugin : this->_transformationPlugins) {
+            for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<ITransformation>> plugin : this->_transformationPlugins) {
                 std::cout << "+--" << plugin.first << std::endl;
             }
 }
@@ -88,7 +88,7 @@ const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &rayTr
     return this->_graphicalPlugins;
 }
 
-const std::map<std::string, rayTracer::PluginHandler::Plugin<ITransformation<double>>> &rayTracer::PluginHandler::getTransformationPlugins() const
+const std::map<std::string, rayTracer::PluginHandler::Plugin<ITransformation>> &rayTracer::PluginHandler::getTransformationPlugins() const
 {
     return this->_transformationPlugins;
 }

@@ -2,18 +2,21 @@
 ** EPITECH PROJECT, 2025
 ** Raytracer
 ** File description:
-** ITransformation
+** ITransformations
 */
 
-#pragma once
+#ifndef ITRANSFORMATIONS_HPP_
+#define ITRANSFORMATIONS_HPP_
 
 #include "Matrix.hpp"
 
-template<typename T>
 class ITransformation
 {
     public:
         virtual ~ITransformation() = default;
+        virtual math::Matrix<double> getMatrix() const = 0;
         virtual const std::string getName() = 0;
-        virtual math::Matrix<T> getMatrix() const = 0;
+
 };
+
+#endif /* !ITRANSFORMATIONS_HPP_ */

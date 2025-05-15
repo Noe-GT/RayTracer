@@ -16,17 +16,17 @@
 class Composite {
     public:
         Composite(std::shared_ptr<IPrimitive> primitive);
-        Composite(std::shared_ptr<ITransformation<double>> transformation);
+        Composite(std::shared_ptr<ITransformation> transformation);
         ~Composite() = default;
 
         void addChild(Composite child);
         std::shared_ptr<IPrimitive> getPrimitive() const;
-        std::shared_ptr<ITransformation<double>> getTransformation() const;
+        std::shared_ptr<ITransformation> getTransformation() const;
         const std::vector<Composite>& getChildren() const;
-        bool isSameTransformation(const std::shared_ptr<ITransformation<double>>& other) const;
+        bool isSameTransformation(const std::shared_ptr<ITransformation>& other) const;
         
     private:
         std::shared_ptr<IPrimitive> _primitive;
-        std::shared_ptr<ITransformation<double>> _transformation;
+        std::shared_ptr<ITransformation> _transformation;
         std::vector<Composite> _children;
 };

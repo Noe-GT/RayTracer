@@ -13,19 +13,19 @@
 #include "IFactory.hpp"
 #include "PluginTypes.hpp"
 
-class Translation : public ATransformation<int>
+class Translation : public ATransformation
 {
     public:
-        Translation(int x, int y, int z);
+        Translation(double x, double y, double z);
         ~Translation() = default;
 };
 
-class TranslationFactory: public rayTracer::IFactory<ITransformation<int>> {
+class TranslationFactory: public rayTracer::IFactory<ITransformation> {
     public:
         TranslationFactory() = default;
         ~TranslationFactory() = default;
 
-        std::shared_ptr<ITransformation<int>> build(int x, int y, int z) final;
+        std::shared_ptr<ITransformation> build(double x, double y, double z) final;
 };
 
 #endif /* !TRANSLATION_HPP_ */
