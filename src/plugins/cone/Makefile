@@ -23,7 +23,7 @@ CPPFLAGS	=	\
 BIN_DIR	=	bin
 PLUGINS_DIR	=	$(ROOT)/plugins
 
-SRCS	=	Translation.cpp	\
+SRCS	=	Cone.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
@@ -31,7 +31,7 @@ SHARED_OBJS	=	$(SRCS_DIR)/shared/bin/APrimitive.o	\
 				$(SRCS_DIR)/shared/bin/Material.o	\
 				$(SRCS_DIR)/shared/bin/Exceptions.o	\
 
-PLUGIN_NAME	=	translation.so
+PLUGIN_NAME	=	cone.so
 
 PLUGIN	=	$(PLUGINS_DIR)/$(PLUGIN_NAME)
 

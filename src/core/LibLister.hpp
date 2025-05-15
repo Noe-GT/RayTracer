@@ -11,8 +11,7 @@
 #include "Config.hpp"
 #include "Exceptions.hpp"
 #include "DLLoader.hpp"
-#include <sys/types.h>
-#include <dirent.h>
+#include <filesystem>
 
 namespace rayTracer {
     class LibLister {
@@ -20,8 +19,8 @@ namespace rayTracer {
             LibLister();
             ~LibLister() = default;
             void display() const;
-            std::string getLibDirectory() const;
-            const std::vector<std::string> &getLibs();
+            const std::string &getLibDirectory() const;
+            const std::vector<std::string> &getLibs() const;
             int getIndexLib(const std::string &path) const;
 
         private:

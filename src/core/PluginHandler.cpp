@@ -7,8 +7,7 @@
 
 #include "PluginHandler.hpp"
 
-rayTracer::PluginHandler::PluginHandler():
-    _primitivePlugins()
+rayTracer::PluginHandler::PluginHandler()
 {
     LibLister lister;
 
@@ -41,8 +40,17 @@ void rayTracer::PluginHandler::cstrPlugin(const std::string &fileName, const Lib
 void rayTracer::PluginHandler::display() const
 {
     std::cout << "PLUGINS" << std::endl;
+    std::cout << "#Primitives:" << std::endl;
     for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> plugin : this->_primitivePlugins) {
-        std::cout << "-" << plugin.first << std::endl;
+        std::cout << "+--" << plugin.first << std::endl;
+    }
+    std::cout << "#Graphicals:" << std::endl;
+    for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> plugin : this->_graphicalPlugins) {
+        std::cout << "+--" << plugin.first << std::endl;
+    }
+    std::cout << "#Transformations:" << std::endl;
+    for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<ITransformations>> plugin : this->_transformationPlugins) {
+        std::cout << "+--" << plugin.first << std::endl;
     }
 }
 

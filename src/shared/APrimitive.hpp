@@ -9,6 +9,7 @@
 #define APRIMITIVE_HPP_
 
 #include "IPrimitive.hpp"
+#include <algorithm>
 
 namespace math {
     class CollisionUtils;

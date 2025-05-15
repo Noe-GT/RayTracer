@@ -5,6 +5,8 @@
 ## Makefile
 ##
 
+include Messages.mk
+
 SRCS_DIR	=	src
 
 LIBS_DIR	=	$(SRCS_DIR)/lib
@@ -18,13 +20,29 @@ ALL_DIRS	=	$(LIBS_DIR)	\
 				$(CORE_DIR)	\
 
 all:
-	$(foreach file, $(ALL_DIRS), make -C $(file);)
+	$(MAKE) libs shared plugins core
+	@echo "$(BUILD_MSG) Raytracer built"
+
+libs:
+	make -C $(LIBS_DIR)
+
+shared:
+	make -C $(SHARED_DIR)
+
+plugins:
+	make -C $(PLUGINS_DIR)
+
+core:
+	make -C $(CORE_DIR)
 
 clean:
 	$(foreach file, $(ALL_DIRS), make clean -C $(file);)
+	@echo "$(DELETE_MSG) Cleaning all object files"
 
 fclean:	clean
 	$(foreach file, $(ALL_DIRS), make fclean -C $(file);)
+	@echo "$(DELETE_MSG) Cleaning all shared libraries, static libraries and \
+	project binaries"
 
 re:	fclean all
 

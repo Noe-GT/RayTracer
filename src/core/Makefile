@@ -5,6 +5,8 @@
 ## Makefile
 ##
 
+include ../../Messages.mk
+
 ROOT	=	../..
 
 SRCS_DIR	=	..
@@ -28,17 +30,20 @@ SRCS	=	Main.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
-SHARED_OBJS	=	$(wildcard $(SRCS_DIR)/shared/bin/*.o)
+SHARED_OBJS	=	$(SRCS_DIR)/shared/bin/Exceptions.o	\
+				$(SRCS_DIR)/shared/bin/Material.o	\
 
 EXEC	=	$(ROOT)/raytracer
 
 all:	$(EXEC)
 
-$(EXEC):	$(OBJS)
+$(EXEC):	$(OBJS) $(SHARED_OBJS)
 	$(CXX) -o $(EXEC) $(OBJS) $(SHARED_OBJS) $(LDFLAGS)
+	@echo "  $(BUILD_MSG) Core files built"
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
+	@echo "    $(FILE_BUILD_MSG) Building $<"
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(CPPFLAGS)
 
 clean:

@@ -4,5 +4,5 @@
 *.so
 raytracer
 vgcore*
-config.cfg
-testImage.ppm
+*.cfg
+*.ppm

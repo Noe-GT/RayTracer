@@ -20,6 +20,7 @@ void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTr
         config.readFile(filePath.c_str());
         this->parsePrimitives(rayTracer.getScene());
         this->parseCamera(rayTracer.getScene());
+        this->parseProcessing(rayTracer);
         this->parseImage(rayTracer);
         this->parseGraphical(rayTracer);
     } catch (const libconfig::FileIOException &fioex) {
@@ -70,6 +71,8 @@ void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &gPlugins = this->_pluginHandler.getGraphicalPlugins();
     std::pair<size_t, size_t> res = rayTracer.getImageResolution();
 
+    if (graphicalConf.exists("showRender"))
+        rayTracer.setShowRender(graphicalConf["showRender"]);
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> gPair : gPlugins) {
         if (libraryName == gPair.first) {
             std::shared_ptr<IGraphical> graphical = gPair.second.getFactory()->build(res.first, res.second);
@@ -160,5 +163,17 @@ void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
     } catch (const libconfig::SettingNotFoundException &e) {}
     if (cameraConf.exists("fieldOfView")) {
         scene._camera.setFov(cameraConf["fieldOfView"]);
+    }
+}
+
+void rayTracer::Parser::parseProcessing(rayTracer::RayTracer &rayTracer)
+{
+    const libconfig::Setting &processConf = config.lookup("processing");
+    int rayDefinition;
+
+    if (processConf.exists("rayDefinition")) {
+        rayDefinition = processConf["rayDefinition"];
+        if (rayDefinition > 1)
+            rayTracer.setRayDefinition(rayDefinition);
     }
 }

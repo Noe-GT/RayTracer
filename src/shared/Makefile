@@ -5,6 +5,8 @@
 ## Makefile
 ##
 
+include ../../Messages.mk
+
 SRCS_DIR	=	..
 
 CXX	=	g++
@@ -25,6 +27,7 @@ all:	$(OBJS)
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
+	@echo "  $(FILE_BUILD_MSG) Building $<"
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(CPPFLAGS)
 
 clean:

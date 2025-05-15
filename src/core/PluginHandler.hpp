@@ -16,7 +16,7 @@
 #include "Exceptions.hpp"
 #include "PluginTypes.hpp"
 #include "IGraphical.hpp"
-#include "ITransformation.hpp"
+#include "ITransformations.hpp"
 
 namespace rayTracer {
     class PluginHandler {

@@ -7,7 +7,9 @@
 #include "RayTracer.hpp"
 
 rayTracer::RayTracer::RayTracer(std::string configFilePath):
+    _rayDefinition(1),
     _outputFilePath("render.ppm"),
+    _showRender(false),
     _pluginHandler(),
     _parser(this->_pluginHandler),
     _scene(this->_pluginHandler)
@@ -23,6 +25,7 @@ void rayTracer::RayTracer::render()
 {
     std::vector<std::vector<math::Color>> dispVector;
 
+    std::cout << "Rendering..." << std::endl;
     for (std::size_t y = 0; y != this->_image.size(); y++) {
         if (this->_graphical)
             dispVector.push_back(std::vector<math::Color>());
@@ -32,11 +35,14 @@ void rayTracer::RayTracer::render()
             if (this->_graphical)
                 dispVector.back().push_back(this->_image[y][x].getColor());
         }
-        if (this->_graphical)
+        if (this->_showRender && this->_graphical)
             this->_graphical->display(dispVector);
     };
-    if (this->_graphical)
+    std::cout << "Render completed." << std::endl;
+    if (this->_graphical) {
+        this->_graphical->display(dispVector);
         this->_graphical->idle();
+    }
 }
 
 void rayTracer::RayTracer::out()
@@ -51,6 +57,7 @@ void rayTracer::RayTracer::out()
         }
     }
     file.close();
+    std::cout << "Render saved as: " << this->_outputFilePath << std::endl;
 }
 
 rayTracer::Scene &rayTracer::RayTracer::getScene()
@@ -61,6 +68,16 @@ rayTracer::Scene &rayTracer::RayTracer::getScene()
 void rayTracer::RayTracer::setGraphical(std::shared_ptr<IGraphical> graphical)
 {
     this->_graphical = std::move(graphical);
+}
+
+void rayTracer::RayTracer::setRayDefinition(int rayDefinition)
+{
+    this->_rayDefinition = rayDefinition;
+}
+
+void rayTracer::RayTracer::setShowRender(bool showRender)
+{
+    this->_showRender = showRender;
 }
 
 std::pair<size_t, size_t> rayTracer::RayTracer::getImageResolution() const
@@ -76,7 +93,7 @@ void rayTracer::RayTracer::setImage(const std::pair<size_t, size_t> &resolution)
     for (size_t y = 0; y < resolution.second; ++y) {
         this->_image[y].resize(resolution.first);
         for (size_t x = 0; x < resolution.first; ++x) {
-            this->_image[y][x] = rayTracer::Pixel(1, x, y, resolution.first, resolution.second, this->_scene);
+            this->_image[y][x] = rayTracer::Pixel(this->_rayDefinition, x, y, resolution.first, resolution.second, this->_scene);
         }
     }
 }
