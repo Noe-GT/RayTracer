@@ -11,6 +11,7 @@ PLUGINS	=	rotation	\
 			scaling	\
 			SFML	\
 			sphere	\
+			cone	\
 			translation	\
 			infinite_plan	\
 			cylinder	\

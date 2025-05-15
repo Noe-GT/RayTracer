@@ -20,6 +20,7 @@ void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTr
         config.readFile(filePath.c_str());
         this->parsePrimitives(rayTracer.getScene());
         this->parseCamera(rayTracer.getScene());
+        this->parseProcessing(rayTracer);
         this->parseImage(rayTracer);
         this->parseGraphical(rayTracer);
     } catch (const libconfig::FileIOException &fioex) {
