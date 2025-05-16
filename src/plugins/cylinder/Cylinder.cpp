@@ -53,7 +53,7 @@ void Cylinder::configure(const libconfig::Setting &setting, int id)
         this->_orientation._y = setting["orientation"]["y"];
         this->_orientation._z = setting["orientation"]["z"];
         this->_orientation = this->_orientation.normalize();
-    } // temporary !!!
+    }
 }
 
 double Cylinder::getDiscriminant(math::Ray &ray)
