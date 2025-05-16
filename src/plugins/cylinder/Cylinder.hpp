@@ -28,7 +28,8 @@ class Cylinder: public APrimitive {
         double &getSize() final;
 
     private:
-        bool intersectBase(math::Ray& ray, math::CollisionUtils &CU);
+        bool intersectBottomBase(math::Ray& ray, math::CollisionUtils &CU);
+        bool intersectTopBase(math::Ray& ray, math::CollisionUtils &CU);
         bool intersectCylinder(math::Ray& ray, math::CollisionUtils &CU);
         double _radius;
         double _height;

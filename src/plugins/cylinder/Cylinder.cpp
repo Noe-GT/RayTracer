@@ -7,7 +7,7 @@
 
 #include "Cylinder.hpp"
 
-Cylinder::Cylinder():
+Cylinder::Cylinder() :
     _radius(0.1),
     _height(1.0),
     _orientation(0, 1, 0)
@@ -69,23 +69,29 @@ double Cylinder::getDiscriminant(math::Ray &ray)
 math::CollisionUtils Cylinder::Collide(math::Ray& ray)
 {
     math::CollisionUtils CU;
-    math::Vector oc = ray._origin - this->_origin;
+    math::Vector d = ray._direction - this->_orientation * ray._direction.dotProduct(this->_orientation);
+    math::Vector deltaP = ray._origin - this->_origin;
+    math::Vector delta = deltaP - this->_orientation * deltaP.dotProduct(this->_orientation);
 
-    CU.setA(ray._direction._x * ray._direction._x + ray._direction._z * ray._direction._z);
-    CU.setB(2.0 * (oc._x * ray._direction._x + oc._z * ray._direction._z));
-    CU.setC(oc._x * oc._x + oc._z * oc._z - _radius * _radius);
+    CU.setA(d.dotProduct(d));
+    CU.setB(2 * d.dotProduct(delta));
+    CU.setC(delta.dotProduct(delta) - this->_radius * this->_radius);
     CU.setDiscriminant(CU.getB() * CU.getB() - 4 * CU.getA() * CU.getC());
+
+    if (CU.getDiscriminant() >= 0)
+        CU.setT((-CU.getB() - sqrt(CU.getDiscriminant())) / (2 * CU.getA()));
     return CU;
 }
 
 bool Cylinder::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<IPrimitive>> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs)
 {
     math::CollisionUtils CU = this->Collide(ray);
-    bool hitSomething = false;
+    bool hitSomething = intersectCylinder(ray, CU);
 
-    hitSomething = this->intersectCylinder(ray, CU);
     if (!hitSomething)
-        hitSomething = this->intersectBase(ray, CU);
+        hitSomething = intersectBottomBase(ray, CU);
+    if (!hitSomething)
+        hitSomething = intersectTopBase(ray, CU);
     if (hitSomething) {
         CU.computeShadows(*this, ray, lights, objs, ray._color);
         CU.computeTransparency(*this, ray, lights, objs, ray._color);
@@ -95,76 +101,66 @@ bool Cylinder::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<IPrim
     return false;
 }
 
-bool Cylinder::intersectCylinder(math::Ray &ray, math::CollisionUtils &CU)
+bool Cylinder::intersectCylinder(math::Ray& ray, math::CollisionUtils &CU)
 {
-    double tMin = std::numeric_limits<double>::max();
-    math::Point bestHit;
-    math::Vector bestNormal;
+    math::Vector hitPoint;
+    double hitHeight;
 
-    if (CU.getDiscriminant() >= 0 && fabs(CU.getA()) > 1e-6) {
-        double sqrtDiscr = std::sqrt(CU.getDiscriminant());
-        double t1 = (-CU.getB() - sqrtDiscr) / (2 * CU.getA());
-        double t2 = (-CU.getB() + sqrtDiscr) / (2 * CU.getA());
+    if (CU.getDiscriminant() >= 0 && CU.getT() > 0.0001) {
+        hitPoint = ray._origin + ray._direction * CU.getT();
+        hitHeight = (hitPoint - this->_origin).dotProduct(this->_orientation);
+        if (hitHeight >= 0 && hitHeight <= this->_height) {
+            CU.setHitPoint(hitPoint);
+            CU.setNormal(((hitPoint - this->_origin) - this->_orientation * hitHeight).normalize());
+            return true;
+        }
+    }
+    return false;
+}
 
-        for (double t : {t1, t2}) {
-            if (t > 1e-4) {
-                math::Point p = ray._origin + ray._direction * t;
-                double yMin = this->_origin._y;
-                double yMax = this->_origin._y + _height;
+bool Cylinder::intersectBottomBase(math::Ray &ray, math::CollisionUtils &CU)
+{
+    math::Vector baseCenter = this->_origin;
+    math::Vector oc = ray._origin - baseCenter;
+    math::Vector hitPoint;
+    double denom = ray._direction.dotProduct(this->_orientation);
+    double t;
 
-                if (p._y >= yMin && p._y <= yMax && t < tMin) {
-                    tMin = t;
-                    bestHit = p;
-                    bestNormal = math::Vector(p._x - this->_origin._x, 0, p._z - this->_origin._z).normalize();
-                    CU.setT(tMin);
-                    CU.setHitPoint(bestHit);
-                    CU.setNormal(bestNormal);
-                    return true;
-                }
+    if (std::abs(denom) > 1e-6) {
+        t = -oc.dotProduct(this->_orientation) / denom;
+        if (t > 0.0001) {
+            hitPoint = ray._origin + ray._direction * t;
+            if ((hitPoint - baseCenter).Length() <= this->_radius) {
+                CU.setT(t);
+                CU.setHitPoint(hitPoint);
+                CU.setNormal(-this->_orientation);
+                return true;
             }
         }
     }
     return false;
 }
 
-bool Cylinder::intersectBase(math::Ray &ray, math::CollisionUtils &CU)
+bool Cylinder::intersectTopBase(math::Ray &ray, math::CollisionUtils &CU)
 {
-    // Bottom base center
-    math::Vector bottomBaseCenter = this->_origin;
-    // Top base center
-    math::Vector topBaseCenter = this->_origin + math::Vector(0, this->_height, 0);
-
-    double t;
+    math::Vector baseCenter = this->_origin + this->_orientation * this->_height;
+    math::Vector oc = ray._origin - baseCenter;
     math::Vector hitPoint;
+    double denom = ray._direction.dotProduct(this->_orientation);
+    double t;
 
-    // Check intersection with the bottom base
-    if (std::abs(ray._direction._y) > 1e-6) { // Avoid division by zero
-        t = (bottomBaseCenter._y - ray._origin._y) / ray._direction._y;
+    if (std::abs(denom) > 1e-6) {
+        t = -oc.dotProduct(this->_orientation) / denom;
         if (t > 0.0001) {
             hitPoint = ray._origin + ray._direction * t;
-            if (std::pow(hitPoint._x - bottomBaseCenter._x, 2) + std::pow(hitPoint._z - bottomBaseCenter._z, 2) <= std::pow(this->_radius, 2)) {
+            if ((hitPoint - baseCenter).Length() <= this->_radius) {
                 CU.setT(t);
                 CU.setHitPoint(hitPoint);
-                CU.setNormal(math::Vector(0, -1, 0)); // Normal points downward
+                CU.setNormal(this->_orientation);
                 return true;
             }
         }
     }
-
-    // Check intersection with the top base
-    if (std::abs(ray._direction._y) > 1e-6) { // Avoid division by zero
-        t = (topBaseCenter._y - ray._origin._y) / ray._direction._y;
-        if (t > 0.0001) {
-            hitPoint = ray._origin + ray._direction * t;
-            if (std::pow(hitPoint._x - topBaseCenter._x, 2) + std::pow(hitPoint._z - topBaseCenter._z, 2) <= std::pow(this->_radius, 2)) {
-                CU.setT(t);
-                CU.setHitPoint(hitPoint);
-                CU.setNormal(math::Vector(0, 1, 0)); // Normal points upward
-                return true;
-            }
-        }
-    }
-
     return false;
 }
 

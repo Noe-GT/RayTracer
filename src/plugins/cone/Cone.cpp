@@ -86,9 +86,8 @@ math::CollisionUtils Cone::Collide(math::Ray& ray)
 bool Cone::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<IPrimitive>> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs)
 {
     math::CollisionUtils CU = this->Collide(ray);
-    bool hitSomething = false;
+    bool hitSomething = this->intersectCone(ray, CU);
 
-    hitSomething = this->intersectCone(ray, CU);
     if (!hitSomething)
         hitSomething = this->intersectBase(ray, CU);
     if (hitSomething) {
