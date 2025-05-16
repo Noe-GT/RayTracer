@@ -8,6 +8,7 @@
 #include "Scene.hpp"
 #include "Pixel.hpp"
 #include "External.hpp"
+#include "RenderPool.hpp"
 
 namespace rayTracer {
     class RayTracer {

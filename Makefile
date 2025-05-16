@@ -9,10 +9,10 @@ include Messages.mk
 
 SRCS_DIR	=	src
 
-LIBS_DIR	=	$(SRCS_DIR)/lib
-SHARED_DIR	=	$(SRCS_DIR)/shared
-PLUGINS_DIR	=	$(SRCS_DIR)/plugins
-CORE_DIR	=	$(SRCS_DIR)/core
+LIBS_DIR		=	$(SRCS_DIR)/lib
+SHARED_DIR		=	$(SRCS_DIR)/shared
+PLUGINS_DIR		=	$(SRCS_DIR)/plugins
+CORE_DIR		=	$(SRCS_DIR)/core
 
 ALL_DIRS	=	$(LIBS_DIR)	\
 				$(SHARED_DIR)	\

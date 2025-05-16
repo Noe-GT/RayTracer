@@ -23,26 +23,37 @@ rayTracer::RayTracer::~RayTracer()
 
 void rayTracer::RayTracer::render()
 {
-    std::vector<std::vector<math::Color>> dispVector;
+    // std::vector<std::vector<math::Color>> dispVector;
 
-    std::cout << "Rendering..." << std::endl;
-    for (std::size_t y = 0; y != this->_image.size(); y++) {
-        if (this->_graphical)
-            dispVector.push_back(std::vector<math::Color>());
-        for (std::size_t x = 0; x != this->_image[y].size(); x++) {
-            this->_image[y][x].simulateRays(this->_scene);
-            math::Color color = this->_image[y][x].getColor();
-            if (this->_graphical)
-                dispVector.back().push_back(this->_image[y][x].getColor());
-        }
-        if (this->_showRender && this->_graphical)
-            this->_graphical->display(dispVector);
-    };
-    std::cout << "Render completed." << std::endl;
-    if (this->_graphical) {
-        this->_graphical->display(dispVector);
-        this->_graphical->idle();
-    }
+    // std::cout << "Rendering..." << std::endl;
+    // for (std::size_t y = 0; y != this->_image.size(); y++) {
+    //     if (this->_graphical)
+    //         dispVector.push_back(std::vector<math::Color>());
+    //     for (std::size_t x = 0; x != this->_image[y].size(); x++) {
+    //         this->_image[y][x].simulateRays(this->_scene);
+    //         if (this->_graphical)
+    //             dispVector.back().push_back(this->_image[y][x].getColor());
+    //     }
+    //     if (this->_showRender && this->_graphical)
+    //         this->_graphical->display(dispVector);
+    // };
+    // std::cout << "Render completed." << std::endl;
+    // if (this->_graphical) {
+    //     this->_graphical->display(dispVector);
+    //     this->_graphical->idle();
+    // }
+
+    // std::vector<std::vector<rayTracer::Pixel>> baseQueue;
+    // std::cout << "Rendering..." << std::endl;
+
+    // for (size_t y = 0; y < 600; ++y) {
+    //     std::vector<rayTracer::Pixel> vect;
+    //     for (size_t x = 0; x < 600; ++x) {
+    //         vect.push_back(rayTracer::Pixel(this->_rayDefinition, x, y, 600, 600, this->_scene));
+    //     }
+    //     baseQueue.push_back(vect);
+    // }
+    rayTracer::RenderPool(2, this->_image, this->_scene);
 }
 
 void rayTracer::RayTracer::out()
