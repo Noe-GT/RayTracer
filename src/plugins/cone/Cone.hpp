@@ -17,7 +17,7 @@
 class Cone: public APrimitive {
     public:
         Cone();
-        Cone(math::Point origin, double radius);
+        Cone(math::Point origin, double radius, double height);
         ~Cone() = default;
 
         bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
@@ -30,10 +30,10 @@ class Cone: public APrimitive {
     private:
         bool intersectBase(math::Ray& ray, math::CollisionUtils &CU);
         bool intersectCone(math::Ray& ray, math::CollisionUtils &CU);
-        Material _material;
         double _radius;
         double _height;
         math::Vector _orientation;
+        Material _material;
 };
 
 class ConeFactory: public rayTracer::IFactory<IPrimitive> {

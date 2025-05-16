@@ -9,13 +9,20 @@
 
 Cylinder::Cylinder():
     _radius(0.1),
-    _height(1.0)
+    _height(1.0),
+    _orientation(0, 1, 0)
 {
 }
 
-Cylinder::Cylinder(math::Point origin, double radius) :
-    _radius(radius)
+Cylinder::Cylinder(math::Point origin, double radius, double height) :
+    _radius(radius),
+    _height(height),
+    _orientation(0, 1, 0)
 {
+    if (this->_radius <= 0)
+        throw rayTracer::ConfigException("Cylinder radius must be strictly positive.");
+    if (this->_height <= 0)
+        throw rayTracer::ConfigException("Cylinder height must be strictly positive.");
     this->_origin = origin;
 }
 
@@ -31,13 +38,22 @@ void Cylinder::configure(const libconfig::Setting &setting, int id)
     if (setting.exists("radius")) {
         this->_radius = setting["radius"];
         if (this->_radius <= 0)
-            throw rayTracer::ConfigException("Cylinder radius must be positive.");
+            throw rayTracer::ConfigException("Cylinder radius must be strictly positive.");
     }
     if (setting.exists("height")) {
         this->_height = setting["height"];
         if (this->_height <= 0)
-            throw rayTracer::ConfigException("Cylinder height must be positive.");
+            throw rayTracer::ConfigException("Cylinder height must be strictly positive.");
     }
+    if (setting.exists("orientation") &&
+        setting["orientation"].exists("x") &&
+        setting["orientation"].exists("y") &&
+        setting["orientation"].exists("z")) {
+        this->_orientation._x = setting["orientation"]["x"];
+        this->_orientation._y = setting["orientation"]["y"];
+        this->_orientation._z = setting["orientation"]["z"];
+        this->_orientation = this->_orientation.normalize();
+    } // temporary !!!
 }
 
 double Cylinder::getDiscriminant(math::Ray &ray)

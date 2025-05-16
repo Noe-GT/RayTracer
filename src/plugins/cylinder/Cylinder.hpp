@@ -17,7 +17,7 @@
 class Cylinder: public APrimitive {
     public:
         Cylinder();
-        Cylinder(math::Point origin, double radius);
+        Cylinder(math::Point origin, double radius, double height);
         ~Cylinder() = default;
 
         bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
@@ -30,9 +30,10 @@ class Cylinder: public APrimitive {
     private:
         bool intersectBase(math::Ray& ray, math::CollisionUtils &CU);
         bool intersectCylinder(math::Ray& ray, math::CollisionUtils &CU);
-        Material _material;
         double _radius;
         double _height;
+        math::Vector _orientation;
+        Material _material;
 };
 
 class CylinderFactory: public rayTracer::IFactory<IPrimitive> {

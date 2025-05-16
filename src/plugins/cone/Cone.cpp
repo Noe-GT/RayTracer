@@ -9,13 +9,20 @@
 
 Cone::Cone():
     _radius(0.1),
-    _height(1.0)
+    _height(1.0),
+    _orientation(0, 1, 0)
 {
 }
 
-Cone::Cone(math::Point origin, double radius) :
-    _radius(radius)
+Cone::Cone(math::Point origin, double radius, double height) :
+    _radius(radius),
+    _height(height),
+    _orientation(0, 1, 0)
 {
+    if (this->_radius <= 0)
+        throw rayTracer::ConfigException("Cone radius must be strictly positive.");
+    if (this->_height <= 0)
+        throw rayTracer::ConfigException("Cone height must be strictly positive.");
     this->_origin = origin;
 }
 
@@ -31,12 +38,12 @@ void Cone::configure(const libconfig::Setting &setting, int id)
     if (setting.exists("radius")) {
         this->_radius = setting["radius"];
         if (this->_radius <= 0)
-            throw rayTracer::ConfigException("Cone radius must be positive.");
+            throw rayTracer::ConfigException("Cone radius must be strictly positive.");
     }
     if (setting.exists("height")) {
         this->_height = setting["height"];
         if (this->_height <= 0)
-            throw rayTracer::ConfigException("Cone height must be positive.");
+            throw rayTracer::ConfigException("Cone height must be strictly positive.");
     }
     if (setting.exists("orientation") &&
         setting["orientation"].exists("x") &&
