@@ -38,6 +38,9 @@ namespace math {
             virtual math::Color operator*(double t);
             virtual math::Color operator/(double t);
 
+            virtual bool operator==(const math::Color& v) const;
+            virtual bool operator!=(const math::Color& v) const;
+
             friend std::ostream& operator<<(std::ostream& os, const math::Color& v);
     };
 };

@@ -169,7 +169,7 @@ namespace math
             {
                 this->_matrix.resize(y, std::vector<T>());
                 for (size_t i = 0; i < y; i++)
-                    this->_matrix[i].resize(0, x);
+                    this->_matrix[i].resize(x, static_cast<T>(0));
             }
 
             size_t getWidth() const

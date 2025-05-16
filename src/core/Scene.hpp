@@ -24,6 +24,7 @@ namespace rayTracer {
             void addComposite(const Composite &composite);
             int getNextId();
             const std::vector<Composite>& getComposites() const;
+            const std::vector<std::shared_ptr<IPrimitive>> getPrimitives() const;
 
             math::Color _ambiantLightColor;
             double _ambiantLightIntensity;
@@ -31,6 +32,7 @@ namespace rayTracer {
             std::vector<Composite> _composites;
             
         private:
+            void parseCompositePrimitives(const Composite& composite, std::vector<std::shared_ptr<IPrimitive>>& primitives) const;
             int _nextId;
     };
 };

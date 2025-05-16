@@ -31,26 +31,85 @@ rayTracer::Pixel::Pixel(int definition, int x, int y, int imageWidth, int imageH
     }
 }
 
+std::vector<std::shared_ptr<IPrimitive>> rayTracer::Pixel::getLights(const Scene &scene)
+{
+    std::vector<std::shared_ptr<IPrimitive>> lights;
+
+    for (const Composite& obj : scene._composites) {
+        parseComposite(obj, lights);
+    }
+    return lights;
+}
+
+void rayTracer::Pixel::parseComposite(const Composite& node, std::vector<std::shared_ptr<IPrimitive>>& lights)
+{
+    std::shared_ptr<IPrimitive> primitive = node.getPrimitive();
+    if (primitive && primitive->getMaterial().getBrightness() > 0)
+        lights.push_back(primitive);
+    
+    for (const auto& child : node.getChildren())
+        parseComposite(child, lights);
+}
+
+
 void rayTracer::Pixel::simulateRays(const Scene& scene)
 {
-    (void)scene;
-    // if (_rays.empty())
-    //     return;
-    // std::vector<std::shared_ptr<IPrimitive>> light;
-    // for (const std::shared_ptr<IPrimitive> &obj : scene._composites) {
-    //     if (obj->getMaterial().getBrightness() != 0) {
-    //         light.push_back(obj);
-    //     }
-    // }
-    // for (math::Ray &ray : _rays) {
-    //     for (const std::shared_ptr<IPrimitive> &obj : scene._composites) {
-    //         if (obj->Intersect(ray, light, scene._composites))
-    //             break;
-    //     }
-    //     ray._color = ray._color * scene._ambiantLightIntensity;
-    //     ray._color += {(scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))};
-    //     }
-    // calculateMeanColor();
+    std::vector<std::shared_ptr<IPrimitive>> lights = this->getLights(scene);
+    if (_rays.empty())
+        return;
+
+    for (math::Ray &ray : _rays) {
+        for (const Composite& composite : scene._composites) {
+            processComposite(composite, ray, scene, lights);
+        }
+        
+        ray._color = ray._color * scene._ambiantLightIntensity;
+        ray._color += {
+            (scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), 
+            (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), 
+            (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))
+        };
+    }
+    calculateMeanColor();
+}
+
+
+
+void rayTracer::Pixel::processComposite(const Composite& composite, math::Ray& ray, const Scene& scene, std::vector<std::shared_ptr<IPrimitive>>& lights)
+{
+    auto primitive = composite.getPrimitive();
+    auto transformation = composite.getTransformation();
+    
+    if (transformation) {
+        math::Ray transformedRay = applyTransformation(ray, transformation->getMatrix());
+        for (const auto& child : composite.getChildren())
+            processComposite(child, transformedRay, scene, lights);
+        if (transformedRay._color != ray._color)
+            ray._color = transformedRay._color;
+    } else if (primitive)
+        primitive->Intersect(ray, lights, scene.getPrimitives());
+    for (const auto& child : composite.getChildren())
+        processComposite(child, ray, scene, lights);
+}
+
+math::Ray rayTracer::Pixel::applyTransformation(const math::Ray& ray, const math::Matrix<double>& transformMatrix)
+{
+    math::Ray transformedRay = ray;
+    math::Matrix<double> directionMatrix(1, 3);
+
+    directionMatrix.setMatrix(0, 0, ray._direction._x);
+    directionMatrix.setMatrix(0, 1, ray._direction._y);
+    directionMatrix.setMatrix(0, 2, ray._direction._z);
+
+    std::cout << "Direction Matrix: y = " << directionMatrix.getHeight() << " x = " << directionMatrix.getWidth() << std::endl;
+    std::cout << "Transform Matrix: y = " << transformMatrix.getHeight() << " x = " << transformMatrix.getWidth() << std::endl;
+    math::Matrix<double> resultMatrix = transformMatrix * directionMatrix;
+    transformedRay._direction._x = resultMatrix.getMatrix()[0][0];
+    transformedRay._direction._y = resultMatrix.getMatrix()[0][1];
+    transformedRay._direction._z = resultMatrix.getMatrix()[0][2];
+    transformedRay._direction.normalize();
+    
+    return transformedRay;
 }
 
 void rayTracer::Pixel::calculateMeanColor() {

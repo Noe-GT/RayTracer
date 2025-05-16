@@ -50,10 +50,9 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
                 
                 if (hasTransformations(primitiveList[i])) {
                     std::unique_ptr<Composite> transformationComposite = 
-                        addTransformation(scene, primitiveList[i], transformations);
+                        addTransformation(primitiveList[i], scene._composites);
                     if (transformationComposite) {
                         transformationComposite->addChild(primitiveComposite);
-                        scene.addComposite(*transformationComposite);
                     } else
                         scene.addComposite(primitiveComposite);
                 } else {
@@ -62,6 +61,58 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
             }
         }
     }
+}
+
+
+bool rayTracer::Parser::hasTransformations(const libconfig::Setting &primitive)
+{
+    const auto &transformationPlugins = this->_pluginHandler.getTransformationPlugins();
+    for (const auto &plugin : transformationPlugins) {
+        if (primitive.exists(plugin.first)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::unique_ptr<Composite> rayTracer::Parser::addTransformation(const libconfig::Setting &primitive,std::vector<Composite> &transformations)
+{
+    const auto &transformationPlugins = this->_pluginHandler.getTransformationPlugins();
+    for (const auto &plugin : transformationPlugins) {
+        if (primitive.exists(plugin.first)) {
+            return createTransformation(primitive, plugin.first, transformations);
+        }
+    }
+    return nullptr;
+}
+
+std::unique_ptr<Composite> rayTracer::Parser::createTransformation(const libconfig::Setting &primitive, const std::string &transformationType, std::vector<Composite> &transformations)
+{
+    const libconfig::Setting &transformationSetting = primitive.lookup(transformationType);
+    double x = 0.0;
+    double y = 0.0;
+    double z = 0.0;
+    if (transformationSetting.exists("x"))
+        x = transformationSetting["x"];
+    if (transformationSetting.exists("y"))
+        y = transformationSetting["y"];
+    if (transformationSetting.exists("z"))
+        z = transformationSetting["z"];
+    
+    const auto &plugins = this->_pluginHandler.getTransformationPlugins();
+    auto it = plugins.find(transformationType);
+    if (it != plugins.end()) {
+        std::shared_ptr<ITransformation> transform = 
+        it->second.getFactory()->build(x, y, z);
+        for (auto &existing : transformations) {
+            if (existing.isSameTransformation(transform))
+                return std::make_unique<Composite>(existing);
+        }
+        Composite transformComposite(transform);
+        transformations.push_back(transformComposite);
+        return std::make_unique<Composite>(transformations.back());
+    }
+    return nullptr;
 }
 
 void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
@@ -81,59 +132,6 @@ void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
         }
     }
 }
-
-bool rayTracer::Parser::hasTransformations(const libconfig::Setting &primitive)
-{
-    const auto &transformationPlugins = this->_pluginHandler.getTransformationPlugins();
-    for (const auto &plugin : transformationPlugins) {
-        if (primitive.exists(plugin.first)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-std::unique_ptr<Composite> rayTracer::Parser::addTransformation(rayTracer::Scene &scene, const libconfig::Setting &primitive,std::vector<Composite> &transformations)
-{
-    const auto &transformationPlugins = this->_pluginHandler.getTransformationPlugins();
-    for (const auto &plugin : transformationPlugins) {
-        if (primitive.exists(plugin.first)) {
-            return createTransformation(scene, primitive, plugin.first, transformations);
-        }
-    }
-    return nullptr;
-}
-
-std::unique_ptr<Composite> rayTracer::Parser::createTransformation(rayTracer::Scene &scene, const libconfig::Setting &primitive, const std::string &transformationType, std::vector<Composite> &transformations)
-{
-    (void)scene;
-    const libconfig::Setting &transformationSetting = primitive.lookup(transformationType);
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    if (transformationSetting.exists("x"))
-        x = transformationSetting["x"];
-    if (transformationSetting.exists("y"))
-        y = transformationSetting["y"];
-    if (transformationSetting.exists("z"))
-        z = transformationSetting["z"];
-              
-    const auto &plugins = this->_pluginHandler.getTransformationPlugins();
-    auto it = plugins.find(transformationType);
-    if (it != plugins.end()) {
-        std::shared_ptr<ITransformation> transform = 
-            it->second.getFactory()->build(x, y, z);
-        for (auto &existing : transformations) {
-            if (existing.isSameTransformation(transform))
-                return std::make_unique<Composite>(existing);
-        }
-        Composite transformComposite(transform);
-        transformations.push_back(transformComposite);
-        return std::make_unique<Composite>(transformations.back());
-    }
-    return nullptr;
-}
-
 void rayTracer::Parser::parseImage(rayTracer::RayTracer &rayTracer)
 {
     const libconfig::Setting &imgConf = config.lookup("image");

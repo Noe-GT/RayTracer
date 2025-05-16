@@ -94,6 +94,16 @@ math::Color math::Color::operator/(double scalar)
     return math::Color(this->_r / scalar, this->_g / scalar, this->_b / scalar);
 }
 
+bool math::Color::operator==(const math::Color& v) const
+{
+    return (this->_r == v._r && this->_g == v._g && this->_b == v._b);
+}
+
+bool math::Color::operator!=(const math::Color& v) const
+{
+    return !(*this == v);
+}
+
 namespace math {
     std::ostream& operator<<(std::ostream& os, const math::Color& c) {
         os << static_cast<int>(255.999 * c._r) << ' '

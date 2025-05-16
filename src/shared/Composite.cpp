@@ -17,9 +17,9 @@ Composite::Composite(std::shared_ptr<ITransformation> transformation)
 {
 }
 
-void Composite::addChild(Composite child)
+void Composite::addChild(Composite &child)
 {
-    _children.push_back(std::move(child));
+    _children.push_back(child);
 }
 
 std::shared_ptr<IPrimitive> Composite::getPrimitive() const
