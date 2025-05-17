@@ -35,7 +35,7 @@ namespace math
                     rayTracer::TypeException("Matrix: T type must be arithmetic");
                 this->_matrix.resize(y, std::vector<T>());
                 for (size_t i = 0; i < y; i++)
-                    this->_matrix[i].resize(static_cast<T>(0), x);
+                    this->_matrix[i].resize(x, static_cast<T>(0));
             }
 
             Matrix(const Matrix &matrix) = default;
@@ -137,19 +137,18 @@ namespace math
                 return *this;
             }
 
-            void reset(size_t x, size_t y)
+            void reset()
             {
-                for (size_t i = 0; i < y; i++)
-                    this->_matrix[i].clear();
-                this->_matrix.clear();
-                this->resize(x, y);
+                for (size_t y = 1; y <= this->getHeight(); y++)
+                    for (size_t x = 1; x <= this->getWidth(); x++)
+                        this->setValue(x, y, static_cast<T>(0));
             }
 
             void resize(size_t x, size_t y)
             {
                 this->_matrix.resize(y, std::vector<T>());
                 for (size_t i = 0; i < y; i++)
-                    this->_matrix[i].resize(0, x);
+                    this->_matrix[i].resize(x, static_cast<T>(0));
             }
 
             size_t getWidth() const
@@ -174,15 +173,24 @@ namespace math
                 return this->_matrix;
             }
 
-            void setMatrix(size_t x, size_t y, T newVal)
+            void setValue(size_t x, size_t y, T newVal)
             {
-                if (y >= this->getHeight())
+                if (y == 0 || y > this->getHeight())
                     throw MatrixException("setMatrix: invalid y index");
-                if (x >= this->getWidth())
+                if (x == 0 || x > this->getWidth())
                     throw MatrixException("setMatrix: invalid x index");
-                this->_matrix[y][x] = newVal;
+                this->_matrix[y - 1][x - 1] = newVal;
             }
-    
+
+            T getValue(size_t x, size_t y) const
+            {
+                if (y == 0 || y > this->getHeight())
+                    throw MatrixException("setMatrix: invalid y index");
+                if (x == 0 || x > this->getWidth())
+                    throw MatrixException("setMatrix: invalid x index");
+                return this->_matrix[y - 1][x - 1];
+            }
+
         private:
             std::vector<std::vector<T>> _matrix;
     };
