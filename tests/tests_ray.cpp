@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** Raytracer
+** File description:
+** tests_ray
+*/
+
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 #include "../src/lib/math/Ray.hpp"
