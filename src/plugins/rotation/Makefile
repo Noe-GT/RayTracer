@@ -42,11 +42,11 @@ all:	$(PLUGIN)
 $(PLUGIN):	$(OBJS) $(SHARED_OBJS)
 	@mkdir -p $(PLUGINS_DIR)
 	$(CXX) -shared -o $(PLUGIN) $(OBJS) $(SHARED_OBJS) $(LDFLAGS)
-	@echo "    $(PLUGIN_MSG) $(PLUGIN_NAME) built"
+	@echo "  $(PLUGIN_MSG) $(PLUGIN_NAME) built"
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
-	@echo "      $(FILE_BUILD_MSG) Building $<"
+	@echo "    $(FILE_BUILD_MSG) Building $<"
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(CPPFLAGS)
 
 clean:

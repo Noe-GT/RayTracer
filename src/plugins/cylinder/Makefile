@@ -23,18 +23,15 @@ CPPFLAGS	=	\
 BIN_DIR	=	bin
 PLUGINS_DIR	=	$(ROOT)/plugins
 
-SRCS	=	Scaling.cpp	\
+SRCS	=	Cylinder.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
 SHARED_OBJS	=	$(SRCS_DIR)/shared/bin/APrimitive.o	\
 				$(SRCS_DIR)/shared/bin/Material.o	\
 				$(SRCS_DIR)/shared/bin/Exceptions.o	\
-				$(SRCS_DIR)/shared/bin/Composite.o	\
-				$(SRCS_DIR)/shared/bin/ATransformation.o	\
 
-
-PLUGIN_NAME	=	scaling.so
+PLUGIN_NAME	=	cylinder.so
 
 PLUGIN	=	$(PLUGINS_DIR)/$(PLUGIN_NAME)
 

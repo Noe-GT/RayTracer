@@ -11,7 +11,6 @@ LIBS	=	math	\
 
 all:
 	$(foreach file, $(LIBS), make -C $(file);)
-	@echo "  $(BUILD_MSG) Libraries built"
 
 clean:
 	$(foreach file, $(LIBS), make clean -C $(file);)

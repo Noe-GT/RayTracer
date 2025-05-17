@@ -14,13 +14,13 @@ PLUGINS	=	rotation	\
 			cone	\
 			translation	\
 			infinite_plan	\
+			cylinder	\
 
 PLUGINS_DIR	=	../../plugins
 
 all:
 	@mkdir -p $(PLUGINS_DIR)
 	$(foreach file, $(PLUGINS), make -C $(file);)
-	@echo "  $(BUILD_MSG) Plugins built"
 
 clean:
 	$(foreach file, $(PLUGINS), make clean -C $(file);)

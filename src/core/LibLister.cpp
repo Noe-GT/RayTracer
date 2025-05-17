@@ -12,10 +12,8 @@ rayTracer::LibLister::LibLister() :
 {
     std::string content;
 
-    if (!std::filesystem::exists(this->_libDirectory))
-        throw rayTracer::PathFindingException("Can't find path: '" + this->_libDirectory + "'");
-    if (!std::filesystem::is_directory(this->_libDirectory))
-        throw rayTracer::PathFindingException("'" + this->_libDirectory + "' is not a directory");
+    if (!std::filesystem::exists(this->_libDirectory) || !std::filesystem::is_directory(this->_libDirectory))
+        return;
     for (const auto &it : std::filesystem::directory_iterator(this->_libDirectory)) {
         content = it.path().filename().c_str();
         if (!(content[0] == '.' || content.size() < 4 || content.substr(content.size() - 3) != ".so"))
