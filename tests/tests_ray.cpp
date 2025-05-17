@@ -1,10 +1,10 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
-#include "../src/Ray.hpp"
+#include "../src/lib/math/Ray.hpp"
 
 Test(Ray, default_constructor) {
     {
-        Ray r;
+        math::Ray r;
         cr_assert_eq(r._origin._x, 0.0);
         cr_assert_eq(r._origin._y, 0.0);
         cr_assert_eq(r._origin._z, 0.0);
@@ -19,9 +19,9 @@ Test(Ray, default_constructor) {
 
 Test(Ray, constructor_with_point_Vector) {
     {
-        Point p(1, 2, 3);
-        Vector v(4, 5, 6);
-        Ray r(p, v);
+        math::Point p(1, 2, 3);
+        math::Vector v(4, 5, 6);
+        math::Ray r(p, v);
 
         cr_assert_eq(r._origin._x, 1.0);
         cr_assert_eq(r._origin._y, 2.0);
@@ -34,7 +34,7 @@ Test(Ray, constructor_with_point_Vector) {
 
 Test(Ray, constructor_with_point_coord) {
     {
-        Ray r(1.0, 2.0, 3.0);
+        math::Ray r(1.0, 2.0, 3.0);
 
         cr_assert_eq(r._origin._x, 1.0);
         cr_assert_eq(r._origin._y, 2.0);
@@ -47,8 +47,8 @@ Test(Ray, constructor_with_point_coord) {
 
 Test(Ray, operator_add_eq) {
     {
-        Ray r1(Point(1,2,3), Vector(4,5,6), Color(7,8,9));
-        Ray r2(Point(10,20,30), Vector(40,50,60), Color(70,80,90));
+        math::Ray r1(math::Point(1,2,3), math::Vector(4,5,6), math::Color(7,8,9));
+        math::Ray r2(math::Point(10,20,30), math::Vector(40,50,60), math::Color(70,80,90));
 
         r1 += r2;
 
@@ -66,8 +66,8 @@ Test(Ray, operator_add_eq) {
 
 Test(Ray, operator_sub_eq) {
     {
-        Ray r1(Point(10,20,30), Vector(40,50,60), Color(70,80,90));
-        Ray r2(Point(1,2,3), Vector(4,5,6), Color(7,8,9));
+        math::Ray r1(math::Point(10,20,30), math::Vector(40,50,60), math::Color(70,80,90));
+        math::Ray r2(math::Point(1,2,3), math::Vector(4,5,6), math::Color(7,8,9));
 
         r1 -= r2;
 
@@ -85,7 +85,7 @@ Test(Ray, operator_sub_eq) {
 
 Test(Ray, operator_mul_eq) {
     {
-        Ray r(Point(1,2,3), Vector(4,5,6), Color(7,8,9));
+        math::Ray r(math::Point(1,2,3), math::Vector(4,5,6), math::Color(7,8,9));
 
         r *= 2.0;
 
@@ -104,10 +104,10 @@ Test(Ray, operator_mul_eq) {
 Test(Ray, arithmetic_operators) {
     // Test + avec Ray
     {
-        Ray r1(Point(1,2,3), Vector(4,5,6), Color(7,8,9));
-        Ray r2(Point(10,20,30), Vector(40,50,60), Color(70,80,90));
+        math::Ray r1(math::Point(1,2,3), math::Vector(4,5,6), math::Color(7,8,9));
+        math::Ray r2(math::Point(10,20,30), math::Vector(40,50,60), math::Color(70,80,90));
 
-        Ray result = r1 + r2;
+        math::Ray result = r1 + r2;
 
         cr_assert_eq(result._origin._x, 11.0);
         cr_assert_eq(result._origin._y, 22.0);
@@ -122,9 +122,9 @@ Test(Ray, arithmetic_operators) {
 
     // Test * avec double
     {
-        Ray r(Point(1,2,3), Vector(4,5,6), Color(7,8,9));
+        math::Ray r(math::Point(1,2,3), math::Vector(4,5,6), math::Color(7,8,9));
 
-        Ray result = r * 2.0;
+        math::Ray result = r * 2.0;
 
         cr_assert_eq(result._origin._x, 2.0);
         cr_assert_eq(result._origin._y, 4.0);
@@ -141,9 +141,9 @@ Test(Ray, arithmetic_operators) {
 Test(Ray, division_operator) {
     // Test / avec double
     {
-        Ray r(Point(2,4,6), Vector(8,10,12), Color(14,16,18));
+        math::Ray r(math::Point(2,4,6), math::Vector(8,10,12), math::Color(14,16,18));
 
-        Ray result = r / 2.0;
+        math::Ray result = r / 2.0;
 
         cr_assert_eq(result._origin._x, 1.0);
         cr_assert_eq(result._origin._y, 2.0);
@@ -158,7 +158,7 @@ Test(Ray, division_operator) {
 
     // Test division par zéro
     {
-        Ray r(Point(1,1,1), Vector(1,1,1), Color(1,1,1));
+        math::Ray r(math::Point(1,1,1), math::Vector(1,1,1), math::Color(1,1,1));
 
         cr_expect_throw(r /= 0.0, std::runtime_error);
     }
