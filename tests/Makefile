@@ -23,6 +23,7 @@ BIN_DIR	=	bin
 
 SRCS	=	tests_ray.cpp	\
 			tests_matrix.cpp	\
+			tests_color.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
