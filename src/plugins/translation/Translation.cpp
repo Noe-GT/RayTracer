@@ -10,9 +10,9 @@
 Translation::Translation(double x, double y, double z) :
     ATransformation(1, 3, "translation")
 {
-    this->_matrix.setMatrix(0, 0, x);
-    this->_matrix.setMatrix(0, 1, y);
-    this->_matrix.setMatrix(0, 2, z);
+    this->_matrix.setValue(1, 1, x);
+    this->_matrix.setValue(1, 2, y);
+    this->_matrix.setValue(1, 3, z);
 }
 
 std::shared_ptr<ITransformation> TranslationFactory::build(double x, double y, double z)

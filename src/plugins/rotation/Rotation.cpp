@@ -11,25 +11,25 @@ Rotation::Rotation(double x, double y, double z) :
     ATransformation(3, 3, "rotation")
 {
     for (size_t i = 0; i <= 2; i++)
-        this->_matrix.setMatrix(i, i, 1.0);
+        this->_matrix.setValue(i + 1, i + 1, 1.0);
 
     math::Matrix mX(this->_matrix);
-    mX.setMatrix(1, 1, cos(x));
-    mX.setMatrix(2, 1, -sin(x));
-    mX.setMatrix(1, 2, sin(x));
-    mX.setMatrix(2, 2, cos(x));
+    mX.setValue(2, 2, cos(x));
+    mX.setValue(3, 2, -sin(x));
+    mX.setValue(2, 3, sin(x));
+    mX.setValue(3, 3, cos(x));
 
     math::Matrix mY(this->_matrix);
-    mY.setMatrix(0, 0, cos(y));
-    mY.setMatrix(2, 0, sin(y));
-    mY.setMatrix(0, 2, -sin(y));
-    mY.setMatrix(2, 2, cos(y));
+    mY.setValue(1, 1, cos(y));
+    mY.setValue(3, 1, sin(y));
+    mY.setValue(1, 3, -sin(y));
+    mY.setValue(3, 3, cos(y));
 
     math::Matrix mZ(this->_matrix);
-    mZ.setMatrix(0, 0, cos(z));
-    mZ.setMatrix(1, 0, -sin(z));
-    mZ.setMatrix(0, 1, sin(z));
-    mZ.setMatrix(1, 1, cos(z));
+    mZ.setValue(1, 1, cos(z));
+    mZ.setValue(2, 1, -sin(z));
+    mZ.setValue(1, 2, sin(z));
+    mZ.setValue(2, 2, cos(z));
 
     this->_matrix = mZ * (mY * mX);
 }

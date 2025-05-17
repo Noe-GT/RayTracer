@@ -66,8 +66,8 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
 
         ray._color = ray._color * scene._ambiantLightIntensity;
         ray._color += {
-            (scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), 
-            (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)), 
+            (scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)),
+            (scene._ambiantLightColor._g * (1.0 - scene._ambiantLightIntensity)),
             (scene._ambiantLightColor._b * (1.0 - scene._ambiantLightIntensity))
         };
     }
@@ -102,9 +102,9 @@ math::Ray rayTracer::Pixel::applyTransformation(const math::Ray& ray, const math
     math::Ray transformedRay = ray;
     math::Matrix<double> directionMatrix(1, 3);
 
-    directionMatrix.setMatrix(0, 0, ray._direction._x);
-    directionMatrix.setMatrix(0, 1, ray._direction._y);
-    directionMatrix.setMatrix(0, 2, ray._direction._z);
+    directionMatrix.setValue(1, 1, ray._direction._x);
+    directionMatrix.setValue(1, 2, ray._direction._y);
+    directionMatrix.setValue(1, 3, ray._direction._z);
 
     math::Matrix<double> resultMatrix = transformMatrix * directionMatrix;
     transformedRay._direction._x = resultMatrix.getMatrix()[0][0];
@@ -121,7 +121,7 @@ math::Ray rayTracer::Pixel::applyTransformation(const math::Ray& ray, const math
               << transformedRay._direction._z << ")" << std::endl;
     
     transformedRay._direction.normalize();
-    
+
     return transformedRay;
 }
 

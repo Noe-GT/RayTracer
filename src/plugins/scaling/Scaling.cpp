@@ -10,9 +10,9 @@
 Scaling::Scaling(double x, double y, double z) :
     ATransformation(3, 3, "scaling")
 {
-    this->_matrix.setMatrix(0, 0, x);
-    this->_matrix.setMatrix(1, 1, y);
-    this->_matrix.setMatrix(2, 2, z);
+    this->_matrix.setValue(1, 1, x);
+    this->_matrix.setValue(2, 2, y);
+    this->_matrix.setValue(3, 3, z);
 }
 
 std::shared_ptr<ITransformation> ScalingFactory::build(double x, double y, double z)
