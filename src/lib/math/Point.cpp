@@ -108,9 +108,9 @@ math::Point & math::Point::operator+=(const Vector& other)
 
 math::Point &math::Point::operator-=(const Vector& other)
 {
-    this->_x += other._x;
-    this->_y += other._y;
-    this->_z += other._z;
+    this->_x -= other._x;
+    this->_y -= other._y;
+    this->_z -= other._z;
     return *this;
 }
 
