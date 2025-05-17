@@ -49,12 +49,12 @@ Test(Point, assignment)
 
 Test(Point, inverse)
 {
-    math::Point a(1.0, -2.0, 3.0);
+    math::Point a(1.0, 2.0, -3.0);
     math::Point b = -a;
 
     cr_expect_float_eq(b._x, -1.0, 1e-6);
-    cr_expect_float_eq(b._y, 2.0, 1e-6);
-    cr_expect_float_eq(b._z, -3.0, 1e-6);
+    cr_expect_float_eq(b._y, -2.0, 1e-6);
+    cr_expect_float_eq(b._z, 3.0, 1e-6);
 }
 
 Test(Point, addition)
@@ -123,22 +123,22 @@ Test(Point, scalar_multiplication2)
 
 Test(Point, scalar_division)
 {
-    math::Point a(2.0, 4.0, 6.0);
+    math::Point a(1.0, 2.0, 3.0);
     math::Point b = a / 2.0;
 
-    cr_expect_float_eq(b._x, 1.0, 1e-6);
-    cr_expect_float_eq(b._y, 2.0, 1e-6);
-    cr_expect_float_eq(b._z, 3.0, 1e-6);
+    cr_expect_float_eq(b._x, 0.5, 1e-6);
+    cr_expect_float_eq(b._y, 1.0, 1e-6);
+    cr_expect_float_eq(b._z, 1.5, 1e-6);
 }
 
 Test(Point, scalar_division2)
 {
-    math::Point a(2.0, 4.0, 6.0);
+    math::Point a(1.0, 2.0, 3.0);
 
     a /= 2.0;
-    cr_expect_float_eq(a._x, 1.0, 1e-6);
-    cr_expect_float_eq(a._y, 2.0, 1e-6);
-    cr_expect_float_eq(a._z, 3.0, 1e-6);
+    cr_expect_float_eq(a._x, 0.5, 1e-6);
+    cr_expect_float_eq(a._y, 1.0, 1e-6);
+    cr_expect_float_eq(a._z, 1.5, 1e-6);
 }
 
 Test(Point, division_by_zero)
@@ -172,22 +172,22 @@ Test(Point, vector_addition2)
 
 Test(Point, vector_substraction)
 {
-    math::Point p(4.0, 5.0, 6.0);
+    math::Point p(1.0, 2.0, 3.0);
     math::Vector v(1.0, 1.0, 1.0);
     math::Point res = p - v;
 
-    cr_expect_float_eq(res._x, 3.0, 1e-6);
-    cr_expect_float_eq(res._y, 4.0, 1e-6);
-    cr_expect_float_eq(res._z, 5.0, 1e-6);
+    cr_expect_float_eq(res._x, 0.0, 1e-6);
+    cr_expect_float_eq(res._y, 1.0, 1e-6);
+    cr_expect_float_eq(res._z, 2.0, 1e-6);
 }
 
 Test(Point, vector_substraction2)
 {
-    math::Point p(4.0, 5.0, 6.0);
+    math::Point p(1.0, 2.0, 3.0);
     math::Vector v(1.0, 1.0, 1.0);
 
     p -= v;
-    cr_expect_float_eq(p._x, 3.0, 1e-6);
-    cr_expect_float_eq(p._y, 4.0, 1e-6);
-    cr_expect_float_eq(p._z, 5.0, 1e-6);
+    cr_expect_float_eq(p._x, 0.0, 1e-6);
+    cr_expect_float_eq(p._y, 1.0, 1e-6);
+    cr_expect_float_eq(p._z, 2.0, 1e-6);
 }

@@ -25,6 +25,7 @@ SRCS	=	tests_ray.cpp	\
 			tests_matrix.cpp	\
 			tests_color.cpp	\
 			tests_point.cpp	\
+			tests_vector.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 
