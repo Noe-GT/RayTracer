@@ -7,7 +7,7 @@
 
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
-#include "../src/lib/math/Ray.hpp"
+#include "Ray.hpp"
 
 Test(Ray, default_constructor) {
     {

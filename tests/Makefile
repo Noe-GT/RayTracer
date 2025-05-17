@@ -22,15 +22,18 @@ CPPFLAGS	=	\
 BIN_DIR	=	bin
 
 SRCS	=	tests_ray.cpp	\
+			tests_matrix.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
+
+SHARED_OBJS	=	$(SHARED_DIR)/$(BIN_DIR)/Exceptions.o	\
 
 EXEC	=	$(ROOT)/unit_tests
 
 all:	$(EXEC)
 
 $(EXEC):	$(OBJS)
-	$(CXX) -o $(EXEC) $(OBJS) $(LDFLAGS)
+	$(CXX) -o $(EXEC) $(OBJS) $(SHARED_OBJS) $(LDFLAGS)
 	@echo "$(BUILD_MSG) Unit tests built"
 
 $(BIN_DIR)/%.o:	%.cpp
