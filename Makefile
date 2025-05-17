@@ -19,21 +19,19 @@ ALL_DIRS	=	$(LIBS_DIR)	\
 				$(PLUGINS_DIR)	\
 				$(CORE_DIR)	\
 
-all:
-	$(MAKE) libs shared plugins core
-	@echo "$(BUILD_MSG) Raytracer built"
+all:	plugins raytracer
+
+raytracer:	libs shared
+	make -C $(CORE_DIR)
+
+plugins:	libs shared
+	make -C $(PLUGINS_DIR)
 
 libs:
 	make -C $(LIBS_DIR)
 
 shared:
 	make -C $(SHARED_DIR)
-
-plugins:
-	make -C $(PLUGINS_DIR)
-
-core:
-	make -C $(CORE_DIR)
 
 clean:
 	$(foreach file, $(ALL_DIRS), make clean -C $(file);)
@@ -46,4 +44,4 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY:	all clean fclean re
+.PHONY:	all clean fclean re raytracer plugins libs shared

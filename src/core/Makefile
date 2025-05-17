@@ -39,11 +39,11 @@ all:	$(EXEC)
 
 $(EXEC):	$(OBJS) $(SHARED_OBJS)
 	$(CXX) -o $(EXEC) $(OBJS) $(SHARED_OBJS) $(LDFLAGS)
-	@echo "  $(BUILD_MSG) Core files built"
+	@echo "$(BUILD_MSG) Raytracer built"
 
 $(BIN_DIR)/%.o:	%.cpp
 	@mkdir -p $(BIN_DIR)
-	@echo "    $(FILE_BUILD_MSG) Building $<"
+	@echo "  $(FILE_BUILD_MSG) Building $<"
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(CPPFLAGS)
 
 clean:
