@@ -58,11 +58,12 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
     if (_rays.empty())
         return;
 
-    for (math::Ray &ray : _rays) {
+    for (math::Ray &ray : this->_rays) {
         for (const Composite& composite : scene._composites) {
-            processComposite(composite, ray, scene, lights);
+            if (processComposite(composite, ray, scene, lights))
+                break;
         }
-        
+
         ray._color = ray._color * scene._ambiantLightIntensity;
         ray._color += {
             (scene._ambiantLightColor._r * (1.0 - scene._ambiantLightIntensity)), 
@@ -75,7 +76,7 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
 
 
 
-void rayTracer::Pixel::processComposite(const Composite& composite, math::Ray& ray, const Scene& scene, std::vector<std::shared_ptr<IPrimitive>>& lights)
+bool rayTracer::Pixel::processComposite(const Composite& composite, math::Ray& ray, const Scene& scene, std::vector<std::shared_ptr<IPrimitive>>& lights)
 {
     auto primitive = composite.getPrimitive();
     auto transformation = composite.getTransformation();
@@ -86,10 +87,14 @@ void rayTracer::Pixel::processComposite(const Composite& composite, math::Ray& r
             processComposite(child, transformedRay, scene, lights);
         if (transformedRay._color != ray._color)
             ray._color = transformedRay._color;
-    } else if (primitive)
-        primitive->Intersect(ray, lights, scene.getPrimitives());
+    } else if (primitive) {
+        if (primitive->Intersect(ray, lights, scene.getPrimitives())) {
+            return true;
+        }
+    }
     for (const auto& child : composite.getChildren())
         processComposite(child, ray, scene, lights);
+    return false;
 }
 
 math::Ray rayTracer::Pixel::applyTransformation(const math::Ray& ray, const math::Matrix<double>& transformMatrix)
@@ -101,12 +106,20 @@ math::Ray rayTracer::Pixel::applyTransformation(const math::Ray& ray, const math
     directionMatrix.setMatrix(0, 1, ray._direction._y);
     directionMatrix.setMatrix(0, 2, ray._direction._z);
 
-    std::cout << "Direction Matrix: y = " << directionMatrix.getHeight() << " x = " << directionMatrix.getWidth() << std::endl;
-    std::cout << "Transform Matrix: y = " << transformMatrix.getHeight() << " x = " << transformMatrix.getWidth() << std::endl;
     math::Matrix<double> resultMatrix = transformMatrix * directionMatrix;
     transformedRay._direction._x = resultMatrix.getMatrix()[0][0];
     transformedRay._direction._y = resultMatrix.getMatrix()[0][1];
     transformedRay._direction._z = resultMatrix.getMatrix()[0][2];
+
+    std::cout << "Old Ray Direction: (" 
+              << ray._direction._x << ", " 
+              << ray._direction._y << ", " 
+              << ray._direction._z << ")" << std::endl;
+    std::cout << "New Ray Direction: (" 
+              << transformedRay._direction._x << ", " 
+              << transformedRay._direction._y << ", " 
+              << transformedRay._direction._z << ")" << std::endl;
+    
     transformedRay._direction.normalize();
     
     return transformedRay;
