@@ -11,8 +11,6 @@
 #include <thread>
 #include "External.hpp"
 #include "Pixel.hpp"
-#include "SafeQueuePopOn.hpp"
-#include "SafeQueuePushOn.hpp"
 #include "DynamicQueue.hpp"
 #include "Scene.hpp"
 #include <chrono>
