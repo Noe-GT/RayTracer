@@ -10,7 +10,6 @@ rayTracer::RayTracer::RayTracer(std::string configFilePath):
     _rayDefinition(1),
     _workers(1),
     _outputFilePath("render.ppm"),
-    _showRender(false),
     _pluginHandler(),
     _parser(this->_pluginHandler),
     _scene(this->_pluginHandler)
@@ -26,7 +25,8 @@ void rayTracer::RayTracer::render()
 {
     std::cout << "Rendering..." << std::endl;
     std::cout << "[workers : " << this->_workers << " | ray definition : " << this->_rayDefinition << "]" << std::endl;
-    rayTracer::RenderPool(this->_workers, this->_image, this->_scene, this->_graphical);
+    rayTracer::RenderPool renderPool(this->_workers, this->_image);
+    renderPool.render(this->_scene, this->_graphical);
 }
 
 void rayTracer::RayTracer::out()
@@ -57,11 +57,6 @@ void rayTracer::RayTracer::setGraphical(std::shared_ptr<IGraphical> graphical)
 void rayTracer::RayTracer::setRayDefinition(size_t rayDefinition)
 {
     this->_rayDefinition = rayDefinition;
-}
-
-void rayTracer::RayTracer::setShowRender(bool showRender)
-{
-    this->_showRender = showRender;
 }
 
 void  rayTracer::RayTracer::setWorkers(size_t workers)
