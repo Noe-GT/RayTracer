@@ -102,11 +102,11 @@ std::unique_ptr<Composite> rayTracer::Parser::createTransformation(const libconf
         y = transformationSetting["y"];
     if (transformationSetting.exists("z"))
         z = transformationSetting["z"];
-    
+
     const auto &plugins = this->_pluginHandler.getTransformationPlugins();
     auto it = plugins.find(transformationType);
     if (it != plugins.end()) {
-        std::shared_ptr<ITransformation> transform = 
+        std::shared_ptr<ITransformation> transform =
         it->second.getFactory()->build(x, y, z);
         for (auto &existing : transformations) {
             if (existing.isSameTransformation(transform))
@@ -126,8 +126,6 @@ void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &gPlugins = this->_pluginHandler.getGraphicalPlugins();
     std::pair<size_t, size_t> res = rayTracer.getImageResolution();
 
-    if (graphicalConf.exists("showRender"))
-        rayTracer.setShowRender(graphicalConf["showRender"]);
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> gPair : gPlugins) {
         if (libraryName == gPair.first) {
             std::shared_ptr<IGraphical> graphical = gPair.second.getFactory()->build(res.first, res.second);
@@ -171,8 +169,9 @@ void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
 void rayTracer::Parser::parseProcessing(rayTracer::RayTracer &rayTracer)
 {
     const libconfig::Setting &processConf = config.lookup("processing");
+    unsigned int nThreads = std::thread::hardware_concurrency();
+    int workers;
     size_t rayDefinition;
-    size_t workers;
 
     if (processConf.exists("rayDefinition")) {
         rayDefinition = processConf["rayDefinition"];
@@ -181,7 +180,12 @@ void rayTracer::Parser::parseProcessing(rayTracer::RayTracer &rayTracer)
     }
     if (processConf.exists("workers")) {
         workers = processConf["workers"];
-        if (workers > 1)
+        if (workers == -1)
+            rayTracer.setWorkers(nThreads);
+        if (static_cast<unsigned int>(workers) > nThreads) {
+            rayTracer.setWorkers(nThreads);
+            std::cout << "workers capped to max number!" << std::endl;
+        } else if (workers > 1)
             rayTracer.setWorkers(workers);
     }
 }

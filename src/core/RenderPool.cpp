@@ -14,6 +14,7 @@ void workerRender(rayTracer::DynamicQueue<std::vector<rayTracer::Pixel>> &render
     while (toRender) {
         for (size_t i = 0; i < toRender->size(); i++)
             toRender->at(i).simulateRays(scene);
+        renderQueue.incDone();
         toRender = renderQueue.pop();
     }
 }
@@ -22,9 +23,9 @@ void rayTracer::RenderPool::displayRender(const std::shared_ptr<IGraphical> &gra
     std::vector<std::vector<math::Color>> dispVector;
     size_t yIndex = 0;
 
-    while (graphical->isActive()) {
+    if (graphical->isActive()) {
         if (graphical->doDisplay()) {
-            while (yIndex < (this->_renderQueue.getAccessIndex() - this->_nWorkers)) {
+            while (yIndex < this->_renderQueue.getDone()) {
                 std::shared_ptr<const std::vector<rayTracer::Pixel>> vect = this->_renderQueue.peak(yIndex);
                 dispVector.emplace_back();
                 for (size_t x = 0; x < vect->size(); x++)
@@ -36,21 +37,32 @@ void rayTracer::RenderPool::displayRender(const std::shared_ptr<IGraphical> &gra
     }
 }
 
-rayTracer::RenderPool::RenderPool(size_t nWorkers, std::vector<std::shared_ptr<std::vector<rayTracer::Pixel>>> &baseQueue,
-    const rayTracer::Scene &scene, const std::shared_ptr<IGraphical> &graphical):
+rayTracer::RenderPool::RenderPool(size_t nWorkers, std::vector<std::shared_ptr<std::vector<rayTracer::Pixel>>> &baseQueue):
     _nWorkers(nWorkers),
     _renderQueue(baseQueue)
 {
-    for (size_t i = 0; i < this->_nWorkers; i++)
-        this->_workers.emplace_back(workerRender, std::ref(this->_renderQueue), scene);
-    if (graphical)
-        this->displayRender(graphical);
 }
 
 rayTracer::RenderPool::~RenderPool()
 {
     for (std::thread &worker : _workers) {
-        if (worker.joinable())
+        if (worker.joinable()) {
             worker.join();
+        }
+    }
+}
+
+void rayTracer::RenderPool::render(const rayTracer::Scene &scene, const std::shared_ptr<IGraphical> &graphical)
+{
+    for (size_t i = 0; i < this->_nWorkers; i++)
+        this->_workers.emplace_back(workerRender, std::ref(this->_renderQueue), scene);
+    while (this->_renderQueue.getDone() != this->_renderQueue.size()) {
+        if (graphical)
+            this->displayRender(graphical);
+    }
+    std::cout << "Rendering done." << std::endl;
+    if (graphical) {
+        this->displayRender(graphical);
+        graphical->idle();
     }
 }
