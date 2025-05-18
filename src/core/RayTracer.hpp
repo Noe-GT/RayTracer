@@ -28,7 +28,7 @@ namespace rayTracer {
 
         private:
             size_t _rayDefinition;
-            size_t _workers;
+            unsigned int _workers;
             std::string _outputFilePath;
             bool _showRender;
             std::shared_ptr<IGraphical> _graphical;
