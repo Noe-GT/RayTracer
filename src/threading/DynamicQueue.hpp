@@ -23,7 +23,7 @@ namespace rayTracer {
                     this->_queue.push_back(elem);
             }
 
-            std::shared_ptr<T> pop() {
+            const std::shared_ptr<T> pop() {
                 std::lock_guard<std::mutex> lock(_mutex);
                 if (!_queue.empty() && this->_accessIndex < this->_queue.size()) {
                     this->_accessIndex++;
@@ -35,6 +35,22 @@ namespace rayTracer {
 
             void reset() {
                 this->_accessIndex = 0;
+            }
+
+            size_t size() const {
+                return this->_queue.size();
+            }
+
+            size_t getAccessIndex() const {
+                return this->_accessIndex;
+            }
+
+            std::shared_ptr<const T> peak(size_t index) const {
+                if (index < _queue.size()) {
+                    return std::const_pointer_cast<const T>(this->_queue[index]);
+                } else {
+                    return nullptr;
+                }
             }
 
         private:

@@ -20,11 +20,13 @@
 namespace rayTracer {
     class RenderPool {
         public:
-            RenderPool(size_t nWorkers, std::vector<std::shared_ptr<std::vector<rayTracer::Pixel>>> &baseQueue, const rayTracer::Scene &scene);
+            RenderPool(size_t nWorkers, std::vector<std::shared_ptr<std::vector<rayTracer::Pixel>>> &baseQueue, const rayTracer::Scene &scene, const std::shared_ptr<IGraphical> &graphical);
             ~RenderPool();
 
         private:
-            const size_t _nWorkers;
+            void displayRender(const std::shared_ptr<IGraphical> &graphical) const;
+
+            size_t _nWorkers;
             std::vector<std::thread> _workers;
             rayTracer::DynamicQueue<std::vector<rayTracer::Pixel>> _renderQueue;
     };

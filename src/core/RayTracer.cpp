@@ -8,6 +8,7 @@
 
 rayTracer::RayTracer::RayTracer(std::string configFilePath):
     _rayDefinition(1),
+    _workers(1),
     _outputFilePath("render.ppm"),
     _showRender(false),
     _pluginHandler(),
@@ -24,28 +25,8 @@ rayTracer::RayTracer::~RayTracer()
 void rayTracer::RayTracer::render()
 {
     std::cout << "Rendering..." << std::endl;
-    rayTracer::RenderPool(this->_workers, this->_image, this->_scene);
-    std::cout << "Render completed." << std::endl;
-
-    // std::vector<std::vector<math::Color>> dispVector;
-
-    // std::cout << "Rendering..." << std::endl;
-    // for (std::size_t y = 0; y != this->_image.size(); y++) {
-    //     if (this->_graphical)
-    //         dispVector.push_back(std::vector<math::Color>());
-    //     for (std::size_t x = 0; x != this->_image[y].size(); x++) {
-    //         this->_image[y][x].simulateRays(this->_scene);
-    //         if (this->_graphical)
-    //             dispVector.back().push_back(this->_image[y][x].getColor());
-    //     }
-    //     if (this->_showRender && this->_graphical)
-    //         this->_graphical->display(dispVector);
-    // };
-    // std::cout << "Render completed." << std::endl;
-    // if (this->_graphical) {
-    //     this->_graphical->display(dispVector);
-    //     this->_graphical->idle();
-    // }
+    std::cout << "[workers : " << this->_workers << " | ray definition : " << this->_rayDefinition << "]" << std::endl;
+    rayTracer::RenderPool(this->_workers, this->_image, this->_scene, this->_graphical);
 }
 
 void rayTracer::RayTracer::out()

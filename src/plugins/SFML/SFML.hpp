@@ -12,6 +12,9 @@
 #include "IGraphical.hpp"
 #include "IFactory.hpp"
 #include "PluginTypes.hpp"
+#include <chrono>
+
+#define DISPLAY_INTERVALS 20
 
 class SFML : public IGraphical {
     public:
@@ -20,12 +23,15 @@ class SFML : public IGraphical {
 
         void display(std::vector<std::vector<math::Color>> image) final;
         void idle() final;
+        bool doDisplay() const final;
+        bool isActive() const final;
 
     private:
         void handleEvents();
         void drawPixel(size_t x, size_t y, const math::Color &color);
 
         sf::RenderWindow _window;
+        std::chrono::steady_clock::time_point _displayChrono;
 };
 
 class SFMLFactory: public rayTracer::IFactory<IGraphical> {

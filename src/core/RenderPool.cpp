@@ -7,10 +7,9 @@
 
 #include "RenderPool.hpp"
 
-void render(rayTracer::DynamicQueue<std::vector<rayTracer::Pixel>> &renderQueue, const rayTracer::Scene &scene)
+void workerRender(rayTracer::DynamicQueue<std::vector<rayTracer::Pixel>> &renderQueue, const rayTracer::Scene &scene)
 {
     std::shared_ptr<std::vector<rayTracer::Pixel>> toRender = renderQueue.pop();
-    std::cout << "worker: " << std::this_thread::get_id() << std::endl;
 
     while (toRender) {
         for (size_t i = 0; i < toRender->size(); i++)
@@ -19,14 +18,33 @@ void render(rayTracer::DynamicQueue<std::vector<rayTracer::Pixel>> &renderQueue,
     }
 }
 
-rayTracer::RenderPool::RenderPool(size_t nWorkers,
-    std::vector<std::shared_ptr<std::vector<rayTracer::Pixel>>> &baseQueue, const rayTracer::Scene &scene):
+void rayTracer::RenderPool::displayRender(const std::shared_ptr<IGraphical> &graphical) const {
+    std::vector<std::vector<math::Color>> dispVector;
+    size_t yIndex = 0;
+
+    while (graphical->isActive()) {
+        if (graphical->doDisplay()) {
+            while (yIndex < (this->_renderQueue.getAccessIndex() - this->_nWorkers)) {
+                std::shared_ptr<const std::vector<rayTracer::Pixel>> vect = this->_renderQueue.peak(yIndex);
+                dispVector.emplace_back();
+                for (size_t x = 0; x < vect->size(); x++)
+                    dispVector.back().push_back(vect->at(x).getColor());
+                yIndex++;
+            }
+            graphical->display(dispVector);
+        }
+    }
+}
+
+rayTracer::RenderPool::RenderPool(size_t nWorkers, std::vector<std::shared_ptr<std::vector<rayTracer::Pixel>>> &baseQueue,
+    const rayTracer::Scene &scene, const std::shared_ptr<IGraphical> &graphical):
     _nWorkers(nWorkers),
     _renderQueue(baseQueue)
 {
-    this->_workers.resize(this->_nWorkers);
     for (size_t i = 0; i < this->_nWorkers; i++)
-        this->_workers.emplace_back(render, std::ref(this->_renderQueue), scene);
+        this->_workers.emplace_back(workerRender, std::ref(this->_renderQueue), scene);
+    if (graphical)
+        this->displayRender(graphical);
 }
 
 rayTracer::RenderPool::~RenderPool()
