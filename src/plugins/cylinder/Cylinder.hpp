@@ -33,7 +33,7 @@ class Cylinder: public APrimitive {
         bool intersectCylinder(math::Ray& ray, math::CollisionUtils &CU);
         double _radius;
         double _height;
-        math::Vector _orientation;
+        math::Vector _rotation;
         Material _material;
 };
 
