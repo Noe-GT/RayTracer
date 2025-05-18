@@ -45,13 +45,13 @@ void Cone::configure(const libconfig::Setting &setting, int id)
         if (this->_height <= 0)
             throw rayTracer::ConfigException("Cone height must be strictly positive.");
     }
-    if (setting.exists("orientation") &&
-        setting["orientation"].exists("x") &&
-        setting["orientation"].exists("y") &&
-        setting["orientation"].exists("z")) {
-        this->_orientation._x = setting["orientation"]["x"];
-        this->_orientation._y = setting["orientation"]["y"];
-        this->_orientation._z = setting["orientation"]["z"];
+    if (setting.exists("rotation") &&
+        setting["rotation"].exists("x") &&
+        setting["rotation"].exists("y") &&
+        setting["rotation"].exists("z")) {
+        this->_orientation._x = setting["rotation"]["x"];
+        this->_orientation._y = setting["rotation"]["y"];
+        this->_orientation._z = setting["rotation"]["z"];
         this->_orientation = this->_orientation.normalize();
     }
     if (setting.exists("translation")) {

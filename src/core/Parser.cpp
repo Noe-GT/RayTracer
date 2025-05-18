@@ -81,7 +81,7 @@ std::unique_ptr<Composite> rayTracer::Parser::addTransformation(const libconfig:
     const auto &transformationPlugins = this->_pluginHandler.getTransformationPlugins();
     for (const auto &plugin : transformationPlugins) {
         if (primitive.exists(plugin.first)) {
-            if (plugin.first == "translation") {
+            if (plugin.first == "translation" || plugin.first == "rotation") {
                 return nullptr;
             }
             return createTransformation(primitive, plugin.first, transformations);
