@@ -32,7 +32,7 @@ namespace math
             Matrix(size_t x, size_t y)
             {
                 if (!std::is_arithmetic_v<T>)
-                    rayTracer::TypeException("Matrix: T type must be arithmetic");
+                    throw rayTracer::TypeException("Matrix: T type must be arithmetic");
                 this->_matrix.resize(y, std::vector<T>());
                 for (size_t i = 0; i < y; i++)
                     this->_matrix[i].resize(x, static_cast<T>(0));
@@ -40,7 +40,7 @@ namespace math
 
             Matrix(const Matrix &matrix) = default;
 
-            Matrix(const Matrix &&matrix) :
+            Matrix(Matrix &&matrix) :
                 _matrix(matrix._matrix)
             {
             }

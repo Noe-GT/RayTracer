@@ -13,11 +13,13 @@ LIBS_DIR	=	$(SRCS_DIR)/lib
 SHARED_DIR	=	$(SRCS_DIR)/shared
 PLUGINS_DIR	=	$(SRCS_DIR)/plugins
 CORE_DIR	=	$(SRCS_DIR)/core
+TESTS_DIR	=	tests
 
 ALL_DIRS	=	$(LIBS_DIR)	\
 				$(SHARED_DIR)	\
 				$(PLUGINS_DIR)	\
 				$(CORE_DIR)	\
+				$(TESTS_DIR)	\
 
 all:	plugins raytracer
 
@@ -33,6 +35,9 @@ libs:
 shared:
 	make -C $(SHARED_DIR)
 
+tests_run:	all
+	make -C $(TESTS_DIR)
+
 clean:
 	$(foreach file, $(ALL_DIRS), make clean -C $(file);)
 	@echo "$(DELETE_MSG) Cleaning all object files"
@@ -44,4 +49,4 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY:	all clean fclean re raytracer plugins libs shared
+.PHONY:	all clean fclean re raytracer plugins libs shared tests_run

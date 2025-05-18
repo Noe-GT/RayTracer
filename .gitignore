@@ -4,6 +4,7 @@ bin/
 *.o
 *.so
 raytracer
+unit_tests
 vgcore*
 *.cfg
 *.ppm

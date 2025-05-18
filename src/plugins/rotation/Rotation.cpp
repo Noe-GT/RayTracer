@@ -10,8 +10,8 @@
 Rotation::Rotation(double x, double y, double z) :
     ATransformation(3, 3, "rotation")
 {
-    for (size_t i = 0; i <= 2; i++)
-        this->_matrix.setValue(i + 1, i + 1, 1.0);
+    for (size_t i = 1; i <= 3; i++)
+        this->_matrix.setValue(i, i, 1.0);
 
     math::Matrix mX(this->_matrix);
     mX.setValue(2, 2, cos(x));
