@@ -23,6 +23,10 @@ rayTracer::RayTracer::~RayTracer()
 
 void rayTracer::RayTracer::render()
 {
+    std::cout << "Rendering..." << std::endl;
+    rayTracer::RenderPool(2, this->_image, this->_scene);
+    std::cout << "Render completed." << std::endl;
+
     // std::vector<std::vector<math::Color>> dispVector;
 
     // std::cout << "Rendering..." << std::endl;
@@ -42,18 +46,6 @@ void rayTracer::RayTracer::render()
     //     this->_graphical->display(dispVector);
     //     this->_graphical->idle();
     // }
-
-    // std::vector<std::vector<rayTracer::Pixel>> baseQueue;
-    // std::cout << "Rendering..." << std::endl;
-
-    // for (size_t y = 0; y < 600; ++y) {
-    //     std::vector<rayTracer::Pixel> vect;
-    //     for (size_t x = 0; x < 600; ++x) {
-    //         vect.push_back(rayTracer::Pixel(this->_rayDefinition, x, y, 600, 600, this->_scene));
-    //     }
-    //     baseQueue.push_back(vect);
-    // }
-    rayTracer::RenderPool(2, this->_image, this->_scene);
 }
 
 void rayTracer::RayTracer::out()
@@ -64,7 +56,7 @@ void rayTracer::RayTracer::out()
     file << "P3\n" << res.first << " "<< res.second << " \n255\n";
     for (int y = 0; y < res.second; ++y) {
         for (int x = 0; x < res.first; ++x) {
-            file << this->_image[y][x].getColor();
+            file << this->_image[y]->at(x).getColor() << std::endl;
         }
     }
     file.close();
@@ -95,16 +87,16 @@ std::pair<size_t, size_t> rayTracer::RayTracer::getImageResolution() const
 {
     if (this->_image.size() <= 0)
         return std::pair<size_t, size_t>(0, 0);
-    return std::pair<size_t, size_t>(this->_image[0].size(), this->_image.size());
+    return std::pair<size_t, size_t>(this->_image[0]->size(), this->_image.size());
 }
 
 void rayTracer::RayTracer::setImage(const std::pair<size_t, size_t> &resolution)
 {
     this->_image.resize(resolution.second);
     for (size_t y = 0; y < resolution.second; ++y) {
-        this->_image[y].resize(resolution.first);
+        this->_image[y] = std::make_shared<std::vector<rayTracer::Pixel>>(resolution.first);
         for (size_t x = 0; x < resolution.first; ++x) {
-            this->_image[y][x] = rayTracer::Pixel(this->_rayDefinition, x, y, resolution.first, resolution.second, this->_scene);
+            this->_image[y]->at(x) = rayTracer::Pixel(this->_rayDefinition, x, y, resolution.first, resolution.second, this->_scene);
         }
     }
 }

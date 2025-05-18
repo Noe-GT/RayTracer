@@ -9,37 +9,23 @@
 
 void render(rayTracer::DynamicQueue<std::vector<rayTracer::Pixel>> &renderQueue, const rayTracer::Scene &scene)
 {
-    std::cout << "thread: " << std::this_thread::get_id() << std::endl;
-    std::unique_ptr<std::vector<rayTracer::Pixel>> toRender = renderQueue.pop();
+    std::shared_ptr<std::vector<rayTracer::Pixel>> toRender = renderQueue.pop();
 
     while (toRender) {
-        for (size_t i = 0; i < toRender->size(); i++) {
+        for (size_t i = 0; i < toRender->size(); i++)
             toRender->at(i).simulateRays(scene);
-            // std::cout << toRender->at(i).getColor();
-        }
         toRender = renderQueue.pop();
-        std::cout << std::endl;
     }
-    std::cout << "rendered" << std::endl;
 }
 
-rayTracer::RenderPool::RenderPool(size_t nWorkers, std::vector<std::vector<rayTracer::Pixel>> &baseQueue, const rayTracer::Scene &scene):
+rayTracer::RenderPool::RenderPool(size_t nWorkers,
+    std::vector<std::shared_ptr<std::vector<rayTracer::Pixel>>> &baseQueue, const rayTracer::Scene &scene):
     _nWorkers(nWorkers),
     _renderQueue(baseQueue)
 {
     this->_workers.resize(this->_nWorkers);
     for (size_t i = 0; i < this->_nWorkers; i++)
         this->_workers.emplace_back(render, std::ref(this->_renderQueue), scene);
-
-    std::ofstream file("pool.ppm");
-
-    file << "P3\n" << 600 << " "<< 600 << " \n255\n";
-    for (int y = 0; y < 600; ++y) {
-        for (int x = 0; x < 600; ++x) {
-            file << baseQueue[y][x].getColor();
-        }
-    }
-    file.close();
 }
 
 rayTracer::RenderPool::~RenderPool()

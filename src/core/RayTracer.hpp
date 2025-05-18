@@ -33,7 +33,7 @@ namespace rayTracer {
             rayTracer::PluginHandler _pluginHandler;
             rayTracer::Parser _parser;
             Scene _scene;
-            std::vector<std::vector<Pixel>> _image;
+            std::vector<std::shared_ptr<std::vector<Pixel>>> _image;
             std::string _confPath;
     };
 }
