@@ -25,8 +25,9 @@ namespace rayTracer {
             }
 
             const std::shared_ptr<T> pop() {
-                std::lock_guard<std::mutex> lock(_mutex);
-                if (!_queue.empty() && this->_accessIndex < this->_queue.size()) {
+                std::lock_guard<std::mutex> lock(this->_mutex);
+                if (!this->_queue.empty() && this->_accessIndex < this->_queue.size()) {
+                    // std::cout << "ind: " << this->_accessIndex << std::endl;
                     this->_accessIndex++;
                     return this->_queue[this->_accessIndex - 1];
                 } else {
@@ -35,7 +36,7 @@ namespace rayTracer {
             }
 
             void incDone() {
-                std::lock_guard<std::mutex> lock(_mutex);
+                std::lock_guard<std::mutex> lock(this->_mutex);
                 this->_done++;
             }
 
