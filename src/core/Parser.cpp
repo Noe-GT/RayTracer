@@ -126,8 +126,6 @@ void rayTracer::Parser::parseGraphical(rayTracer::RayTracer &rayTracer)
     const std::map<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> &gPlugins = this->_pluginHandler.getGraphicalPlugins();
     std::pair<size_t, size_t> res = rayTracer.getImageResolution();
 
-    if (graphicalConf.exists("showRender"))
-        rayTracer.setShowRender(graphicalConf["showRender"]);
     for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IGraphical>> gPair : gPlugins) {
         if (libraryName == gPair.first) {
             std::shared_ptr<IGraphical> graphical = gPair.second.getFactory()->build(res.first, res.second);

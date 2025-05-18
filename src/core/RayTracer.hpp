@@ -22,7 +22,6 @@ namespace rayTracer {
             void setImage(const std::pair<size_t, size_t> &resolution);
             void setOutputFilePath(const std::string &outputFilePath);
             void setRayDefinition(size_t rayDefinition);
-            void setShowRender(bool showRender);
             void setWorkers(size_t workers);
             std::pair<size_t, size_t>getImageResolution() const;
 
@@ -30,7 +29,6 @@ namespace rayTracer {
             size_t _rayDefinition;
             unsigned int _workers;
             std::string _outputFilePath;
-            bool _showRender;
             std::shared_ptr<IGraphical> _graphical;
             rayTracer::PluginHandler _pluginHandler;
             rayTracer::Parser _parser;

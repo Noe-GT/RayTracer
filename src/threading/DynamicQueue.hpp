@@ -17,7 +17,8 @@ namespace rayTracer {
     class DynamicQueue {
         public:
             DynamicQueue(std::vector<std::shared_ptr<T>> &queue):
-                _accessIndex(0)
+                _accessIndex(0),
+                _done(0)
             {
                 for (std::shared_ptr<T> &elem : queue)
                     this->_queue.push_back(elem);
@@ -33,8 +34,18 @@ namespace rayTracer {
                 }
             }
 
+            void incDone() {
+                std::lock_guard<std::mutex> lock(_mutex);
+                this->_done++;
+            }
+
+            size_t getDone() const {
+                return this->_done;
+            }
+
             void reset() {
                 this->_accessIndex = 0;
+                this->_done = 0;
             }
 
             size_t size() const {
@@ -55,6 +66,7 @@ namespace rayTracer {
 
         private:
             size_t _accessIndex;
+            size_t _done;
             std::mutex _mutex;
             std::vector<std::shared_ptr<T>> _queue;
     };
