@@ -24,7 +24,7 @@ rayTracer::RayTracer::~RayTracer()
 void rayTracer::RayTracer::render()
 {
     std::cout << "Rendering..." << std::endl;
-    rayTracer::RenderPool(2, this->_image, this->_scene);
+    rayTracer::RenderPool(this->_workers, this->_image, this->_scene);
     std::cout << "Render completed." << std::endl;
 
     // std::vector<std::vector<math::Color>> dispVector;
@@ -73,7 +73,7 @@ void rayTracer::RayTracer::setGraphical(std::shared_ptr<IGraphical> graphical)
     this->_graphical = std::move(graphical);
 }
 
-void rayTracer::RayTracer::setRayDefinition(int rayDefinition)
+void rayTracer::RayTracer::setRayDefinition(size_t rayDefinition)
 {
     this->_rayDefinition = rayDefinition;
 }
@@ -81,6 +81,11 @@ void rayTracer::RayTracer::setRayDefinition(int rayDefinition)
 void rayTracer::RayTracer::setShowRender(bool showRender)
 {
     this->_showRender = showRender;
+}
+
+void  rayTracer::RayTracer::setWorkers(size_t workers)
+{
+    this->_workers = workers;
 }
 
 std::pair<size_t, size_t> rayTracer::RayTracer::getImageResolution() const

@@ -10,6 +10,7 @@
 void render(rayTracer::DynamicQueue<std::vector<rayTracer::Pixel>> &renderQueue, const rayTracer::Scene &scene)
 {
     std::shared_ptr<std::vector<rayTracer::Pixel>> toRender = renderQueue.pop();
+    std::cout << "worker: " << std::this_thread::get_id() << std::endl;
 
     while (toRender) {
         for (size_t i = 0; i < toRender->size(); i++)

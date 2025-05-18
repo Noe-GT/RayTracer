@@ -111,11 +111,17 @@ void rayTracer::Parser::parseCamera(rayTracer::Scene &scene)
 void rayTracer::Parser::parseProcessing(rayTracer::RayTracer &rayTracer)
 {
     const libconfig::Setting &processConf = config.lookup("processing");
-    int rayDefinition;
+    size_t rayDefinition;
+    size_t workers;
 
     if (processConf.exists("rayDefinition")) {
         rayDefinition = processConf["rayDefinition"];
         if (rayDefinition > 1)
             rayTracer.setRayDefinition(rayDefinition);
+    }
+    if (processConf.exists("workers")) {
+        workers = processConf["workers"];
+        if (workers > 1)
+            rayTracer.setWorkers(workers);
     }
 }
