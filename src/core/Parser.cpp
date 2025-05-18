@@ -53,8 +53,9 @@ void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
                         addTransformation(primitiveList[i], scene._composites);
                     if (transformationComposite) {
                         transformationComposite->addChild(primitiveComposite);
-                    } else
+                    } else {
                         scene.addComposite(primitiveComposite);
+                    }
                 } else {
                     scene.addComposite(primitiveComposite);
                 }
@@ -80,6 +81,9 @@ std::unique_ptr<Composite> rayTracer::Parser::addTransformation(const libconfig:
     const auto &transformationPlugins = this->_pluginHandler.getTransformationPlugins();
     for (const auto &plugin : transformationPlugins) {
         if (primitive.exists(plugin.first)) {
+            if (plugin.first == "translation") {
+                return nullptr;
+            }
             return createTransformation(primitive, plugin.first, transformations);
         }
     }

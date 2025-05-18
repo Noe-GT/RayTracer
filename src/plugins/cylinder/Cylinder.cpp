@@ -54,6 +54,21 @@ void Cylinder::configure(const libconfig::Setting &setting, int id)
         this->_orientation._z = setting["orientation"]["z"];
         this->_orientation = this->_orientation.normalize();
     }
+    if (setting.exists("translation")) {
+        const libconfig::Setting &translation = setting["translation"];
+        if (translation.exists("x")) {
+            double tx= translation["x"];
+            this->_origin._x += tx;
+        }
+        if (translation.exists("y")) {
+            double ty= translation["y"];
+            this->_origin._y += ty;
+        }
+        if (translation.exists("z")) {
+            double tz= translation["z"];
+            this->_origin._z += tz;
+        }
+    }
 }
 
 double Cylinder::getDiscriminant(math::Ray &ray)

@@ -55,7 +55,7 @@ void rayTracer::Pixel::parseComposite(const Composite& node, std::vector<std::sh
 void rayTracer::Pixel::simulateRays(const Scene& scene)
 {
     std::vector<std::shared_ptr<IPrimitive>> lights = this->getLights(scene);
-    if (_rays.empty())
+    if (this->_rays.empty())
         return;
 
     for (math::Ray &ray : this->_rays) {
@@ -78,8 +78,8 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
 
 bool rayTracer::Pixel::processComposite(const Composite& composite, math::Ray& ray, const Scene& scene, std::vector<std::shared_ptr<IPrimitive>>& lights)
 {
-    auto primitive = composite.getPrimitive();
-    auto transformation = composite.getTransformation();
+    std::shared_ptr<IPrimitive>  primitive = composite.getPrimitive();
+    std::shared_ptr<ITransformation>  transformation = composite.getTransformation();
     
     if (transformation) {
         math::Ray transformedRay = applyTransformation(ray, transformation->getMatrix());
@@ -101,27 +101,14 @@ math::Ray rayTracer::Pixel::applyTransformation(const math::Ray& ray, const math
 {
     math::Ray transformedRay = ray;
     math::Matrix<double> directionMatrix(1, 3);
-
     directionMatrix.setValue(1, 1, ray._direction._x);
     directionMatrix.setValue(1, 2, ray._direction._y);
     directionMatrix.setValue(1, 3, ray._direction._z);
-
     math::Matrix<double> resultMatrix = transformMatrix * directionMatrix;
     transformedRay._direction._x = resultMatrix.getMatrix()[0][0];
     transformedRay._direction._y = resultMatrix.getMatrix()[0][1];
     transformedRay._direction._z = resultMatrix.getMatrix()[0][2];
-
-    std::cout << "Old Ray Direction: (" 
-              << ray._direction._x << ", " 
-              << ray._direction._y << ", " 
-              << ray._direction._z << ")" << std::endl;
-    std::cout << "New Ray Direction: (" 
-              << transformedRay._direction._x << ", " 
-              << transformedRay._direction._y << ", " 
-              << transformedRay._direction._z << ")" << std::endl;
-    
     transformedRay._direction.normalize();
-
     return transformedRay;
 }
 
