@@ -17,6 +17,8 @@ class IGraphical {
         virtual ~IGraphical() = default;
         virtual void display(std::vector<std::vector<math::Color>> image) = 0;
         virtual void idle() = 0;
+        virtual bool doDisplay() const = 0;
+        virtual bool isActive() const = 0;
 };
 
 #endif /* !IGRAPHICAL_HPP_ */

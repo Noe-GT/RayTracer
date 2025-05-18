@@ -13,7 +13,7 @@ SRCS_DIR	=	..
 
 CXX	=	g++
 CXXFLAGS	=	-std=c++20 -Wall -Wextra -Werror -g3	\
-				-I. -I$(SRCS_DIR)/shared -I$(SRCS_DIR)/lib/math
+				-I. -I$(SRCS_DIR)/shared -I$(SRCS_DIR)/threading -I$(SRCS_DIR)/lib/math
 LDFLAGS	=	-lconfig++ -L$(SRCS_DIR)/lib/math -lmath
 CPPFLAGS	=	\
 
@@ -27,6 +27,7 @@ SRCS	=	Main.cpp	\
 			PluginHandler.cpp	\
 			RayTracer.cpp	\
 			Scene.cpp	\
+			RenderPool.cpp	\
 
 OBJS	=	$(SRCS:%.cpp=$(BIN_DIR)/%.o)
 

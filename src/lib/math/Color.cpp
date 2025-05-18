@@ -108,7 +108,7 @@ namespace math {
     std::ostream& operator<<(std::ostream& os, const math::Color& c) {
         os << static_cast<int>(255.999 * c._r) << ' '
         << static_cast<int>(255.999 * c._g) << ' '
-        << static_cast<int>(255.999 * c._b) << '\n';
+        << static_cast<int>(255.999 * c._b);
         return os;
     }
 };

@@ -8,6 +8,7 @@
 #include "Scene.hpp"
 #include "Pixel.hpp"
 #include "External.hpp"
+#include "RenderPool.hpp"
 
 namespace rayTracer {
     class RayTracer {
@@ -20,19 +21,21 @@ namespace rayTracer {
             void setGraphical(std::shared_ptr<IGraphical> graphical);
             void setImage(const std::pair<size_t, size_t> &resolution);
             void setOutputFilePath(const std::string &outputFilePath);
-            void setRayDefinition(int rayDefinition);
+            void setRayDefinition(size_t rayDefinition);
             void setShowRender(bool showRender);
+            void setWorkers(size_t workers);
             std::pair<size_t, size_t>getImageResolution() const;
 
         private:
-            int _rayDefinition;
+            size_t _rayDefinition;
+            size_t _workers;
             std::string _outputFilePath;
             bool _showRender;
             std::shared_ptr<IGraphical> _graphical;
             rayTracer::PluginHandler _pluginHandler;
             rayTracer::Parser _parser;
             Scene _scene;
-            std::vector<std::vector<Pixel>> _image;
+            std::vector<std::shared_ptr<std::vector<Pixel>>> _image;
             std::string _confPath;
     };
 }

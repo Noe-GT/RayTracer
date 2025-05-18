@@ -8,7 +8,8 @@
 #include "SFML.hpp"
 
 SFML::SFML(size_t width, size_t height):
-    _window(sf::VideoMode(width, height), "RayTracer", sf::Style::Titlebar | sf::Style::Close)
+    _window(sf::VideoMode(width, height), "RayTracer", sf::Style::Titlebar | sf::Style::Close),
+    _displayChrono(std::chrono::steady_clock::now())
 {
 }
 
@@ -28,6 +29,8 @@ void SFML::display(std::vector<std::vector<math::Color>> image)
     if (!this->_window.isOpen())
         return;
     this->handleEvents();
+    if (!this->doDisplay())
+        return;
     this->_window.clear(sf::Color::Black);
     for (size_t y = 0; y < image.size(); ++y) {
         for (size_t x = 0; x < image[y].size(); ++x) {
@@ -35,6 +38,12 @@ void SFML::display(std::vector<std::vector<math::Color>> image)
         }
     }
     this->_window.display();
+    this->_displayChrono = std::chrono::steady_clock::now();
+}
+
+bool SFML::doDisplay() const
+{
+    return (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - this->_displayChrono).count() >= DISPLAY_INTERVALS);
 }
 
 void SFML::handleEvents()
@@ -52,6 +61,11 @@ void SFML::idle()
     this->_window.display();
     while (this->_window.isOpen())
         this->handleEvents();
+}
+
+bool SFML::isActive() const
+{
+    return (this->_window.isOpen());
 }
 
 std::shared_ptr<IGraphical> SFMLFactory::build()
