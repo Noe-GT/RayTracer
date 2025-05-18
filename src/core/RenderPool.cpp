@@ -15,7 +15,7 @@ void render(rayTracer::DynamicQueue<std::vector<rayTracer::Pixel>> &renderQueue,
     while (toRender) {
         for (size_t i = 0; i < toRender->size(); i++) {
             toRender->at(i).simulateRays(scene);
-            std::cout << toRender->at(i).getColor();
+            // std::cout << toRender->at(i).getColor();
         }
         toRender = renderQueue.pop();
         std::cout << std::endl;
@@ -30,6 +30,16 @@ rayTracer::RenderPool::RenderPool(size_t nWorkers, std::vector<std::vector<rayTr
     this->_workers.resize(this->_nWorkers);
     for (size_t i = 0; i < this->_nWorkers; i++)
         this->_workers.emplace_back(render, std::ref(this->_renderQueue), scene);
+
+    std::ofstream file("pool.ppm");
+
+    file << "P3\n" << 600 << " "<< 600 << " \n255\n";
+    for (int y = 0; y < 600; ++y) {
+        for (int x = 0; x < 600; ++x) {
+            file << baseQueue[y][x].getColor();
+        }
+    }
+    file.close();
 }
 
 rayTracer::RenderPool::~RenderPool()
