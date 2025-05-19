@@ -145,7 +145,7 @@ classDiagram
 - primitives (list of primitives present in the scene, written in plurial)
 
 ## Extra
-You can add your own primitives by integrating new plugins. To do so, create a new directory in the `src/plugins` directory, with .cpp/.hpp files and a Makefile. Next, add your directory name in the `PLUGINS` variable in the file `src/plugins/Makefile` to compile your new plugin.
+- You can add your own primitives by integrating new plugins. To do so, create a new directory in the `src/plugins` directory, with .cpp/.hpp files and a Makefile. Next, add your directory name in the `PLUGINS` variable in the file `src/plugins/Makefile` to compile your new plugin.
 This plugin will have to be a class descending of the `APrimitive` class and integrating all mandatory methods of the class. To finish, you will only have to create a factory for your new primitive descending of the class `IFactory<IPrimitive>`. The only method you will have to override (and set as final by the way) is the `build` method, generating a shared pointer of your new primitive.
 
 ## Notes
