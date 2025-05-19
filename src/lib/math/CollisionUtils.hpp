@@ -55,6 +55,8 @@ namespace math {
                 const math::Color &ambiantColor);
 
     private:
+        float computeShadowsLight(const std::shared_ptr<IPrimitive> &light, IPrimitive &primitive, const std::vector<std::shared_ptr<IPrimitive>> &objs);
+
         double _a;
         double _b;
         double _c;

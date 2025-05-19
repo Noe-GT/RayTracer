@@ -148,6 +148,36 @@ void math::CollisionUtils::computeReflection(
     ray._color = ray._color * (1 - reflectivity) + finalReflectedColor * reflectivity;
 }
 
+float math::CollisionUtils::computeShadowsLight(const std::shared_ptr<IPrimitive> &light,
+    IPrimitive &primitive,
+    const std::vector<std::shared_ptr<IPrimitive>> &objs)
+{
+    math::Vector lightDir = (light->getOrigin() - _hitPoint);
+    double distToLight = lightDir.Length();
+    math::Vector epsilon = _normal * 0.001f;
+    math::Ray shadowRay;
+    float tmpShadowFactor;
+    float shadowFactor = 1.0f;
+
+    lightDir.normalize();
+    shadowRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
+    shadowRay._direction = lightDir;
+    for (const std::shared_ptr<IPrimitive> &obj : objs) {
+        if (obj->getID() == primitive.getID())
+            continue;
+        if (obj->getID() == light->getID())
+            continue;
+        math::CollisionUtils tmp = obj->Collide(shadowRay);
+        if (tmp.getDiscriminant() >= 0) {
+            if (tmp.getT() > 0.001f && tmp.getT() < distToLight) {
+                tmpShadowFactor = std::max(0.1, obj->getMaterial().getTransparency());
+                shadowFactor = std::min(shadowFactor, tmpShadowFactor);
+            }
+        }
+    }
+    return std::max(0.0, _normal.dotProduct(lightDir)) * (shadowFactor);
+}
+
 void math::CollisionUtils::computeShadows(
     IPrimitive &primitive,
     math::Ray &ray,
@@ -157,31 +187,10 @@ void math::CollisionUtils::computeShadows(
 {
     math::Color materialColor = primitive.getMaterial().GetColor();
     math::Color finalColor = {ambiantColor._r * 0.2f, ambiantColor._g * 0.2f, ambiantColor._b * 0.2f};
+    float diffuse;
 
     for (const std::shared_ptr<IPrimitive> &light : lights) {
-        math::Vector lightDir = (light->getOrigin() - _hitPoint);
-        double distToLight = lightDir.Length();
-        lightDir.normalize();
-        math::Vector epsilon = _normal * 0.001f;
-        math::Ray shadowRay;
-        shadowRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
-        shadowRay._direction = lightDir;
-        float shadowFactor = 1.0f;
-        float tmpShadowFactor;
-        for (const std::shared_ptr<IPrimitive> &obj : objs) {
-            if (obj->getID() == primitive.getID())
-                continue;
-            if (obj->getID() == light->getID())
-                continue;
-            math::CollisionUtils tmp = obj->Collide(shadowRay);
-            if (tmp.getDiscriminant() >= 0) {
-                if (tmp.getT() > 0.001f && tmp.getT() < distToLight) {
-                    tmpShadowFactor = std::max(0.1, obj->getMaterial().getTransparency());
-                    shadowFactor = std::min(shadowFactor, tmpShadowFactor);
-                }
-            }
-        }
-        float diffuse = std::max(0.0, _normal.dotProduct(lightDir)) * (shadowFactor);
+        diffuse = this->computeShadowsLight(light, primitive, objs);
         finalColor += materialColor * (diffuse * (light->getMaterial().getBrightness()));
         finalColor._r = std::min(1.0, finalColor._r);
         finalColor._g = std::min(1.0, finalColor._g);
@@ -193,7 +202,6 @@ void math::CollisionUtils::computeShadows(
     finalColor._b = std::min(1.0, finalColor._b);
     ray._color = finalColor;
 }
-
 
 void math::CollisionUtils::computeTransparency(
     IPrimitive &primitive,
