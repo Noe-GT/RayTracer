@@ -14,13 +14,13 @@
 #include "PluginTypes.hpp"
 #include "Exceptions.hpp"
 
-class Cone: public APrimitive {
+class Cone: public rayTracer::APrimitive {
     public:
         Cone();
         Cone(math::Point origin, double radius, double height);
         ~Cone() = default;
 
-        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
+        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &lights,const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &objs) final;
         math::CollisionUtils Collide(math::Ray& ray) final;
         void configure(const libconfig::Setting &setting, int id) final;
 
@@ -36,12 +36,12 @@ class Cone: public APrimitive {
         Material _material;
 };
 
-class ConeFactory: public rayTracer::IFactory<IPrimitive> {
+class ConeFactory: public rayTracer::IFactory<rayTracer::IPrimitive> {
     public:
         ConeFactory() = default;
         ~ConeFactory() = default;
 
-        std::shared_ptr<IPrimitive> build() final;
+        std::shared_ptr<rayTracer::IPrimitive> build() final;
 };
 
 #endif /* !CONE_HPP_ */

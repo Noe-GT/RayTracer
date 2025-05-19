@@ -13,7 +13,10 @@
 #include <cmath>
 #include "Ray.hpp"
 #include <vector>
-class IPrimitive;
+
+namespace rayTracer {
+    class IPrimitive;
+}
 
 namespace math {
     class CollisionUtils {
@@ -38,24 +41,24 @@ namespace math {
             void setDiscriminant(double newVal);
             void setHasCollision(bool newVal);
 
-            void computeReflection(IPrimitive &me,
+            void computeReflection(rayTracer::IPrimitive &me,
                 math::Ray &ray,
-                const std::vector<std::shared_ptr<IPrimitive>> &light,
-                const std::vector<std::shared_ptr<IPrimitive>> &objs,
+                const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &light,
+                const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs,
                 const math::Color &ambiantColor);
-            void computeShadows(IPrimitive &me,
+            void computeShadows(rayTracer::IPrimitive &me,
                 math::Ray &ray,
-                const std::vector<std::shared_ptr<IPrimitive>> &light,
-                const std::vector<std::shared_ptr<IPrimitive>> &objs,
+                const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &light,
+                const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs,
                 const math::Color &ambiantColor);
-            void computeTransparency(IPrimitive &me,
+            void computeTransparency(rayTracer::IPrimitive &me,
                 math::Ray &ray,
-                const std::vector<std::shared_ptr<IPrimitive>> &light,
-                const std::vector<std::shared_ptr<IPrimitive>> &objs,
+                const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &light,
+                const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs,
                 const math::Color &ambiantColor);
 
     private:
-        float computeShadowsLight(const std::shared_ptr<IPrimitive> &light, IPrimitive &primitive, const std::vector<std::shared_ptr<IPrimitive>> &objs);
+        float computeShadowsLight(const std::shared_ptr<rayTracer::IPrimitive> &light, rayTracer::IPrimitive &primitive, const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs);
 
         double _a;
         double _b;
@@ -67,4 +70,4 @@ namespace math {
         math::Vector _normal;
 
     };
-}
+};

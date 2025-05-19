@@ -35,17 +35,17 @@ const std::vector<Composite>& rayTracer::Scene::getComposites() const
     return _composites;
 }
 
-const std::vector<std::shared_ptr<IPrimitive>> rayTracer::Scene::getPrimitives() const
+const std::vector<std::shared_ptr<rayTracer::IPrimitive>> rayTracer::Scene::getPrimitives() const
 {
-    std::vector<std::shared_ptr<IPrimitive>> primitives;
+    std::vector<std::shared_ptr<rayTracer::IPrimitive>> primitives;
     for (const Composite& composite : this->_composites)
         parseCompositePrimitives(composite, primitives);
     return primitives;
 }
 
-void rayTracer::Scene::parseCompositePrimitives(const Composite& composite, std::vector<std::shared_ptr<IPrimitive>>& primitives) const
+void rayTracer::Scene::parseCompositePrimitives(const Composite& composite, std::vector<std::shared_ptr<rayTracer::IPrimitive>>& primitives) const
 {
-    std::shared_ptr<IPrimitive> primitive = composite.getPrimitive();
+    std::shared_ptr<rayTracer::IPrimitive> primitive = composite.getPrimitive();
     if (primitive)
         primitives.push_back(primitive);
     for (const auto& child : composite.getChildren())

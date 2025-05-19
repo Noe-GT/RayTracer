@@ -13,13 +13,13 @@
 #include <memory>
 #include "PluginTypes.hpp"
 
-class Sphere: public APrimitive {
+class Sphere: public rayTracer::APrimitive {
     public:
         Sphere();
         Sphere(math::Point origin, double radius);
         ~Sphere() = default;
 
-        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
+        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &lights,const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &objs) final;
         math::CollisionUtils Collide(math::Ray& ray) final;
         void configure(const libconfig::Setting &setting, int id) final;
 
@@ -31,12 +31,12 @@ class Sphere: public APrimitive {
         double _radius;
 };
 
-class SphereFactory: public rayTracer::IFactory<IPrimitive> {
+class SphereFactory: public rayTracer::IFactory<rayTracer::IPrimitive> {
     public:
         SphereFactory() = default;
         ~SphereFactory() = default;
 
-        std::shared_ptr<IPrimitive> build() final;
+        std::shared_ptr<rayTracer::IPrimitive> build() final;
 };
 
 #endif /* !SPHERE_HPP_ */

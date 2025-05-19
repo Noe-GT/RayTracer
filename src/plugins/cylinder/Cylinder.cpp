@@ -28,7 +28,7 @@ Cylinder::Cylinder(math::Point origin, double radius, double height) :
 
 void Cylinder::configure(const libconfig::Setting &setting, int id)
 {
-    APrimitive::configure(setting, id);
+    rayTracer::APrimitive::configure(setting, id);
     if (setting.exists("x"))
         this->_origin._x = setting["x"];
     if (setting.exists("y"))
@@ -98,7 +98,7 @@ math::CollisionUtils Cylinder::Collide(math::Ray& ray)
     return CU;
 }
 
-bool Cylinder::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<IPrimitive>> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs)
+bool Cylinder::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &lights, const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs)
 {
     math::CollisionUtils CU = this->Collide(ray);
     bool hitSomething = intersectCylinder(ray, CU);
@@ -184,14 +184,14 @@ double &Cylinder::getSize()
     return this->_radius;
 }
 
-std::shared_ptr<IPrimitive> CylinderFactory::build()
+std::shared_ptr<rayTracer::IPrimitive> CylinderFactory::build()
 {
     return std::make_shared<Cylinder>();
 }
 
 extern "C"
 {
-    rayTracer::IFactory<IPrimitive> *entryPoint()
+    rayTracer::IFactory<rayTracer::IPrimitive> *entryPoint()
     {
         return new CylinderFactory;
     }

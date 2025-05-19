@@ -36,14 +36,14 @@ void rayTracer::Parser::loadConfig(const std::string &filePath, rayTracer::RayTr
 void rayTracer::Parser::parsePrimitives(rayTracer::Scene &scene)
 {
     const libconfig::Setting &primitives = config.lookup("primitives");
-    const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &pPlugins = this->_pluginHandler.getPrimitivePlugins();
+    const std::map<std::string, rayTracer::PluginHandler::Plugin<rayTracer::IPrimitive>> &pPlugins = this->_pluginHandler.getPrimitivePlugins();
     std::vector<Composite> transformations;
 
-    for (std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> pPair : pPlugins) {
+    for (std::pair<std::string, rayTracer::PluginHandler::Plugin<rayTracer::IPrimitive>> pPair : pPlugins) {
         if (primitives.exists(pPair.first + "s")) {
             libconfig::Setting &primitiveList = primitives.lookup(pPair.first + "s");
             for (int i = 0; i < primitiveList.getLength(); i++) {
-                std::shared_ptr<IPrimitive> primitive = pPair.second.getFactory()->build();
+                std::shared_ptr<rayTracer::IPrimitive> primitive = pPair.second.getFactory()->build();
                 int id = scene.getNextId();
                 primitive->configure(primitiveList[i], id);
                 Composite primitiveComposite(primitive);

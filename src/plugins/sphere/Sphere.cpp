@@ -20,7 +20,7 @@ Sphere::Sphere(math::Point origin, double radius) :
 
 void Sphere::configure(const libconfig::Setting &setting, int id)
 {
-    APrimitive::configure(setting, id);
+    rayTracer::APrimitive::configure(setting, id);
     if (setting.exists("x"))
         this->_origin._x = setting["x"];
     if (setting.exists("y"))
@@ -70,7 +70,7 @@ math::CollisionUtils Sphere::Collide(math::Ray& ray)
     return CU;
 }
 
-bool Sphere::Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs)
+bool Sphere::Intersect(math::Ray& ray, const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &lights,const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &objs)
 {
     math::Color ambiantColor(ray._color);
     math::CollisionUtils CU;
@@ -102,14 +102,14 @@ double &Sphere::getSize()
     return this->_radius;
 }
 
-std::shared_ptr<IPrimitive> SphereFactory::build()
+std::shared_ptr<rayTracer::IPrimitive> SphereFactory::build()
 {
     return std::make_shared<Sphere>();
 }
 
 extern "C"
 {
-    rayTracer::IFactory<IPrimitive> *entryPoint()
+    rayTracer::IFactory<rayTracer::IPrimitive> *entryPoint()
     {
         return new SphereFactory;
     }

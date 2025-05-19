@@ -28,7 +28,7 @@ Cone::Cone(math::Point origin, double radius, double height) :
 
 void Cone::configure(const libconfig::Setting &setting, int id)
 {
-    APrimitive::configure(setting, id);
+    rayTracer::APrimitive::configure(setting, id);
     if (setting.exists("x"))
         this->_origin._x = setting["x"];
     if (setting.exists("y"))
@@ -98,7 +98,7 @@ math::CollisionUtils Cone::Collide(math::Ray& ray)
     return CU;
 }
 
-bool Cone::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<IPrimitive>> &lights, const std::vector<std::shared_ptr<IPrimitive>> &objs)
+bool Cone::Intersect(math::Ray& ray, const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &lights, const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs)
 {
     math::CollisionUtils CU = this->Collide(ray);
     bool hitSomething = this->intersectCone(ray, CU);
@@ -159,14 +159,14 @@ double &Cone::getSize()
     return this->_radius;
 }
 
-std::shared_ptr<IPrimitive> ConeFactory::build()
+std::shared_ptr<rayTracer::IPrimitive> ConeFactory::build()
 {
     return std::make_shared<Cone>();
 }
 
 extern "C"
 {
-    rayTracer::IFactory<IPrimitive> *entryPoint()
+    rayTracer::IFactory<rayTracer::IPrimitive> *entryPoint()
     {
         return new ConeFactory;
     }

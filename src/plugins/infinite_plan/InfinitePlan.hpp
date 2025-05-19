@@ -12,13 +12,13 @@
 #include <memory>
 #include "PluginTypes.hpp"
 
-class InfinitePlan: public APrimitive {
+class InfinitePlan: public rayTracer::APrimitive {
     public:
         InfinitePlan();
         InfinitePlan(math::Point origin, double radius);
         ~InfinitePlan() = default;
 
-        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
+        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &lights,const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &objs) final;
         math::CollisionUtils Collide(math::Ray& ray) final;
         void configure(const libconfig::Setting &setting, int id) final;
 
@@ -30,10 +30,10 @@ class InfinitePlan: public APrimitive {
         double _radius;
 };
 
-class InfinitePlanFactory: public rayTracer::IFactory<IPrimitive> {
+class InfinitePlanFactory: public rayTracer::IFactory<rayTracer::IPrimitive> {
     public:
         InfinitePlanFactory() = default;
         ~InfinitePlanFactory() = default;
 
-        std::shared_ptr<IPrimitive> build() final;
+        std::shared_ptr<rayTracer::IPrimitive> build() final;
 };
