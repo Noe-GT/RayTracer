@@ -149,4 +149,4 @@ You can add your own primitives by integrating new plugins. To do so, create a n
 This plugin will have to be a class descending of the `APrimitive` class and integrating all mandatory methods of the class. To finish, you will only have to create a factory for your new primitive descending of the class `IFactory<IPrimitive>`. The only method you will have to override (and set as final by the way) is the `build` method, generating a shared pointer of your new primitive.
 
 ## Notes
-Note that you will need the `libconfig++` installed on your machine (version 1.8 or above)
+- Note that you will need the `libconfig++` installed on your machine (version 1.8 or above)
