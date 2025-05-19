@@ -2,32 +2,32 @@
 ** EPITECH PROJECT, 2025
 ** Raytracer
 ** File description:
-** APrimitive
+** rayTracer::APrimitive
 */
 
 #include "APrimitive.hpp"
 
-APrimitive::APrimitive():
+rayTracer::APrimitive::APrimitive():
     _origin(0, 0, -1)
 {
 }
 
-int &APrimitive::getID()
+int &rayTracer::APrimitive::getID()
 {
     return this->_id;
 }
 
-Material &APrimitive::getMaterial()
+Material &rayTracer::APrimitive::getMaterial()
 {
     return this->_material;
 }
 
-math::Point &APrimitive::getOrigin()
+math::Point &rayTracer::APrimitive::getOrigin()
 {
     return this->_origin;
 }
 
-void APrimitive::configure(const libconfig::Setting &setting, int id)
+void rayTracer::APrimitive::configure(const libconfig::Setting &setting, int id)
 {
     this->_id = id;
     double reflectivity = 0.0;

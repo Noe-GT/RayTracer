@@ -13,12 +13,12 @@ math::CollisionUtils::CollisionUtils()
 
 double math::CollisionUtils::getA() const
 {
-    return _a;
+    return this->_a;
 }
 
 double math::CollisionUtils::getB() const
 {
-    return _b;
+    return this->_b;
 }
 
 double math::CollisionUtils::getC() const
@@ -38,12 +38,12 @@ double math::CollisionUtils::getDiscriminant() const
 
 math::Vector math::CollisionUtils::getHitPoint() const
 {
-    return _hitPoint;
+    return this->_hitPoint;
 }
 
 math::Vector math::CollisionUtils::getNormal() const
 {
-    return _normal;
+    return this->_normal;
 }
 
 
@@ -94,16 +94,16 @@ void math::CollisionUtils::setHasCollision(bool newVal)
 }
 
 void math::CollisionUtils::computeReflection(
-    IPrimitive &primitive,
+    rayTracer::IPrimitive &primitive,
     math::Ray &ray,
-    const std::vector<std::shared_ptr<IPrimitive>> &lights,
-    const std::vector<std::shared_ptr<IPrimitive>> &objs,
+    const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &lights,
+    const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs,
     const math::Color &ambiantColor)
 {
     double reflectivity = primitive.getMaterial().getReflectivity();
     if (reflectivity <= 0)
         return;
-    math::Vector reflectedDir = ray._direction.normalize() - _normal * (2 * ray._direction.normalize().dotProduct(_normal));
+    math::Vector reflectedDir = ray._direction.normalize() - this->_normal * (2 * ray._direction.normalize().dotProduct(this->_normal));
     double blurness = primitive.getMaterial().getBlurness();
     int numRays = 1;
 
@@ -118,22 +118,22 @@ void math::CollisionUtils::computeReflection(
 
     math::Color finalReflectedColor(0, 0, 0);
     math::Noise noiseGenerator;
-    math::Vector epsilon(_normal._x * 0.00000001f, _normal._y * 0.00000001f, _normal._z * 0.00000001f);
+    math::Vector epsilon(this->_normal._x * 0.00000001f, this->_normal._y * 0.00000001f, this->_normal._z * 0.00000001f);
 
     for (int i = 0; i < numRays; i++) {
         math::Ray secondaryRay;
         math::Vector perturbedDir = reflectedDir;
         if (i > 0 && blurness > 0) {
-            double noise = noiseGenerator.getNoise(_hitPoint._x, _hitPoint._y, _hitPoint._z, blurness);
+            double noise = noiseGenerator.getNoise(this->_hitPoint._x, this->_hitPoint._y, this->_hitPoint._z, blurness);
             double modulatedNoise = fmod(blurness / 10, noise);
             math::Vector perturbation(modulatedNoise, modulatedNoise, modulatedNoise);
             double rayInfluence = static_cast<double>(i) / numRays;
             perturbedDir = (reflectedDir + perturbation * (blurness * (0.2 + 0.8 * rayInfluence))).normalize();
         }
-        secondaryRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
+        secondaryRay._origin = {this->_hitPoint._x + epsilon._x, this->_hitPoint._y + epsilon._y, this->_hitPoint._z + epsilon._z};
         secondaryRay._direction = perturbedDir;
         bool hasIntersection = false;
-        for (const std::shared_ptr<IPrimitive> &obj : objs) {
+        for (const std::shared_ptr<rayTracer::IPrimitive> &obj : objs) {
             if (obj->getID() != primitive.getID() && obj->Intersect(secondaryRay, lights, objs)) {
                 finalReflectedColor += secondaryRay._color;
                 hasIntersection = true;
@@ -149,39 +149,18 @@ void math::CollisionUtils::computeReflection(
 }
 
 void math::CollisionUtils::computeShadows(
-    IPrimitive &primitive,
+    rayTracer::IPrimitive &primitive,
     math::Ray &ray,
-    const std::vector<std::shared_ptr<IPrimitive>> &lights,
-    const std::vector<std::shared_ptr<IPrimitive>> &objs,
+    const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &lights,
+    const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs,
     const math::Color &ambiantColor)
 {
     math::Color materialColor = primitive.getMaterial().GetColor();
     math::Color finalColor = {ambiantColor._r * 0.2f, ambiantColor._g * 0.2f, ambiantColor._b * 0.2f};
+    float diffuse;
 
-    for (const std::shared_ptr<IPrimitive> &light : lights) {
-        math::Vector lightDir = (light->getOrigin() - _hitPoint);
-        double distToLight = lightDir.Length();
-        lightDir.normalize();
-        math::Vector epsilon = _normal * 0.001f;
-        math::Ray shadowRay;
-        shadowRay._origin = {_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z};
-        shadowRay._direction = lightDir;
-        float shadowFactor = 1.0f;
-        float tmpShadowFactor;
-        for (const std::shared_ptr<IPrimitive> &obj : objs) {
-            if (obj->getID() == primitive.getID())
-                continue;
-            if (obj->getID() == light->getID())
-                continue;
-            math::CollisionUtils tmp = obj->Collide(shadowRay);
-            if (tmp.getDiscriminant() >= 0) {
-                if (tmp.getT() > 0.001f && tmp.getT() < distToLight) {
-                    tmpShadowFactor = std::max(0.1, obj->getMaterial().getTransparency());
-                    shadowFactor = std::min(shadowFactor, tmpShadowFactor);
-                }
-            }
-        }
-        float diffuse = std::max(0.0, _normal.dotProduct(lightDir)) * (shadowFactor);
+    for (const std::shared_ptr<rayTracer::IPrimitive> &light : lights) {
+        diffuse = this->computeShadowsLight(light, primitive, objs);
         finalColor += materialColor * (diffuse * (light->getMaterial().getBrightness()));
         finalColor._r = std::min(1.0, finalColor._r);
         finalColor._g = std::min(1.0, finalColor._g);
@@ -194,21 +173,50 @@ void math::CollisionUtils::computeShadows(
     ray._color = finalColor;
 }
 
+float math::CollisionUtils::computeShadowsLight(const std::shared_ptr<rayTracer::IPrimitive> &light,
+    rayTracer::IPrimitive &primitive,
+    const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs)
+{
+    math::Vector lightDir = (light->getOrigin() - this->_hitPoint);
+    double distToLight = lightDir.Length();
+    math::Vector epsilon = this->_normal * 0.001f;
+    math::Ray shadowRay;
+    float tmpShadowFactor;
+    float shadowFactor = 1.0f;
+
+    lightDir.normalize();
+    shadowRay._origin = {this->_hitPoint._x + epsilon._x, this->_hitPoint._y + epsilon._y, this->_hitPoint._z + epsilon._z};
+    shadowRay._direction = lightDir;
+    for (const std::shared_ptr<rayTracer::IPrimitive> &obj : objs) {
+        if (obj->getID() == primitive.getID())
+            continue;
+        if (obj->getID() == light->getID())
+            continue;
+        math::CollisionUtils tmp = obj->Collide(shadowRay);
+        if (tmp.getDiscriminant() >= 0) {
+            if (tmp.getT() > 0.001f && tmp.getT() < distToLight) {
+                tmpShadowFactor = std::max(0.1, obj->getMaterial().getTransparency());
+                shadowFactor = std::min(shadowFactor, tmpShadowFactor);
+            }
+        }
+    }
+    return std::max(0.0, this->_normal.dotProduct(lightDir)) * (shadowFactor);
+}
 
 void math::CollisionUtils::computeTransparency(
-    IPrimitive &primitive,
+    rayTracer::IPrimitive &primitive,
     math::Ray &ray,
-    const std::vector<std::shared_ptr<IPrimitive>> &lights,
-    const std::vector<std::shared_ptr<IPrimitive>> &objs,
+    const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &lights,
+    const std::vector<std::shared_ptr<rayTracer::IPrimitive>> &objs,
     const math::Color &ambiantColor)
 {
     double refractiveIndex = primitive.getMaterial().getRefractness();
     double transparency = primitive.getMaterial().getTransparency();
+    int numRays = 1;
 
     if (transparency <= 0)
         return;
     double blurness = primitive.getMaterial().getBlurness();
-    int numRays = 1;
 
     if (blurness > 0) {
         if (blurness < 0.3)
@@ -221,26 +229,26 @@ void math::CollisionUtils::computeTransparency(
 
     math::Color finalRefractedColor(0, 0, 0);
     math::Noise noiseGenerator;
-    math::Vector epsilon(_normal._x * 0.00000001f, _normal._y * 0.00000001f, _normal._z * 0.00000001f);
+    math::Vector epsilon(this->_normal._x * 0.00000001f, this->_normal._y * 0.00000001f, this->_normal._z * 0.00000001f);
 
     for (int i = 0; i < numRays; i++) {
-        double eta = (_normal.dotProduct(ray._direction) < 0 ? 1.0 / refractiveIndex : refractiveIndex);
-        double cosi = -_normal.dotProduct(ray._direction.normalize());
+        double eta = (this->_normal.dotProduct(ray._direction) < 0 ? 1.0 / refractiveIndex : refractiveIndex);
+        double cosi = -this->_normal.dotProduct(ray._direction.normalize());
         double k = 1.0 - eta * eta * (1.0 - cosi * cosi);
         math::Vector refractedDir;
 
         if (k < 0.0)
-            refractedDir = ray._direction.normalize() - _normal * 2.0 * cosi;
+            refractedDir = ray._direction.normalize() - this->_normal * 2.0 * cosi;
         else
-            refractedDir = ray._direction.normalize() * eta + _normal * (eta * cosi - sqrt(k));
+            refractedDir = ray._direction.normalize() * eta + this->_normal * (eta * cosi - sqrt(k));
         if (i > 0 && blurness > 0) {
-            double noise = noiseGenerator.getNoise(_hitPoint._x, _hitPoint._y, _hitPoint._z, blurness);
+            double noise = noiseGenerator.getNoise(this->_hitPoint._x, this->_hitPoint._y, this->_hitPoint._z, blurness);
             double modulatedNoise = fmod(blurness / 10, noise);
             math::Vector perturbation(modulatedNoise, modulatedNoise, modulatedNoise);
             double rayInfluence = static_cast<double>(i) / numRays;
             refractedDir = (refractedDir + perturbation * (blurness * (0.2 + 0.8 * rayInfluence))).normalize();
         }
-        math::Ray internalRay(_hitPoint._x + epsilon._x, _hitPoint._y + epsilon._y, _hitPoint._z + epsilon._z);
+        math::Ray internalRay(this->_hitPoint._x + epsilon._x, this->_hitPoint._y + epsilon._y, this->_hitPoint._z + epsilon._z);
         internalRay._direction = refractedDir;
 
         math::Vector exitPoint;
@@ -272,7 +280,7 @@ void math::CollisionUtils::computeTransparency(
             finalRay._color = ray._color;
 
             bool hasRefraction = false;
-            for (const std::shared_ptr<IPrimitive> &obj : objs) {
+            for (const std::shared_ptr<rayTracer::IPrimitive> &obj : objs) {
                 if (obj.get()->getID() != primitive.getID() && obj->Intersect(finalRay, lights, objs)) {
                     finalRefractedColor += finalRay._color;
                     hasRefraction = true;

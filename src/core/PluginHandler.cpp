@@ -24,7 +24,7 @@ void rayTracer::PluginHandler::cstrPlugin(const std::string &fileName, const Lib
     switch (loader->getLibType())
     {
         case rayTracer::PluginType::PRIMITIVE:
-            this->_primitivePlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<IPrimitive>(loader, pluginName));
+            this->_primitivePlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<rayTracer::IPrimitive>(loader, pluginName));
             break;
         case rayTracer::PluginType::GRAPHICAL:
             this->_graphicalPlugins.insert_or_assign(pluginName, rayTracer::PluginHandler::Plugin<IGraphical>(loader, pluginName));
@@ -41,7 +41,7 @@ void rayTracer::PluginHandler::display() const
 {
     std::cout << "PLUGINS" << std::endl;
     std::cout << "#Primitives:" << std::endl;
-    for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> plugin : this->_primitivePlugins) {
+    for (const std::pair<std::string, rayTracer::PluginHandler::Plugin<rayTracer::IPrimitive>> plugin : this->_primitivePlugins) {
         std::cout << "+--" << plugin.first << std::endl;
     }
     std::cout << "#Graphicals:" << std::endl;
@@ -78,7 +78,7 @@ std::shared_ptr<rayTracer::IFactory<T>> rayTracer::PluginHandler::getPluginFacto
     return nullptr;
 }
 
-const std::map<std::string, rayTracer::PluginHandler::Plugin<IPrimitive>> &rayTracer::PluginHandler::getPrimitivePlugins() const
+const std::map<std::string, rayTracer::PluginHandler::Plugin<rayTracer::IPrimitive>> &rayTracer::PluginHandler::getPrimitivePlugins() const
 {
     return this->_primitivePlugins;
 }

@@ -7,7 +7,7 @@
 
 #include "Composite.hpp"
 
-Composite::Composite(std::shared_ptr<IPrimitive> primitive)
+Composite::Composite(std::shared_ptr<rayTracer::IPrimitive> primitive)
     : _primitive(primitive), _transformation(nullptr)
 {
 }
@@ -22,7 +22,7 @@ void Composite::addChild(Composite &child)
     _children.push_back(child);
 }
 
-std::shared_ptr<IPrimitive> Composite::getPrimitive() const
+std::shared_ptr<rayTracer::IPrimitive> Composite::getPrimitive() const
 {
     return _primitive;
 }

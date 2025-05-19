@@ -20,9 +20,9 @@ namespace rayTracer {
         const math::Color& getColor() const;
         void simulateRays(const Scene& scene);
         std::pair<size_t, size_t> getPos() const;
-        std::vector<std::shared_ptr<IPrimitive>> getLights(const Scene &scene);
-        void parseComposite(const Composite& node, std::vector<std::shared_ptr<IPrimitive>>& lights);
-        bool processComposite(const Composite& composite, math::Ray& ray, const Scene& scene, std::vector<std::shared_ptr<IPrimitive>>& lights);
+        std::vector<std::shared_ptr<rayTracer::IPrimitive>> getLights(const Scene &scene);
+        void parseComposite(const Composite& node, std::vector<std::shared_ptr<rayTracer::IPrimitive>>& lights);
+        bool processComposite(const Composite& composite, math::Ray& ray, const Scene& scene, std::vector<std::shared_ptr<rayTracer::IPrimitive>>& lights);
         math::Ray applyTransformation(const math::Ray& ray, const math::Matrix<double>& transformMatrix);
 
     private:

@@ -14,13 +14,13 @@
 #include "PluginTypes.hpp"
 #include "Exceptions.hpp"
 
-class Cylinder: public APrimitive {
+class Cylinder: public rayTracer::APrimitive {
     public:
         Cylinder();
         Cylinder(math::Point origin, double radius, double height);
         ~Cylinder() = default;
 
-        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<IPrimitive>> &lights,const std::vector <std::shared_ptr<IPrimitive>> &objs) final;
+        bool Intersect(math::Ray& ray, const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &lights,const std::vector <std::shared_ptr<rayTracer::IPrimitive>> &objs) final;
         math::CollisionUtils Collide(math::Ray& ray) final;
         void configure(const libconfig::Setting &setting, int id) final;
 
@@ -37,12 +37,12 @@ class Cylinder: public APrimitive {
         Material _material;
 };
 
-class CylinderFactory: public rayTracer::IFactory<IPrimitive> {
+class CylinderFactory: public rayTracer::IFactory<rayTracer::IPrimitive> {
     public:
         CylinderFactory() = default;
         ~CylinderFactory() = default;
 
-        std::shared_ptr<IPrimitive> build() final;
+        std::shared_ptr<rayTracer::IPrimitive> build() final;
 };
 
 #endif /* !CYLINDER_HPP_ */

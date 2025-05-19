@@ -31,9 +31,9 @@ rayTracer::Pixel::Pixel(int definition, int x, int y, int imageWidth, int imageH
     }
 }
 
-std::vector<std::shared_ptr<IPrimitive>> rayTracer::Pixel::getLights(const Scene &scene)
+std::vector<std::shared_ptr<rayTracer::IPrimitive>> rayTracer::Pixel::getLights(const Scene &scene)
 {
-    std::vector<std::shared_ptr<IPrimitive>> lights;
+    std::vector<std::shared_ptr<rayTracer::IPrimitive>> lights;
 
     for (const Composite& obj : scene._composites) {
         parseComposite(obj, lights);
@@ -41,9 +41,9 @@ std::vector<std::shared_ptr<IPrimitive>> rayTracer::Pixel::getLights(const Scene
     return lights;
 }
 
-void rayTracer::Pixel::parseComposite(const Composite& node, std::vector<std::shared_ptr<IPrimitive>>& lights)
+void rayTracer::Pixel::parseComposite(const Composite& node, std::vector<std::shared_ptr<rayTracer::IPrimitive>>& lights)
 {
-    std::shared_ptr<IPrimitive> primitive = node.getPrimitive();
+    std::shared_ptr<rayTracer::IPrimitive> primitive = node.getPrimitive();
     if (primitive && primitive->getMaterial().getBrightness() > 0)
         lights.push_back(primitive);
     
@@ -54,7 +54,7 @@ void rayTracer::Pixel::parseComposite(const Composite& node, std::vector<std::sh
 
 void rayTracer::Pixel::simulateRays(const Scene& scene)
 {
-    std::vector<std::shared_ptr<IPrimitive>> lights = this->getLights(scene);
+    std::vector<std::shared_ptr<rayTracer::IPrimitive>> lights = this->getLights(scene);
     if (this->_rays.empty())
         return;
 
@@ -76,9 +76,9 @@ void rayTracer::Pixel::simulateRays(const Scene& scene)
 
 
 
-bool rayTracer::Pixel::processComposite(const Composite& composite, math::Ray& ray, const Scene& scene, std::vector<std::shared_ptr<IPrimitive>>& lights)
+bool rayTracer::Pixel::processComposite(const Composite& composite, math::Ray& ray, const Scene& scene, std::vector<std::shared_ptr<rayTracer::IPrimitive>>& lights)
 {
-    std::shared_ptr<IPrimitive>  primitive = composite.getPrimitive();
+    std::shared_ptr<rayTracer::IPrimitive>  primitive = composite.getPrimitive();
     std::shared_ptr<ITransformation>  transformation = composite.getTransformation();
     
     if (transformation) {
