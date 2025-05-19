@@ -32,7 +32,7 @@ classDiagram
 
     class Simulation {
         -vector~Ray~ _rays
-        -vector~rayTracer::IPrimitive~ _primitives
+        -vector~IPrimitive~ _primitives
         -Camera _camera
         -PrimitiveFactory _factory
         +TraceRays() void
@@ -68,7 +68,7 @@ classDiagram
         -Point _origin
         -Vector _direction
         -Color _color
-        +Trace(vector~rayTracer::IPrimitive~ primitives) Color
+        +Trace(vector~IPrimitive~ primitives) Color
     }
 
     class Camera {
@@ -79,7 +79,7 @@ classDiagram
     }
 
     %% Primitive et Matériaux
-    class rayTracer::IPrimitive {
+    class IPrimitive {
         <<interface>>
         +intersect(Ray ray) bool
     }
@@ -109,13 +109,13 @@ classDiagram
     Simulation "1" --> "*" Ray
     Simulation "1" --> "1" PrimitiveFactory
     Simulation "1" --> "1" Camera
-    Simulation "1" --> "*" rayTracer::IPrimitive
+    Simulation "1" --> "*" IPrimitive
 
     PrimitiveFactory ..> Sphere : create
     PrimitiveFactory ..> Plane : create
 
-    rayTracer::IPrimitive <|-- Sphere
-    rayTracer::IPrimitive <|-- Plane
+    IPrimitive <|-- Sphere
+    IPrimitive <|-- Plane
 
     Ray "1" --> "1" Point
     Ray "1" --> "1" Vector
