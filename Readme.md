@@ -1,3 +1,13 @@
+# Raytracer
+
+This document presents how the program works
+
+## Cloning the program
+Cloning: `git clone git@github.com:EpitechPromo2028/B-OOP-400-LYN-4-1-raytracer-ulysse.mercadal.git`
+Making: `make`
+Executing: `./raytracer [config file (.cfg)]`
+
+**Architecture**:
 ```mermaid
 classDiagram
     class RayTracer {
@@ -106,7 +116,22 @@ classDiagram
 ```
 
 ## Configuration file
-** Categories **
-- camera
-- graphical
-- primitives
+**Categories**
+- camera (camera's informations):
+    - postion (x, y, z)
+    - rotation (x, y, z)
+- image (generated image informations):
+    - resolution (width, height)
+    - format (output format)
+    - fileName (output file path)
+- graphical:
+    - library (library used)
+    - showRender (progressively displays the output on a GUI)
+- processing:
+    - rayDefinition (number of rays per pixel)
+    - workers (number of threads working on the generation)
+- primitives (list of primitives present in the scene, written in plurial)
+
+## Extra
+You can add your own primitives by integrating new plugins. To do so, create a new directory in the `src/plugins` directory, with .cpp/.hpp files and a Makefile. Next, add your directory name in the `PLUGINS` variable in the file `src/plugins/Makefile` to compile your new plugin.
+This plugin will have to be a class descending of the `APrimitive` class and integrating all mandatory methods of the class. To finish, you will only have to create a factory for your new primitive descending of the class `IFactory<IPrimitive>`. The only method you will have to override (and set as final by the way) is the `build` method, generating a shared pointer of your new primitive.
