@@ -3,9 +3,12 @@
 This document presents how the program works
 
 ## Cloning the program
-Cloning: `git clone git@github.com:EpitechPromo2028/B-OOP-400-LYN-4-1-raytracer-ulysse.mercadal.git`
-Making: `make`
-Executing: `./raytracer [config file (.cfg)]`
+Cloning:
+```git clone git@github.com:EpitechPromo2028/B-OOP-400-LYN-4-1-raytracer-ulysse.mercadal.git```
+Making:
+```make```
+Executing:
+```./raytracer [config file (.cfg)]```
 
 **Architecture**:
 ```mermaid
